@@ -28,12 +28,12 @@ export default function Dashboard() {
 
   if (attorneyLoading) {
     return (
-      <div className="min-h-screen bg-light-gray">
-        <div className="bg-warm-white h-20 border-b border-light-navy">
+      <div className="min-h-screen bg-light-blue">
+        <div className="bg-slate-blue h-20 border-b-2 border-steel-blue">
           <Skeleton className="h-full w-full" />
         </div>
         <div className="max-w-7xl mx-auto px-8 py-8">
-          <div className="bg-warm-white rounded-xl p-8 shadow-sm">
+          <div className="bg-warm-white rounded-xl p-8 shadow-xl border-2 border-steel-blue">
             <Skeleton className="h-12 w-96 mb-6" />
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -47,29 +47,33 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-light-gray">
+    <div className="min-h-screen bg-light-blue">
       <Header attorney={attorney as any} />
       
       <main className="max-w-7xl mx-auto px-8 py-8">
         {/* LexFiat's Unique Value: Adaptive Workflow Intelligence */}
         <div className="mb-8">
-          <div className="bg-warm-white rounded-xl p-8 shadow-sm border border-light-navy">
+          <div className="bg-warm-white rounded-xl p-8 shadow-xl border-2 border-steel-blue">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-3xl font-serif font-bold text-navy mb-2">
+                <h1 className="text-3xl font-serif font-bold text-deep-navy mb-2">
                   Document Analysis & Response
                 </h1>
-                <p className="text-charcoal text-lg">
+                <p className="text-steel-blue text-lg font-medium">
                   Active workflow for Johnson v Johnson (Oakland County)
                 </p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-6">
                 <div className="text-right">
-                  <p className="text-sm text-charcoal font-medium">TRO Response Due</p>
-                  <p className="text-2xl font-bold text-alert-red">47 hours</p>
+                  <p className="text-sm text-steel-blue font-semibold tracking-wide">TRO RESPONSE DUE</p>
+                  <p className="text-3xl font-bold text-alert-amber">47 hours</p>
+                  <div className="workflow-progress mt-2">
+                    <div className="progress-pulse"></div>
+                  </div>
                 </div>
-                <div className="w-16 h-16 edison-bulb flex items-center justify-center">
-                  <Lightbulb className="h-8 w-8 text-navy" />
+                <div className="relative w-16 h-16 edison-bulb">
+                  <div className="edison-filament"></div>
+                  <div className="light-rays"></div>
                 </div>
               </div>
             </div>
@@ -91,29 +95,38 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Secondary Workflows - Available but not cluttering */}
+        {/* Secondary Workflows - Uniform and Inevitable */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-warm-white rounded-lg p-6 shadow-sm border border-light-navy">
-            <h3 className="text-lg font-semibold text-navy mb-2">Emergency Response</h3>
-            <p className="text-sm text-charcoal mb-4">Ready for urgent motions & TROs</p>
-            <button className="w-full bg-light-gray hover:bg-light-navy text-navy font-medium py-2 rounded-md transition-colors">
-              Activate Workflow
+          <div className="bg-slate-blue rounded-lg p-6 shadow-lg border-2 border-steel-blue">
+            <h3 className="text-lg font-semibold text-warm-white mb-2">Emergency Response</h3>
+            <p className="text-sm text-light-blue mb-4">Ready for urgent motions & TROs</p>
+            <div className="workflow-progress mb-4">
+              <div className="progress-pulse"></div>
+            </div>
+            <button className="w-full bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-semibold py-3 rounded-md transition-all duration-300 tracking-wide">
+              ACTIVATE WORKFLOW
             </button>
           </div>
           
-          <div className="bg-warm-white rounded-lg p-6 shadow-sm border border-light-navy">
-            <h3 className="text-lg font-semibold text-navy mb-2">Discovery Management</h3>
-            <p className="text-sm text-charcoal mb-4">Automated discovery tracking</p>
-            <button className="w-full bg-light-gray hover:bg-light-navy text-navy font-medium py-2 rounded-md transition-colors">
-              Activate Workflow
+          <div className="bg-slate-blue rounded-lg p-6 shadow-lg border-2 border-steel-blue">
+            <h3 className="text-lg font-semibold text-warm-white mb-2">Discovery Management</h3>
+            <p className="text-sm text-light-blue mb-4">Automated discovery tracking</p>
+            <div className="workflow-progress mb-4">
+              <div className="progress-pulse"></div>
+            </div>
+            <button className="w-full bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-semibold py-3 rounded-md transition-all duration-300 tracking-wide">
+              ACTIVATE WORKFLOW
             </button>
           </div>
           
-          <div className="bg-warm-white rounded-lg p-6 shadow-sm border border-light-navy">
-            <h3 className="text-lg font-semibold text-navy mb-2">Settlement Negotiation</h3>
-            <p className="text-sm text-charcoal mb-4">AI-assisted negotiation support</p>
-            <button className="w-full bg-light-gray hover:bg-light-navy text-navy font-medium py-2 rounded-md transition-colors">
-              Activate Workflow
+          <div className="bg-slate-blue rounded-lg p-6 shadow-lg border-2 border-steel-blue">
+            <h3 className="text-lg font-semibold text-warm-white mb-2">Settlement Negotiation</h3>
+            <p className="text-sm text-light-blue mb-4">AI-assisted negotiation support</p>
+            <div className="workflow-progress mb-4">
+              <div className="progress-pulse"></div>
+            </div>
+            <button className="w-full bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-semibold py-3 rounded-md transition-all duration-300 tracking-wide">
+              ACTIVATE WORKFLOW
             </button>
           </div>
         </div>

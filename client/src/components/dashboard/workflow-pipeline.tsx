@@ -35,9 +35,9 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
       status: "active",
       count: 12,
       detail: "New emails today",
-      bgColor: "bg-aqua bg-opacity-10",
-      iconColor: "text-aqua",
-      borderColor: "border-aqua"
+      bgColor: "bg-professional-blue bg-opacity-10",
+      iconColor: "text-professional-blue",
+      borderColor: "border-professional-blue"
     },
     {
       id: 2,
@@ -47,9 +47,9 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
       status: "processing",
       count: 8,
       detail: "Being analyzed",
-      bgColor: "bg-edison-gold bg-opacity-10",
-      iconColor: "text-yellow-600",
-      borderColor: "border-yellow-400"
+      bgColor: "bg-accent-gold bg-opacity-10",
+      iconColor: "text-rich-gold",
+      borderColor: "border-accent-gold"
     },
     {
       id: 3,
@@ -59,9 +59,9 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
       status: "ready",
       count: 3,
       detail: "Awaiting review",
-      bgColor: "bg-light-green bg-opacity-10",
-      iconColor: "text-light-green",
-      borderColor: "border-light-green"
+      bgColor: "bg-professional-blue bg-opacity-15",
+      iconColor: "text-professional-blue",
+      borderColor: "border-professional-blue"
     },
     {
       id: 4,
@@ -71,9 +71,9 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
       status: "pending",
       count: 2,
       detail: "Ready for approval",
-      bgColor: "bg-alert-red bg-opacity-10",
-      iconColor: "text-alert-red",
-      borderColor: "border-alert-red"
+      bgColor: "bg-alert-amber bg-opacity-10",
+      iconColor: "text-alert-amber",
+      borderColor: "border-alert-amber"
     },
     {
       id: 5,
@@ -83,23 +83,27 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
       status: "completed",
       count: 5,
       detail: "Sent today",
-      bgColor: "bg-charcoal bg-opacity-10",
-      iconColor: "text-charcoal",
-      borderColor: "border-charcoal"
+      bgColor: "bg-steel-blue bg-opacity-10",
+      iconColor: "text-steel-blue",
+      borderColor: "border-steel-blue"
     }
   ];
 
   return (
     <div className="space-y-8">
       {/* Pipeline Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-navy flex items-center space-x-2">
-          <Lightbulb className="h-5 w-5 text-edison-gold" />
-          <span>Legal Intelligence Pipeline</span>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-xl font-semibold text-deep-navy flex items-center space-x-3">
+          <Lightbulb className="h-6 w-6 text-accent-gold" />
+          <span className="tracking-wide">LEGAL INTELLIGENCE PIPELINE</span>
         </h2>
-        <div className="text-sm text-charcoal">
+        <div className="text-sm text-steel-blue font-medium">
           Last updated: 2 minutes ago
         </div>
+      </div>
+      
+      <div className="workflow-progress mb-6">
+        <div className="progress-pulse"></div>
       </div>
 
       {/* Workflow Pipeline Cards */}
@@ -111,52 +115,52 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
           return (
             <div
               key={step.id}
-              className={`relative ${step.bgColor} border-2 ${step.borderColor} rounded-lg p-4 transition-all duration-200 hover:shadow-md ${
-                isActive ? 'shadow-lg scale-105' : ''
+              className={`relative ${step.bgColor} border-2 ${step.borderColor} rounded-lg p-5 transition-all duration-300 hover:shadow-lg ${
+                isActive ? 'shadow-xl scale-105 border-accent-gold' : 'hover:border-accent-gold'
               }`}
             >
-              {/* Pipeline connector */}
+              {/* Pipeline connector - Inexorable Progress */}
               {index < pipelineSteps.length - 1 && (
                 <div className="hidden md:block absolute -right-2 top-1/2 transform -translate-y-1/2 z-10">
-                  <div className="w-4 h-0.5 bg-light-navy"></div>
+                  <div className="w-4 h-1 bg-gradient-to-r from-professional-blue to-accent-gold rounded-full shadow-sm"></div>
                 </div>
               )}
 
               <div className="text-center space-y-3">
-                <div className={`w-12 h-12 ${step.bgColor} rounded-full flex items-center justify-center mx-auto border ${step.borderColor}`}>
-                  <IconComponent className={`h-6 w-6 ${step.iconColor}`} />
+                <div className={`w-14 h-14 ${step.bgColor} rounded-full flex items-center justify-center mx-auto border-2 ${step.borderColor} shadow-md`}>
+                  <IconComponent className={`h-7 w-7 ${step.iconColor}`} />
                 </div>
                 
                 <div>
-                  <h3 className="font-semibold text-navy text-sm mb-1">{step.title}</h3>
-                  <p className="text-xs text-charcoal mb-2">{step.description}</p>
+                  <h3 className="font-bold text-deep-navy text-sm mb-1 tracking-wide">{step.title.toUpperCase()}</h3>
+                  <p className="text-xs text-steel-blue mb-3 font-medium">{step.description}</p>
                   
                   <div className="text-center">
-                    <div className={`text-xl font-bold ${step.iconColor} mb-1`}>
+                    <div className={`text-2xl font-bold ${step.iconColor} mb-1`}>
                       {step.count}
                     </div>
-                    <div className="text-xs text-charcoal">
+                    <div className="text-xs text-steel-blue font-medium">
                       {step.detail}
                     </div>
                   </div>
                 </div>
 
-                {/* Status indicator */}
+                {/* Status indicator - Inevitable Progress */}
                 {step.status === 'active' && (
                   <div className="absolute -top-2 -right-2">
-                    <div className="w-4 h-4 bg-aqua rounded-full animate-pulse"></div>
+                    <div className="w-5 h-5 bg-professional-blue rounded-full animate-pulse shadow-lg border-2 border-warm-white"></div>
                   </div>
                 )}
                 
                 {step.status === 'processing' && (
                   <div className="absolute -top-2 -right-2">
-                    <div className="w-4 h-4 bg-yellow-500 rounded-full animate-spin"></div>
+                    <div className="w-5 h-5 bg-accent-gold rounded-full animate-spin shadow-lg border-2 border-warm-white"></div>
                   </div>
                 )}
 
                 {step.status === 'pending' && (
                   <div className="absolute -top-2 -right-2">
-                    <AlertTriangle className="w-4 h-4 text-alert-red animate-bounce" />
+                    <AlertTriangle className="w-5 h-5 text-alert-amber animate-bounce drop-shadow-lg" />
                   </div>
                 )}
               </div>
@@ -165,57 +169,72 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
         })}
       </div>
 
-      {/* Action Buttons - LexFiat's Unique Value */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-light-navy">
+      {/* Action Buttons - Inexorable Legal Intelligence */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-8 border-t-2 border-steel-blue">
         <button 
           onClick={() => setShowDraftApproval(true)}
-          className="bg-aqua hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2">
-          <FileText className="h-4 w-4" />
-          <span>Review 2 Draft Responses</span>
+          className="bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg tracking-wide">
+          <FileText className="h-5 w-5" />
+          <span>REVIEW 2 DRAFT RESPONSES</span>
         </button>
         
-        <button className="bg-light-green hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2">
-          <Check className="h-4 w-4" />
-          <span>Approve & Send 3 Responses</span>
+        <button className="bg-accent-gold hover:bg-professional-blue text-deep-navy hover:text-warm-white font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg tracking-wide">
+          <Check className="h-5 w-5" />
+          <span>APPROVE & SEND 3 RESPONSES</span>
         </button>
         
-        <button className="bg-light-gray hover:bg-light-navy text-navy font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2">
-          <Brain className="h-4 w-4" />
-          <span>View AI Analysis</span>
+        <button className="bg-steel-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg tracking-wide">
+          <Brain className="h-5 w-5" />
+          <span>VIEW AI ANALYSIS</span>
         </button>
       </div>
 
-      {/* Task Tracking & Prioritization */}
-      <div className="bg-light-gray rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-navy mb-4">Task Priority & Completion Tracking</h3>
+      {/* Task Tracking & Prioritization - Inexorable Progress */}
+      <div className="bg-slate-blue rounded-lg p-8 shadow-lg border-2 border-steel-blue">
+        <h3 className="text-xl font-bold text-warm-white mb-6 tracking-wide flex items-center space-x-3">
+          <Clock className="h-6 w-6 text-accent-gold" />
+          <span>TASK PRIORITY & COMPLETION TRACKING</span>
+        </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="space-y-3">
-            <h4 className="font-medium text-charcoal">High Priority (47h deadline)</h4>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between p-3 bg-warm-white rounded border-l-4 border-alert-red">
-                <span className="text-sm text-navy">TRO Response - Johnson v Johnson</span>
-                <Clock className="h-4 w-4 text-alert-red" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="space-y-4">
+            <h4 className="font-bold text-accent-gold tracking-wide">CRITICAL PRIORITY</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-4 bg-warm-white rounded-lg border-l-4 border-alert-amber shadow-md">
+                <span className="text-sm font-semibold text-deep-navy">TRO Response - Johnson v Johnson</span>
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4 text-alert-amber" />
+                  <span className="text-xs font-bold text-alert-amber">47H</span>
+                </div>
+              </div>
+              <div className="workflow-progress">
+                <div className="progress-pulse"></div>
               </div>
             </div>
           </div>
           
-          <div className="space-y-3">
-            <h4 className="font-medium text-charcoal">Medium Priority</h4>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between p-3 bg-warm-white rounded border-l-4 border-yellow-400">
-                <span className="text-sm text-navy">Discovery Request Review</span>
-                <Clock className="h-4 w-4 text-yellow-600" />
+          <div className="space-y-4">
+            <h4 className="font-bold text-professional-blue tracking-wide">STANDARD PRIORITY</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-4 bg-warm-white rounded-lg border-l-4 border-professional-blue shadow-md">
+                <span className="text-sm font-semibold text-deep-navy">Discovery Request Review</span>
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4 text-professional-blue" />
+                  <span className="text-xs font-bold text-professional-blue">3D</span>
+                </div>
               </div>
             </div>
           </div>
           
-          <div className="space-y-3">
-            <h4 className="font-medium text-charcoal">Completed Today</h4>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between p-3 bg-warm-white rounded border-l-4 border-light-green">
-                <span className="text-sm text-navy">5 Client Email Responses</span>
-                <Check className="h-4 w-4 text-light-green" />
+          <div className="space-y-4">
+            <h4 className="font-bold text-accent-gold tracking-wide">COMPLETED TODAY</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-4 bg-warm-white rounded-lg border-l-4 border-accent-gold shadow-md">
+                <span className="text-sm font-semibold text-deep-navy">5 Client Email Responses</span>
+                <div className="flex items-center space-x-2">
+                  <Check className="h-4 w-4 text-accent-gold" />
+                  <span className="text-xs font-bold text-accent-gold">DONE</span>
+                </div>
               </div>
             </div>
           </div>

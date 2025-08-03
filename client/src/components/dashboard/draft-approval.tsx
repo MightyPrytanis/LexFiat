@@ -66,15 +66,15 @@ Mekel S. Miller, Esq.`,
     <div className="fixed inset-0 bg-navy bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-warm-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="bg-light-navy px-6 py-4 border-b border-light-gray">
+        <div className="bg-slate-blue px-6 py-4 border-b-2 border-steel-blue">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-navy">Draft Response Review & Approval</h2>
-              <p className="text-sm text-charcoal">LexFiat AI-Generated Legal Communications</p>
+              <h2 className="text-xl font-bold text-warm-white tracking-wide">DRAFT RESPONSE REVIEW & APPROVAL</h2>
+              <p className="text-sm text-accent-gold font-medium">LexFiat AI-Generated Legal Communications</p>
             </div>
             <button 
               onClick={onClose}
-              className="text-charcoal hover:text-navy transition-colors"
+              className="text-warm-white hover:text-accent-gold transition-colors"
             >
               <X className="h-6 w-6" />
             </button>
@@ -83,18 +83,18 @@ Mekel S. Miller, Esq.`,
 
         <div className="flex h-[calc(90vh-120px)]">
           {/* Draft List Sidebar */}
-          <div className="w-80 bg-light-gray border-r border-light-navy overflow-y-auto">
+          <div className="w-80 bg-light-blue border-r-2 border-steel-blue overflow-y-auto">
             <div className="p-4">
-              <h3 className="font-semibold text-navy mb-4">Pending Drafts ({drafts.length})</h3>
+              <h3 className="font-bold text-deep-navy mb-4 tracking-wide">PENDING DRAFTS ({drafts.length})</h3>
               <div className="space-y-3">
                 {drafts.map((draft, index) => (
                   <div
                     key={draft.id}
                     onClick={() => setSelectedDraft(index)}
-                    className={`p-4 rounded-lg cursor-pointer transition-colors ${
+                    className={`p-4 rounded-lg cursor-pointer transition-all duration-300 shadow-md ${
                       selectedDraft === index 
-                        ? 'bg-aqua bg-opacity-20 border-2 border-aqua' 
-                        : 'bg-warm-white border border-light-navy hover:bg-light-navy'
+                        ? 'bg-professional-blue bg-opacity-20 border-2 border-accent-gold shadow-lg' 
+                        : 'bg-warm-white border-2 border-steel-blue hover:border-accent-gold hover:shadow-lg'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
@@ -111,22 +111,22 @@ Mekel S. Miller, Esq.`,
                       </div>
                     </div>
                     
-                    <p className="font-medium text-sm text-navy mb-1">
+                    <p className="font-semibold text-sm text-deep-navy mb-1">
                       {draft.subject}
                     </p>
-                    <p className="text-xs text-charcoal mb-2">
+                    <p className="text-xs text-steel-blue mb-2 font-medium">
                       To: {draft.recipient}
                     </p>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-1">
-                        <MessageSquare className="h-3 w-3 text-light-green" />
-                        <span className="text-xs text-light-green font-medium">
-                          AI Confidence: {draft.confidence}%
+                        <MessageSquare className="h-3 w-3 text-accent-gold" />
+                        <span className="text-xs text-accent-gold font-bold">
+                          AI: {draft.confidence}%
                         </span>
                       </div>
                       {draft.redFlags.length > 0 && (
-                        <div className="w-2 h-2 bg-alert-red rounded-full"></div>
+                        <div className="w-2 h-2 bg-alert-amber rounded-full animate-pulse"></div>
                       )}
                     </div>
                   </div>

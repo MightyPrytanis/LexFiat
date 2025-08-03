@@ -25,9 +25,10 @@ The dashboard is **workflow-driven**, not information-driven. Each legal scenari
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
-Design preferences: Lighter, less cluttered interface (15% reduction in visual complexity)
-Theme: Professional light theme with navy/light-gray colors, aqua accents, clean white backgrounds, and abundant whitespace
-Logo: Edison bulb design with "piercing darkness" light effect, representing legal intelligence illuminating complex legal problems
+Design preferences: Serious professional interface that suggests inexorability and competence
+Theme: Professional blues and golds color palette - more serious than "Mondrian" bright colors but not "Imperial Star Destroyer" dark
+Logo: Negative space Edison bulb design with white filament/rays on dark circle, representing legal intelligence "piercing darkness"
+Workflow philosophy: Uniform roadmaps suggesting legal tasks will get completed - "it will, it must get done, it's only a matter of time"
 
 ## System Architecture
 
