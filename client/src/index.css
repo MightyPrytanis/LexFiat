@@ -24,35 +24,38 @@
   --ring: hsl(207, 90%, 54%);
   --radius: 0.5rem;
 
-  /* Lex Fiat Lighter Professional Theme */
-  --navy: hsl(217, 25%, 22%);
-  --charcoal: hsl(216, 15%, 35%);
-  --warm-white: hsl(210, 17%, 98%);
-  --aqua: hsl(213, 94%, 68%);
-  --light-green: hsl(158, 64%, 67%);
-  --alert-red: hsl(0, 84%, 60%);
+  /* Lex Fiat Light Professional Theme - Reduced Visual Clutter */
+  --navy: hsl(220, 30%, 15%);
+  --light-navy: hsl(220, 15%, 85%);
+  --charcoal: hsl(210, 8%, 25%);
+  --light-gray: hsl(210, 8%, 95%);
+  --warm-white: hsl(210, 17%, 99%);
+  --aqua: hsl(195, 85%, 45%);
+  --light-green: hsl(158, 45%, 55%);
+  --alert-red: hsl(0, 70%, 55%);
+  --edison-gold: hsl(45, 100%, 70%);
 }
 
 .dark {
-  --background: hsl(217, 25%, 22%);
-  --foreground: hsl(210, 17%, 98%);
-  --muted: hsl(216, 15%, 35%);
-  --muted-foreground: hsl(217, 12%, 65%);
-  --popover: hsl(216, 15%, 35%);
-  --popover-foreground: hsl(210, 17%, 98%);
-  --card: hsl(216, 15%, 35%);
-  --card-foreground: hsl(210, 17%, 98%);
-  --border: hsl(217, 12%, 45%);
-  --input: hsl(217, 12%, 45%);
-  --primary: hsl(213, 94%, 68%);
-  --primary-foreground: hsl(217, 25%, 22%);
-  --secondary: hsl(216, 15%, 35%);
-  --secondary-foreground: hsl(210, 17%, 98%);
-  --accent: hsl(216, 15%, 35%);
-  --accent-foreground: hsl(210, 17%, 98%);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(210, 17%, 98%);
-  --ring: hsl(213, 94%, 68%);
+  --background: hsl(210, 8%, 95%);
+  --foreground: hsl(220, 30%, 15%);
+  --muted: hsl(210, 8%, 90%);
+  --muted-foreground: hsl(210, 8%, 45%);
+  --popover: hsl(210, 17%, 99%);
+  --popover-foreground: hsl(220, 30%, 15%);
+  --card: hsl(210, 17%, 99%);
+  --card-foreground: hsl(220, 30%, 15%);
+  --border: hsl(210, 8%, 85%);
+  --input: hsl(210, 8%, 85%);
+  --primary: hsl(195, 85%, 45%);
+  --primary-foreground: hsl(210, 17%, 99%);
+  --secondary: hsl(210, 8%, 90%);
+  --secondary-foreground: hsl(220, 30%, 15%);
+  --accent: hsl(210, 8%, 90%);
+  --accent-foreground: hsl(220, 30%, 15%);
+  --destructive: hsl(0, 70%, 55%);
+  --destructive-foreground: hsl(210, 17%, 99%);
+  --ring: hsl(195, 85%, 45%);
 }
 
 @layer base {
@@ -70,9 +73,25 @@
   }
 }
 
-/* Lex Fiat Theme Classes */
+/* Lex Fiat Light Professional Theme Classes */
 .bg-navy {
   background-color: var(--navy);
+}
+
+.bg-light-navy {
+  background-color: var(--light-navy);
+}
+
+.bg-light-gray {
+  background-color: var(--light-gray);
+}
+
+.text-navy {
+  color: var(--navy);
+}
+
+.text-light-navy {
+  color: var(--light-navy);
 }
 
 .bg-charcoal {
@@ -117,6 +136,33 @@
 
 .text-alert-red {
   color: var(--alert-red);
+}
+
+.edison-bulb {
+  position: relative;
+  background: radial-gradient(circle at center, var(--edison-gold) 0%, transparent 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--edison-gold), 0 0 40px var(--edison-gold);
+  animation: bulb-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes bulb-glow {
+  from {
+    box-shadow: 0 0 20px var(--edison-gold), 0 0 40px var(--edison-gold);
+  }
+  to {
+    box-shadow: 0 0 30px var(--edison-gold), 0 0 60px var(--edison-gold);
+  }
+}
+
+.piercing-light {
+  background: linear-gradient(45deg, transparent 45%, var(--edison-gold) 50%, transparent 55%);
+  animation: light-pierce 3s ease-in-out infinite;
+}
+
+@keyframes light-pierce {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }
 
 .border-aqua {

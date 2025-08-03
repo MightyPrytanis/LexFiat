@@ -1,4 +1,4 @@
-import { Bell, Settings } from "lucide-react";
+import { Bell, Settings, Lightbulb } from "lucide-react";
 // import attorneyPhoto from "@assets/IMG_0104_1754179760418.JPG";
 
 interface HeaderProps {
@@ -11,61 +11,62 @@ interface HeaderProps {
 
 export default function Header({ attorney }: HeaderProps) {
   return (
-    <header className="bg-charcoal border-b border-gray-600 px-6 py-4">
+    <header className="bg-warm-white border-b border-light-navy px-8 py-5 shadow-sm">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-8">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-12">
+          {/* Edison Bulb Logo */}
+          <div className="flex items-center space-x-4">
             <div className="relative">
-              <div className="w-10 h-10 gradient-beacon rounded-xl flex items-center justify-center">
-                <i className="fas fa-lightbulb text-navy text-xl"></i>
+              <div className="w-12 h-12 edison-bulb flex items-center justify-center">
+                <Lightbulb className="h-6 w-6 text-navy" />
               </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-light-green rounded-full animate-pulse-glow"></div>
+              <div className="absolute inset-0 piercing-light rounded-full"></div>
             </div>
-            <span className="text-xl font-serif font-bold text-warm-white">Lex Fiat</span>
+            <div>
+              <span className="text-2xl font-serif font-bold text-navy">Lex Fiat</span>
+              <p className="text-xs text-charcoal font-medium -mt-1">Legal Intelligence</p>
+            </div>
           </div>
           
-          {/* Main Navigation */}
-          <nav className="hidden md:flex space-x-6">
-            <a href="#" className="text-aqua font-medium border-b-2 border-aqua pb-2">Dashboard</a>
-            <a href="#" className="text-gray-300 hover:text-aqua transition-colors">Active Cases</a>
-            <a href="#" className="text-gray-300 hover:text-aqua transition-colors">Documents</a>
-            <a href="#" className="text-gray-300 hover:text-aqua transition-colors">Analytics</a>
+          {/* Simplified Navigation */}
+          <nav className="hidden md:flex space-x-8">
+            <a href="#" className="text-aqua font-semibold border-b-2 border-aqua pb-1">Workflow Dashboard</a>
+            <a href="#" className="text-charcoal hover:text-aqua transition-colors">Analytics</a>
           </nav>
         </div>
 
         {/* Header Actions */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6">
           {/* Gmail Integration Status */}
-          <div className="flex items-center space-x-2 bg-navy px-3 py-2 rounded-lg">
-            <div className="w-2 h-2 bg-light-green rounded-full animate-pulse-glow"></div>
-            <span className="text-sm text-gray-300">Gmail Active</span>
+          <div className="flex items-center space-x-2 bg-light-gray px-4 py-2 rounded-full">
+            <div className="w-2 h-2 bg-light-green rounded-full animate-pulse"></div>
+            <span className="text-sm text-charcoal font-medium">Gmail Connected</span>
           </div>
           
           {/* Notifications */}
-          <button className="relative p-2 text-gray-300 hover:text-aqua transition-colors">
+          <button className="relative p-2 text-charcoal hover:text-aqua transition-colors">
             <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-alert-red text-xs rounded-full flex items-center justify-center text-white">
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-alert-red text-xs rounded-full flex items-center justify-center text-white font-bold">
               3
             </span>
           </button>
 
-          {/* Attorney Profile */}
-          <div className="flex items-center space-x-3 bg-navy px-4 py-2 rounded-lg">
-            <div className="w-8 h-8 rounded-full bg-aqua bg-opacity-20 flex items-center justify-center">
-              <span className="text-xs font-medium text-aqua">
+          {/* Attorney Profile with Photo */}
+          <div className="flex items-center space-x-3 bg-light-gray px-4 py-2 rounded-full">
+            <div className="w-10 h-10 rounded-full bg-aqua bg-opacity-20 flex items-center justify-center border-2 border-aqua">
+              <span className="text-sm font-bold text-aqua">
                 {attorney?.name ? attorney.name.split(' ').map(n => n[0]).join('').slice(0, 2) : 'MM'}
               </span>
             </div>
             <div>
-              <p className="font-medium text-sm text-warm-white">
+              <p className="font-semibold text-sm text-navy">
                 {attorney?.name || "Mekel S. Miller, Esq."}
               </p>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-charcoal">
                 {attorney?.specialization || "Family Law Attorney"}
               </p>
             </div>
-            <Settings className="h-4 w-4 text-gray-400 hover:text-aqua cursor-pointer transition-colors" />
+            <Settings className="h-4 w-4 text-charcoal hover:text-aqua cursor-pointer transition-colors" />
           </div>
         </div>
       </div>

@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { Lightbulb } from "lucide-react";
 import Header from "@/components/layout/header";
-import Sidebar from "@/components/layout/sidebar";
+import WorkflowPipeline from "@/components/dashboard/workflow-pipeline";
 import AlertsBanner from "@/components/dashboard/alerts-banner";
-import ActiveCases from "@/components/dashboard/active-cases";
-import WorkflowModules from "@/components/dashboard/workflow-modules";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Dashboard() {
@@ -29,21 +28,16 @@ export default function Dashboard() {
 
   if (attorneyLoading) {
     return (
-      <div className="min-h-screen bg-navy">
-        <div className="flex">
-          <div className="w-64 bg-charcoal p-6">
-            <Skeleton className="h-8 w-32 mb-4" />
-            <div className="space-y-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full" />
-              ))}
-            </div>
-          </div>
-          <div className="flex-1 p-6">
+      <div className="min-h-screen bg-light-gray">
+        <div className="bg-warm-white h-20 border-b border-light-navy">
+          <Skeleton className="h-full w-full" />
+        </div>
+        <div className="max-w-7xl mx-auto px-8 py-8">
+          <div className="bg-warm-white rounded-xl p-8 shadow-sm">
             <Skeleton className="h-12 w-96 mb-6" />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-64 w-full" />
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Skeleton key={i} className="h-32 w-full" />
               ))}
             </div>
           </div>
@@ -53,47 +47,77 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-navy text-warm-white">
+    <div className="min-h-screen bg-light-gray">
       <Header attorney={attorney as any} />
       
-      <div className="flex">
-        <Sidebar />
-        
-        <main className="flex-1 p-8 overflow-y-auto">
-          {/* Dashboard Header - Simplified */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-4">
+      <main className="max-w-7xl mx-auto px-8 py-8">
+        {/* LexFiat's Unique Value: Adaptive Workflow Intelligence */}
+        <div className="mb-8">
+          <div className="bg-warm-white rounded-xl p-8 shadow-sm border border-light-navy">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-2xl font-serif font-bold mb-1">Legal Intelligence Dashboard</h1>
-                <p className="text-gray-400 text-sm">
-                  {statsLoading ? (
-                    <Skeleton className="h-3 w-80" />
-                  ) : (
-                    `${(dashboardStats as any)?.activeCases || 0} active matters • ${urgentRedFlags.length} urgent alerts • Last sync: ${(dashboardStats as any)?.lastSync || 'Unknown'}`
-                  )}
+                <h1 className="text-3xl font-serif font-bold text-navy mb-2">
+                  Document Analysis & Response
+                </h1>
+                <p className="text-charcoal text-lg">
+                  Active workflow for Johnson v Johnson (Oakland County)
                 </p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="text-right">
+                  <p className="text-sm text-charcoal font-medium">TRO Response Due</p>
+                  <p className="text-2xl font-bold text-alert-red">47 hours</p>
+                </div>
+                <div className="w-16 h-16 edison-bulb flex items-center justify-center">
+                  <Lightbulb className="h-8 w-8 text-navy" />
+                </div>
               </div>
             </div>
 
-            {/* Alerts Banner */}
+            {/* Emergency Alerts */}
             {urgentRedFlags.length > 0 && (
-              <AlertsBanner redFlags={urgentRedFlags} />
+              <div className="mb-6">
+                <AlertsBanner redFlags={urgentRedFlags} />
+              </div>
             )}
-          </div>
 
-          {/* Active Cases and Workflow Status */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
-            <ActiveCases 
-              cases={cases as any} 
+            {/* Workflow Pipeline - LexFiat's Core Value */}
+            <WorkflowPipeline 
+              cases={cases as any}
               redFlags={redFlags as any}
-              isLoading={casesLoading || redFlagsLoading} 
+              dashboardStats={dashboardStats as any}
+              isLoading={casesLoading || redFlagsLoading || statsLoading}
             />
           </div>
+        </div>
 
-          {/* Workflow Modules */}
-          <WorkflowModules dashboardStats={dashboardStats as any} isLoading={statsLoading} />
-        </main>
-      </div>
+        {/* Secondary Workflows - Available but not cluttering */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-warm-white rounded-lg p-6 shadow-sm border border-light-navy">
+            <h3 className="text-lg font-semibold text-navy mb-2">Emergency Response</h3>
+            <p className="text-sm text-charcoal mb-4">Ready for urgent motions & TROs</p>
+            <button className="w-full bg-light-gray hover:bg-light-navy text-navy font-medium py-2 rounded-md transition-colors">
+              Activate Workflow
+            </button>
+          </div>
+          
+          <div className="bg-warm-white rounded-lg p-6 shadow-sm border border-light-navy">
+            <h3 className="text-lg font-semibold text-navy mb-2">Discovery Management</h3>
+            <p className="text-sm text-charcoal mb-4">Automated discovery tracking</p>
+            <button className="w-full bg-light-gray hover:bg-light-navy text-navy font-medium py-2 rounded-md transition-colors">
+              Activate Workflow
+            </button>
+          </div>
+          
+          <div className="bg-warm-white rounded-lg p-6 shadow-sm border border-light-navy">
+            <h3 className="text-lg font-semibold text-navy mb-2">Settlement Negotiation</h3>
+            <p className="text-sm text-charcoal mb-4">AI-assisted negotiation support</p>
+            <button className="w-full bg-light-gray hover:bg-light-navy text-navy font-medium py-2 rounded-md transition-colors">
+              Activate Workflow
+            </button>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
