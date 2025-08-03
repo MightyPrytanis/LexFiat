@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(210, 22%, 98%);
+  --foreground: hsl(210, 22%, 11%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(210, 6%, 46%);
+  --popover: hsl(210, 22%, 98%);
+  --popover-foreground: hsl(210, 22%, 11%);
+  --card: hsl(210, 22%, 98%);
+  --card-foreground: hsl(210, 22%, 11%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(210, 40%, 99%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(210, 22%, 11%);
+  --accent: hsl(210, 40%, 96%);
+  --accent-foreground: hsl(210, 22%, 11%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 40%, 99%);
+  --ring: hsl(207, 90%, 54%);
+  --radius: 0.5rem;
+
+  /* Lex Fiat Lighter Professional Theme */
+  --navy: hsl(217, 25%, 22%);
+  --charcoal: hsl(216, 15%, 35%);
+  --warm-white: hsl(210, 17%, 98%);
+  --aqua: hsl(213, 94%, 68%);
+  --light-green: hsl(158, 64%, 67%);
+  --alert-red: hsl(0, 84%, 60%);
+}
+
+.dark {
+  --background: hsl(217, 25%, 22%);
+  --foreground: hsl(210, 17%, 98%);
+  --muted: hsl(216, 15%, 35%);
+  --muted-foreground: hsl(217, 12%, 65%);
+  --popover: hsl(216, 15%, 35%);
+  --popover-foreground: hsl(210, 17%, 98%);
+  --card: hsl(216, 15%, 35%);
+  --card-foreground: hsl(210, 17%, 98%);
+  --border: hsl(217, 12%, 45%);
+  --input: hsl(217, 12%, 45%);
+  --primary: hsl(213, 94%, 68%);
+  --primary-foreground: hsl(217, 25%, 22%);
+  --secondary: hsl(216, 15%, 35%);
+  --secondary-foreground: hsl(210, 17%, 98%);
+  --accent: hsl(216, 15%, 35%);
+  --accent-foreground: hsl(210, 17%, 98%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 17%, 98%);
+  --ring: hsl(213, 94%, 68%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-serif {
+    font-family: 'DM Serif Display', serif;
+  }
+}
+
+/* Lex Fiat Theme Classes */
+.bg-navy {
+  background-color: var(--navy);
+}
+
+.bg-charcoal {
+  background-color: var(--charcoal);
+}
+
+.bg-warm-white {
+  background-color: var(--warm-white);
+}
+
+.bg-aqua {
+  background-color: var(--aqua);
+}
+
+.bg-light-green {
+  background-color: var(--light-green);
+}
+
+.bg-alert-red {
+  background-color: var(--alert-red);
+}
+
+.text-navy {
+  color: var(--navy);
+}
+
+.text-charcoal {
+  color: var(--charcoal);
+}
+
+.text-warm-white {
+  color: var(--warm-white);
+}
+
+.text-aqua {
+  color: var(--aqua);
+}
+
+.text-light-green {
+  color: var(--light-green);
+}
+
+.text-alert-red {
+  color: var(--alert-red);
+}
+
+.border-aqua {
+  border-color: var(--aqua);
+}
+
+.border-light-green {
+  border-color: var(--light-green);
+}
+
+.border-alert-red {
+  border-color: var(--alert-red);
+}
+
+/* Custom gradients for workflow modules */
+.gradient-beacon {
+  background: linear-gradient(135deg, var(--aqua), var(--light-green));
+}
+
+/* Animation for notification pulse */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Responsive design utilities */
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none;
+  }
+}
+
+/* Loading and skeleton states */
+.skeleton {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.1) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
