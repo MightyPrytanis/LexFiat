@@ -160,18 +160,18 @@ export function IntegrationSettings() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {integrations.map((integration) => (
           <Card key={integration.id} className="bg-slate-800 border-slate-700">
             <CardHeader>
-              <CardTitle className="flex items-center justify-between text-white">
+              <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-white space-y-3 sm:space-y-0">
                 <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-lg ${integration.color}`}>
+                  <div className={`p-2 rounded-lg ${integration.color} flex-shrink-0`}>
                     {integration.icon}
                   </div>
-                  <div>
-                    <h3 className="font-semibold">{integration.name}</h3>
-                    <p className="text-sm text-slate-400 font-normal">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-sm sm:text-base">{integration.name}</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 font-normal break-words">
                       {integration.description}
                     </p>
                   </div>
@@ -225,7 +225,7 @@ export function IntegrationSettings() {
                           className="bg-slate-700 border-slate-600 text-white"
                         />
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                         <Button
                           onClick={handleGmailConnect}
                           disabled={updateIntegration.isPending}
@@ -236,7 +236,7 @@ export function IntegrationSettings() {
                         <Button
                           variant="outline"
                           onClick={() => setEditingIntegration(null)}
-                          className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                          className="border-slate-600 text-slate-300 hover:bg-slate-700 sm:flex-shrink-0"
                         >
                           Cancel
                         </Button>
@@ -273,7 +273,7 @@ export function IntegrationSettings() {
                           className="bg-slate-700 border-slate-600 text-white"
                         />
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                         <Button
                           onClick={() => handleConnect(integration.id)}
                           disabled={updateIntegration.isPending}
@@ -284,7 +284,7 @@ export function IntegrationSettings() {
                         <Button
                           variant="outline"
                           onClick={() => setEditingIntegration(null)}
-                          className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                          className="border-slate-600 text-slate-300 hover:bg-slate-700 sm:flex-shrink-0"
                         >
                           Cancel
                         </Button>
@@ -322,7 +322,7 @@ export function IntegrationSettings() {
                           </Button>
                         </div>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                         <Button
                           onClick={() => handleConnect(integration.id)}
                           disabled={updateIntegration.isPending}
@@ -333,7 +333,7 @@ export function IntegrationSettings() {
                         <Button
                           variant="outline"
                           onClick={() => setEditingIntegration(null)}
-                          className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                          className="border-slate-600 text-slate-300 hover:bg-slate-700 sm:flex-shrink-0"
                         >
                           Cancel
                         </Button>
@@ -346,12 +346,12 @@ export function IntegrationSettings() {
                   {isConnected(integration.id) ? (
                     <div className="bg-slate-700 p-3 rounded-lg">
                       <p className="text-sm text-green-400 mb-2">✓ Integration Active</p>
-                      <div className="flex space-x-2">
+                      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => setEditingIntegration(integration.id)}
-                          className="border-slate-600 text-slate-300 hover:bg-slate-600"
+                          className="border-slate-600 text-slate-300 hover:bg-slate-600 flex-1"
                         >
                           Update Connection
                         </Button>
@@ -361,7 +361,7 @@ export function IntegrationSettings() {
                           onClick={() => {
                             /* Add disconnect logic */
                           }}
-                          className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white"
+                          className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white flex-1 sm:flex-initial"
                         >
                           Disconnect
                         </Button>

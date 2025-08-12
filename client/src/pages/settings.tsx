@@ -9,10 +9,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Settings, User, Link, Bot, MessageSquare, Shield, Bell } from "lucide-react";
+import { Settings, User, Link, Bot, MessageSquare, Shield, Bell, ArrowLeft } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
+import { Link as RouterLink } from "wouter";
 
 export default function SettingsPage() {
   const [profileData, setProfileData] = useState({
@@ -70,43 +71,58 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white">
-      <div className="container mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gold mb-2 flex items-center">
-            <Settings className="w-8 h-8 mr-3" />
-            Settings & Preferences
+      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 lg:py-8">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center mb-4">
+            <RouterLink href="/">
+              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white mr-3 px-2">
+                <ArrowLeft className="w-4 h-4 mr-1" />
+                <span className="hidden sm:inline">Back to Dashboard</span>
+                <span className="sm:hidden">Back</span>
+              </Button>
+            </RouterLink>
+          </div>
+          
+          <h1 className="text-2xl sm:text-3xl font-bold text-gold mb-2 flex flex-col sm:flex-row sm:items-center">
+            <Settings className="w-6 h-6 sm:w-8 sm:h-8 mb-2 sm:mb-0 sm:mr-3" />
+            <span>Settings & Preferences</span>
           </h1>
-          <p className="text-slate-400">
+          <p className="text-slate-400 text-sm sm:text-base">
             Configure your LexFiat experience, integrations, and preferences
           </p>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="bg-slate-800 border-slate-700">
-            <TabsTrigger value="profile" className="flex items-center space-x-2">
-              <User className="w-4 h-4" />
-              <span>Profile</span>
+        <Tabs defaultValue="profile" className="space-y-4 sm:space-y-6">
+          <TabsList className="bg-slate-800 border-slate-700 flex-wrap h-auto p-2 gap-1 sm:gap-0 sm:h-10 sm:p-1">
+            <TabsTrigger value="profile" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm px-2 sm:px-3">
+              <User className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Profile</span>
+              <span className="sm:hidden">Pro</span>
             </TabsTrigger>
-            <TabsTrigger value="integrations" className="flex items-center space-x-2">
-              <Link className="w-4 h-4" />
-              <span>Integrations</span>
+            <TabsTrigger value="integrations" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm px-2 sm:px-3">
+              <Link className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Integrations</span>
+              <span className="sm:hidden">Int</span>
             </TabsTrigger>
-            <TabsTrigger value="ai-providers" className="flex items-center space-x-2">
-              <Bot className="w-4 h-4" />
-              <span>AI Providers</span>
+            <TabsTrigger value="ai-providers" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm px-2 sm:px-3">
+              <Bot className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">AI Providers</span>
+              <span className="sm:hidden">AI</span>
             </TabsTrigger>
-            <TabsTrigger value="preferences" className="flex items-center space-x-2">
-              <Shield className="w-4 h-4" />
-              <span>Preferences</span>
+            <TabsTrigger value="preferences" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm px-2 sm:px-3">
+              <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Preferences</span>
+              <span className="sm:hidden">Pref</span>
             </TabsTrigger>
-            <TabsTrigger value="feedback" className="flex items-center space-x-2">
-              <MessageSquare className="w-4 h-4" />
-              <span>Feedback</span>
+            <TabsTrigger value="feedback" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm px-2 sm:px-3">
+              <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Feedback</span>
+              <span className="sm:hidden">FB</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="profile" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TabsContent value="profile" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <AvatarUpload
                 currentAvatarUrl={attorney?.profilePhotoUrl}
                 attorneyName={attorney?.name || "Attorney"}

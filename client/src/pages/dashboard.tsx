@@ -61,12 +61,12 @@ export default function Dashboard() {
         </div>
       )}
       
-      <main className="max-w-7xl mx-auto px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Quick Actions Bar */}
-        <div className="mb-6 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+        <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Dashboard</h1>
           <Link href="/settings">
-            <Button className="bg-gold hover:bg-gold/90 text-slate-900">
+            <Button className="bg-gold hover:bg-gold/90 text-slate-900 w-full sm:w-auto">
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </Button>
@@ -74,8 +74,8 @@ export default function Dashboard() {
         </div>
 
         {/* Assembly Line Workflow Pipeline - LexFiat's Core */}
-        <div className="mb-8">
-          <div className="bg-card-dark rounded-xl p-8 shadow-xl border border-border-gray">
+        <div className="mb-6 sm:mb-8">
+          <div className="bg-card-dark rounded-xl p-4 sm:p-6 lg:p-8 shadow-xl border border-border-gray">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h1 className="text-3xl font-bold text-primary mb-2">
