@@ -86,14 +86,25 @@ export function DemoModeButton() {
       // Invalidate all queries to refresh the dashboard with demo data
       queryClient.invalidateQueries();
       
+      const scenario = demoScenarios.find(s => s.id === selectedScenario);
+      
       toast({
-        title: "Demo Mode Activated",
-        description: `${data.casesLoaded} cases and ${data.documentsLoaded} documents loaded successfully.`,
-        duration: 5000,
+        title: `✨ ${scenario?.title} Demo Active`,
+        description: `Loaded ${data.casesLoaded} cases, ${data.documentsLoaded} documents, and ${data.redFlagsLoaded} red flags. Explore LexFiat's Legal Intelligence in action!`,
+        duration: 8000,
       });
       
       setIsDialogOpen(false);
       setSelectedScenario(null);
+      
+      // Add a follow-up toast to guide exploration
+      setTimeout(() => {
+        toast({
+          title: "🔍 Explore Demo Features",
+          description: "Check the workflow pipeline, review red flags, and see how LexFiat's AI analyzes legal documents automatically.",
+          duration: 6000,
+        });
+      }, 2000);
     },
     onError: () => {
       toast({
@@ -154,6 +165,17 @@ export function DemoModeButton() {
           </DialogHeader>
 
           <div className="space-y-6 mt-6">
+            <div className="mb-4 p-4 bg-blue-950/50 border border-blue-800 rounded-lg">
+              <h3 className="text-lg font-semibold text-gold mb-2 flex items-center">
+                <Sparkles className="w-5 h-5 mr-2" />
+                Experience LexFiat's Legal Intelligence
+              </h3>
+              <p className="text-sm text-slate-300">
+                Each scenario demonstrates how LexFiat's Adaptive Workflow Intelligence transforms legal practice management 
+                with AI-powered document analysis, automated red flag detection, and intelligent task prioritization.
+              </p>
+            </div>
+            
             <div className="grid grid-cols-1 gap-4">
               {demoScenarios.map((scenario) => (
                 <Card 

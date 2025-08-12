@@ -323,6 +323,49 @@ export class MemStorage implements IStorage {
       createdAt: new Date()
     };
     this.redFlags.set(redFlag2Id, redFlag2);
+
+    // Initialize AI providers
+    const aiProviderData = [
+      {
+        provider: 'anthropic',
+        name: 'Claude (Anthropic)',
+        enabled: true,
+        models: ['claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022'],
+        currentModel: 'claude-sonnet-4-20250514',
+        priority: 1,
+        description: 'Advanced reasoning and analysis capabilities'
+      },
+      {
+        provider: 'gemini',
+        name: 'Gemini (Google)',
+        enabled: false,
+        models: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash-preview'],
+        currentModel: 'gemini-2.5-flash',
+        priority: 2,
+        description: 'Multimodal AI with document and image analysis'
+      },
+      {
+        provider: 'openai',
+        name: 'OpenAI GPT',
+        enabled: false,
+        models: ['gpt-4o', 'gpt-4', 'gpt-3.5-turbo'],
+        currentModel: 'gpt-4o',
+        priority: 3,
+        description: 'General-purpose language model with broad knowledge'
+      }
+    ];
+
+    aiProviderData.forEach(provider => {
+      const id = randomUUID();
+      const aiProvider = {
+        ...provider,
+        id,
+        attorneyId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.aiProviders.set(id, aiProvider);
+    });
   }
 
   // Demo Mode Methods
@@ -332,19 +375,44 @@ export class MemStorage implements IStorage {
 
     const demoData = this.generateDemoDataForScenario(scenario);
     
+    // Track loaded items and link them properly
+    const loadedCases: LegalCase[] = [];
+    const loadedDocuments: Document[] = [];
+    
     // Load demo cases
     for (const demoCase of demoData.cases) {
-      await this.createLegalCase(demoCase);
+      const createdCase = await this.createLegalCase(demoCase);
+      loadedCases.push(createdCase);
     }
 
-    // Load demo documents
-    for (const demoDoc of demoData.documents) {
-      await this.createDocument(demoDoc);
+    // Load demo documents and link to cases
+    for (let i = 0; i < demoData.documents.length; i++) {
+      const demoDoc = demoData.documents[i];
+      const linkedCase = loadedCases[Math.min(i, loadedCases.length - 1)];
+      
+      const documentWithCase = {
+        ...demoDoc,
+        caseId: linkedCase.id,
+        attorneyId: linkedCase.attorneyId
+      };
+      
+      const createdDocument = await this.createDocument(documentWithCase);
+      loadedDocuments.push(createdDocument);
     }
 
-    // Load demo red flags
-    for (const demoFlag of demoData.redFlags) {
-      await this.createRedFlag(demoFlag);
+    // Load demo red flags and link to cases/documents
+    for (let i = 0; i < demoData.redFlags.length; i++) {
+      const demoFlag = demoData.redFlags[i];
+      const linkedCase = loadedCases[Math.min(i % loadedCases.length, loadedCases.length - 1)];
+      const linkedDocument = loadedDocuments[Math.min(i % loadedDocuments.length, loadedDocuments.length - 1)];
+      
+      const redFlagWithLinks = {
+        ...demoFlag,
+        caseId: linkedCase?.id || null,
+        documentId: i < loadedDocuments.length ? linkedDocument?.id || null : null
+      };
+      
+      await this.createRedFlag(redFlagWithLinks);
     }
 
     return {
@@ -400,12 +468,23 @@ export class MemStorage implements IStorage {
             {
               type: "deadline_critical",
               description: "Emergency custody hearing in 3 days - immediate action required",
-              severity: "critical"
+              severity: "critical",
+              caseId: null,
+              documentId: null
             },
             {
               type: "child_safety",
               description: "Documented physical injuries to minor child with unexplained bruising patterns",
-              severity: "critical"
+              severity: "critical",
+              caseId: null,
+              documentId: null
+            },
+            {
+              type: "client_emotional_state",
+              description: "Client displaying extreme distress requiring immediate support",
+              severity: "high",
+              caseId: null,
+              documentId: null
             }
           ]
         };
@@ -441,12 +520,23 @@ export class MemStorage implements IStorage {
             {
               type: "will_contest",
               description: "Active will contest filed by beneficiary claiming undue influence",
-              severity: "high"
+              severity: "high",
+              caseId: null,
+              documentId: null
             },
             {
               type: "asset_valuation",
               description: "Significant estate assets requiring professional valuations and court approvals",
-              severity: "medium"
+              severity: "medium",
+              caseId: null,
+              documentId: null
+            },
+            {
+              type: "family_conflict",
+              description: "Hostile family dynamics between siblings affecting estate administration",
+              severity: "medium",
+              caseId: null,
+              documentId: null
             }
           ]
         };
@@ -515,17 +605,37 @@ export class MemStorage implements IStorage {
             {
               type: "deadline_critical",
               description: "Emergency custody hearing in 3 days requires immediate filing",
-              severity: "critical"
+              severity: "critical",
+              caseId: null,
+              documentId: null
             },
             {
               type: "child_safety",
               description: "Documented injuries to minor child requiring immediate action",
-              severity: "critical"
+              severity: "critical",
+              caseId: null,
+              documentId: null
             },
             {
               type: "will_contest",
               description: "Active probate contest may significantly delay estate settlement",
-              severity: "high"
+              severity: "high",
+              caseId: null,
+              documentId: null
+            },
+            {
+              type: "discovery_deadline",
+              description: "Outstanding discovery requests require responses within statutory timeframes",
+              severity: "medium",
+              caseId: null,
+              documentId: null
+            },
+            {
+              type: "medical_documentation",
+              description: "Critical medical records supporting personal injury claim",
+              severity: "medium",
+              caseId: null,
+              documentId: null
             }
           ]
         };

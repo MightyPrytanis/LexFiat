@@ -97,10 +97,10 @@ export function AiProviderSetup() {
   };
 
   const availableProviders = [
-    { key: "chatgpt", name: "ChatGPT", icon: "🤖", description: "OpenAI's GPT models" },
+    { key: "anthropic", name: "Claude", icon: "🧠", description: "Advanced reasoning and analysis capabilities" },
+    { key: "gemini", name: "Gemini", icon: "💎", description: "Google's multimodal AI with document analysis" },
+    { key: "openai", name: "ChatGPT", icon: "🤖", description: "OpenAI's GPT models" },
     { key: "grok", name: "Grok", icon: "🔥", description: "xAI's conversational AI" },
-    { key: "copilot", name: "Copilot", icon: "🧠", description: "Microsoft's AI assistant" },
-    { key: "gemini", name: "Gemini", icon: "💎", description: "Google's multimodal AI" },
     { key: "perplexity", name: "Perplexity", icon: "🔍", description: "Research-focused AI" },
   ];
 
