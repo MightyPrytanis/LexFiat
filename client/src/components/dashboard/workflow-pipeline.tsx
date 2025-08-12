@@ -1,12 +1,11 @@
-import { Mail, Brain, FileText, Send, Check, Clock, AlertTriangle, Lightbulb } from "lucide-react";
 import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Mail, Brain, FileText, Check, Send, Clock, AlertTriangle, ChevronRight } from "lucide-react";
 import DraftApproval from "./draft-approval";
 
 interface WorkflowPipelineProps {
-  cases?: any[];
-  redFlags?: any[];
-  dashboardStats?: any;
+  cases: any[];
+  redFlags: any[];
+  dashboardStats: any;
   isLoading: boolean;
 }
 
@@ -16,236 +15,256 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-64" />
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="h-32 w-full" />
+        <div className="h-8 bg-card-light rounded animate-pulse"></div>
+        <div className="grid grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="h-40 bg-card-light rounded animate-pulse"></div>
           ))}
         </div>
       </div>
     );
   }
 
-  const pipelineSteps = [
+  // Assembly Line Stages
+  const assemblyStages = [
     {
       id: 1,
-      title: "Gmail Fetch",
-      description: "Monitor incoming emails",
+      title: "Intake",
+      description: "Gmail monitoring",
       icon: Mail,
-      status: "active",
+      color: "success",
       count: 12,
-      detail: "New emails today",
-      bgColor: "bg-professional-blue bg-opacity-10",
-      iconColor: "text-professional-blue",
-      borderColor: "border-professional-blue"
+      detail: "emails analyzed today",
+      status: "active"
     },
     {
       id: 2,
-      title: "AI Analysis",
-      description: "Claude analyzes content",
+      title: "Processing", 
+      description: "Claude AI analysis",
       icon: Brain,
-      status: "processing",
+      color: "processing",
       count: 8,
-      detail: "Being analyzed",
-      bgColor: "bg-accent-gold bg-opacity-10",
-      iconColor: "text-rich-gold",
-      borderColor: "border-accent-gold"
+      detail: "documents in progress",
+      status: "processing"
     },
     {
       id: 3,
-      title: "Draft Response",
-      description: "Generate replies",
-      icon: FileText,
-      status: "ready",
-      count: 3,
-      detail: "Awaiting review",
-      bgColor: "bg-professional-blue bg-opacity-15",
-      iconColor: "text-professional-blue",
-      borderColor: "border-professional-blue"
-    },
-    {
-      id: 4,
-      title: "Attorney Review",
-      description: "Your approval needed",
+      title: "Output & Delivery",
+      description: "Review & approval",
       icon: Check,
-      status: "pending",
-      count: 2,
-      detail: "Ready for approval",
-      bgColor: "bg-alert-amber bg-opacity-10",
-      iconColor: "text-alert-amber",
-      borderColor: "border-alert-amber"
-    },
-    {
-      id: 5,
-      title: "Send Response",
-      description: "Auto-send approved",
-      icon: Send,
-      status: "completed",
-      count: 5,
-      detail: "Sent today",
-      bgColor: "bg-steel-blue bg-opacity-10",
-      iconColor: "text-steel-blue",
-      borderColor: "border-steel-blue"
+      color: "purple",
+      count: 3,
+      detail: "awaiting attorney review",
+      status: "pending"
     }
   ];
 
+  const getColorClasses = (color: string) => {
+    switch (color) {
+      case 'success':
+        return {
+          bg: 'bg-status-success',
+          text: 'text-status-success',
+          border: 'border-status-success'
+        };
+      case 'processing':
+        return {
+          bg: 'bg-status-processing',
+          text: 'text-status-processing', 
+          border: 'border-status-processing'
+        };
+      case 'purple':
+        return {
+          bg: 'bg-status-purple',
+          text: 'text-status-purple',
+          border: 'border-status-purple'
+        };
+      default:
+        return {
+          bg: 'bg-border-gray',
+          text: 'text-secondary',
+          border: 'border-border-gray'
+        };
+    }
+  };
+
   return (
     <div className="space-y-8">
-      {/* Pipeline Header */}
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xl font-semibold text-deep-navy flex items-center space-x-3">
-          <Lightbulb className="h-6 w-6 text-accent-gold" />
-          <span className="tracking-wide">LEGAL INTELLIGENCE PIPELINE</span>
-        </h2>
-        <div className="text-sm text-steel-blue font-medium">
-          Last updated: 2 minutes ago
+      {/* Assembly Line Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <div className="w-1 h-8 bg-accent-gold rounded-full"></div>
+          <h2 className="text-xl font-bold text-primary">Assembly Line Workflow</h2>
+        </div>
+        <div className="text-sm text-secondary font-mono">
+          Last update: {new Date().toLocaleTimeString()}
         </div>
       </div>
-      
-      <div className="workflow-progress mb-6">
-        <div className="progress-pulse"></div>
+
+      {/* Conveyor Belt Animation */}
+      <div className="relative">
+        <div className="flow-line mb-8"></div>
       </div>
 
-      {/* Workflow Pipeline Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        {pipelineSteps.map((step, index) => {
-          const IconComponent = step.icon;
-          const isActive = step.status === 'active' || step.status === 'processing';
+      {/* Three-Stage Assembly Line */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {assemblyStages.map((stage, index) => {
+          const colors = getColorClasses(stage.color);
+          const IconComponent = stage.icon;
           
           return (
-            <div
-              key={step.id}
-              className={`relative ${step.bgColor} border-2 ${step.borderColor} rounded-lg p-5 transition-all duration-300 hover:shadow-lg ${
-                isActive ? 'shadow-xl scale-105 border-accent-gold' : 'hover:border-accent-gold'
-              }`}
-            >
-              {/* Pipeline connector - Inexorable Progress */}
-              {index < pipelineSteps.length - 1 && (
-                <div className="hidden md:block absolute -right-2 top-1/2 transform -translate-y-1/2 z-10">
-                  <div className="w-4 h-1 bg-gradient-to-r from-professional-blue to-accent-gold rounded-full shadow-sm"></div>
+            <div key={stage.id} className="relative">
+              {/* Stage Card */}
+              <div className={`bg-card-light rounded-lg p-6 border-t-4 ${colors.border} shadow-lg hover:shadow-xl transition-all duration-300`}>
+                {/* Stage Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`w-12 h-12 ${colors.bg} bg-opacity-20 rounded-full flex items-center justify-center border-2 ${colors.border}`}>
+                    <IconComponent className={`h-6 w-6 ${colors.text}`} />
+                  </div>
+                  {stage.status === 'processing' && (
+                    <div className="animate-spin w-4 h-4 border-2 border-status-processing border-t-transparent rounded-full"></div>
+                  )}
+                </div>
+
+                {/* Stage Title */}
+                <h3 className="text-lg font-bold text-primary mb-1">{stage.title}</h3>
+                <p className="text-sm text-secondary mb-4">{stage.description}</p>
+
+                {/* Progress Metrics */}
+                <div className="bg-card-dark p-4 rounded-lg border border-border-gray">
+                  <div className={`text-3xl font-bold ${colors.text} font-mono mb-1`}>
+                    {stage.count}
+                  </div>
+                  <div className="text-xs text-secondary">
+                    {stage.detail}
+                  </div>
+                </div>
+
+                {/* Active Items List */}
+                <div className="mt-4 space-y-2">
+                  {stage.id === 1 && (
+                    <div className="workflow-item priority-high">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-primary font-medium">TRO Motion received</span>
+                        <Clock className="h-4 w-4 text-status-warning" />
+                      </div>
+                      <p className="text-xs text-secondary mt-1">Johnson v Johnson • 2 min ago</p>
+                    </div>
+                  )}
+                  
+                  {stage.id === 2 && (
+                    <div className="workflow-item priority-critical">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-primary font-medium">TRO analysis 87% complete</span>
+                        <div className="progress-fill bg-status-processing h-1 w-16 rounded-full"></div>
+                      </div>
+                      <p className="text-xs text-secondary mt-1">ETA: 3 minutes</p>
+                    </div>
+                  )}
+                  
+                  {stage.id === 3 && (
+                    <div className="workflow-item priority-critical">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-primary font-medium">2 drafts ready for review</span>
+                        <AlertTriangle className="h-4 w-4 text-status-warning animate-bounce" />
+                      </div>
+                      <p className="text-xs text-secondary mt-1">Response due: 47 hours</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Conveyor Belt Connector */}
+              {index < assemblyStages.length - 1 && (
+                <div className="hidden md:block absolute -right-4 top-1/2 transform -translate-y-1/2 z-10">
+                  <ChevronRight className="h-8 w-8 text-accent-gold" />
                 </div>
               )}
-
-              <div className="text-center space-y-3">
-                <div className={`w-14 h-14 ${step.bgColor} rounded-full flex items-center justify-center mx-auto border-2 ${step.borderColor} shadow-md`}>
-                  <IconComponent className={`h-7 w-7 ${step.iconColor}`} />
-                </div>
-                
-                <div>
-                  <h3 className="font-bold text-deep-navy text-sm mb-1 tracking-wide">{step.title.toUpperCase()}</h3>
-                  <p className="text-xs text-steel-blue mb-3 font-medium">{step.description}</p>
-                  
-                  <div className="text-center">
-                    <div className={`text-2xl font-bold ${step.iconColor} mb-1`}>
-                      {step.count}
-                    </div>
-                    <div className="text-xs text-steel-blue font-medium">
-                      {step.detail}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Status indicator - Inevitable Progress */}
-                {step.status === 'active' && (
-                  <div className="absolute -top-2 -right-2">
-                    <div className="w-5 h-5 bg-professional-blue rounded-full animate-pulse shadow-lg border-2 border-warm-white"></div>
-                  </div>
-                )}
-                
-                {step.status === 'processing' && (
-                  <div className="absolute -top-2 -right-2">
-                    <div className="w-5 h-5 bg-accent-gold rounded-full animate-spin shadow-lg border-2 border-warm-white"></div>
-                  </div>
-                )}
-
-                {step.status === 'pending' && (
-                  <div className="absolute -top-2 -right-2">
-                    <AlertTriangle className="w-5 h-5 text-alert-amber animate-bounce drop-shadow-lg" />
-                  </div>
-                )}
-              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Action Buttons - Inexorable Legal Intelligence */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-8 border-t-2 border-steel-blue">
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-4 justify-center pt-6 border-t border-border-gray">
         <button 
           onClick={() => setShowDraftApproval(true)}
-          className="bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg tracking-wide">
+          className="bg-status-critical hover:bg-accent-gold text-white hover:text-primary-dark font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center space-x-2 shadow-lg"
+        >
           <FileText className="h-5 w-5" />
-          <span>REVIEW 2 DRAFT RESPONSES</span>
+          <span>REVIEW 2 URGENT DRAFTS</span>
         </button>
         
-        <button className="bg-accent-gold hover:bg-professional-blue text-deep-navy hover:text-warm-white font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg tracking-wide">
-          <Check className="h-5 w-5" />
-          <span>APPROVE & SEND 3 RESPONSES</span>
+        <button className="bg-accent-gold hover:bg-status-processing text-primary-dark hover:text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center space-x-2 shadow-lg">
+          <Send className="h-5 w-5" />
+          <span>AUTO-SEND APPROVED</span>
         </button>
         
-        <button className="bg-steel-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-bold py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg tracking-wide">
+        <button className="bg-status-processing hover:bg-accent-gold text-white hover:text-primary-dark font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center space-x-2 shadow-lg">
           <Brain className="h-5 w-5" />
           <span>VIEW AI ANALYSIS</span>
         </button>
       </div>
 
-      {/* Task Tracking & Prioritization - Inexorable Progress */}
-      <div className="bg-slate-blue rounded-lg p-8 shadow-lg border-2 border-steel-blue">
-        <h3 className="text-xl font-bold text-warm-white mb-6 tracking-wide flex items-center space-x-3">
-          <Clock className="h-6 w-6 text-accent-gold" />
-          <span>TASK PRIORITY & COMPLETION TRACKING</span>
+      {/* Cases Overview - Standard Examples */}
+      <div className="bg-card-light rounded-lg p-6 border border-border-gray">
+        <h3 className="text-lg font-bold text-primary mb-4 flex items-center space-x-2">
+          <div className="w-1 h-6 bg-accent-gold rounded-full"></div>
+          <span>Active Cases</span>
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="space-y-4">
-            <h4 className="font-bold text-accent-gold tracking-wide">CRITICAL PRIORITY</h4>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-4 bg-warm-white rounded-lg border-l-4 border-alert-amber shadow-md">
-                <span className="text-sm font-semibold text-deep-navy">TRO Response - Johnson v Johnson</span>
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-alert-amber" />
-                  <span className="text-xs font-bold text-alert-amber">47H</span>
-                </div>
-              </div>
-              <div className="workflow-progress">
-                <div className="progress-pulse"></div>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Johnson v Johnson - Emergency TRO */}
+          <div className="workflow-item priority-critical">
+            <div className="flex justify-between items-start mb-2">
+              <h4 className="font-bold text-primary">Johnson v Johnson</h4>
+              <span className="text-xs bg-status-critical text-white px-2 py-1 rounded font-bold">CRITICAL</span>
+            </div>
+            <p className="text-sm text-secondary mb-2">Wayne County Family Division</p>
+            <p className="text-xs text-accent-gold font-semibold">Emergency TRO • 24h deadline</p>
+            <div className="mt-2 flex justify-between text-xs">
+              <span className="text-secondary">Client: Mark Johnson</span>
+              <span className="text-status-warning font-mono">47:23:15</span>
             </div>
           </div>
-          
-          <div className="space-y-4">
-            <h4 className="font-bold text-professional-blue tracking-wide">STANDARD PRIORITY</h4>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-4 bg-warm-white rounded-lg border-l-4 border-professional-blue shadow-md">
-                <span className="text-sm font-semibold text-deep-navy">Discovery Request Review</span>
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-professional-blue" />
-                  <span className="text-xs font-bold text-professional-blue">3D</span>
-                </div>
-              </div>
+
+          {/* Hartley Estate - Probate */}
+          <div className="workflow-item priority-normal">
+            <div className="flex justify-between items-start mb-2">
+              <h4 className="font-bold text-primary">Hartley Estate</h4>
+              <span className="text-xs bg-status-processing text-white px-2 py-1 rounded font-bold">NORMAL</span>
+            </div>
+            <p className="text-sm text-secondary mb-2">Oakland County Probate</p>
+            <p className="text-xs text-accent-gold font-semibold">Letters of Authority</p>
+            <div className="mt-2 flex justify-between text-xs">
+              <span className="text-secondary">Client: James Hartley</span>
+              <span className="text-status-warning">No contact 18 days</span>
             </div>
           </div>
-          
-          <div className="space-y-4">
-            <h4 className="font-bold text-accent-gold tracking-wide">COMPLETED TODAY</h4>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-4 bg-warm-white rounded-lg border-l-4 border-accent-gold shadow-md">
-                <span className="text-sm font-semibold text-deep-navy">5 Client Email Responses</span>
-                <div className="flex items-center space-x-2">
-                  <Check className="h-4 w-4 text-accent-gold" />
-                  <span className="text-xs font-bold text-accent-gold">DONE</span>
-                </div>
-              </div>
+
+          {/* Towne v Michigan Dept of AG */}
+          <div className="workflow-item priority-high">
+            <div className="flex justify-between items-start mb-2">
+              <h4 className="font-bold text-primary">Towne v Michigan Dept</h4>
+              <span className="text-xs bg-status-warning text-white px-2 py-1 rounded font-bold">HIGH</span>
+            </div>
+            <p className="text-sm text-secondary mb-2">Employment Law</p>
+            <p className="text-xs text-accent-gold font-semibold">Summary Disposition Motion</p>
+            <div className="mt-2 flex justify-between text-xs">
+              <span className="text-secondary">Client: David Towne</span>
+              <span className="text-status-success">Strong position</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Draft Approval Modal */}
-      <DraftApproval 
-        isOpen={showDraftApproval}
-        onClose={() => setShowDraftApproval(false)}
-      />
+      {showDraftApproval && (
+        <DraftApproval 
+          isOpen={showDraftApproval}
+          onClose={() => setShowDraftApproval(false)} 
+        />
+      )}
     </div>
   );
 }

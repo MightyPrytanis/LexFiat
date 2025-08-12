@@ -28,16 +28,16 @@ export default function Dashboard() {
 
   if (attorneyLoading) {
     return (
-      <div className="min-h-screen bg-light-blue">
-        <div className="bg-slate-blue h-20 border-b-2 border-steel-blue">
+      <div className="min-h-screen bg-primary-dark">
+        <div className="bg-primary-light h-24 border-b border-accent-gold">
           <Skeleton className="h-full w-full" />
         </div>
         <div className="max-w-7xl mx-auto px-8 py-8">
-          <div className="bg-warm-white rounded-xl p-8 shadow-xl border-2 border-steel-blue">
+          <div className="bg-card-dark rounded-xl p-8 shadow-xl border border-border-gray">
             <Skeleton className="h-12 w-96 mb-6" />
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Skeleton key={i} className="h-32 w-full" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-40 w-full" />
               ))}
             </div>
           </div>
@@ -47,45 +47,47 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-light-blue">
+    <div className="min-h-screen bg-primary-dark">
       <Header attorney={attorney as any} />
       
+      {/* Critical Alerts Section */}
+      {urgentRedFlags.length > 0 && (
+        <div className="bg-status-critical bg-opacity-20 border-b border-status-critical px-8 py-4">
+          <div className="max-w-7xl mx-auto">
+            <AlertsBanner redFlags={urgentRedFlags} />
+          </div>
+        </div>
+      )}
+      
       <main className="max-w-7xl mx-auto px-8 py-8">
-        {/* LexFiat's Unique Value: Adaptive Workflow Intelligence */}
+        {/* Assembly Line Workflow Pipeline - LexFiat's Core */}
         <div className="mb-8">
-          <div className="bg-warm-white rounded-xl p-8 shadow-xl border-2 border-steel-blue">
+          <div className="bg-card-dark rounded-xl p-8 shadow-xl border border-border-gray">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-3xl font-serif font-bold text-deep-navy mb-2">
-                  Document Analysis & Response
+                <h1 className="text-3xl font-bold text-primary mb-2">
+                  Legal Intelligence Assembly Line
                 </h1>
-                <p className="text-steel-blue text-lg font-medium">
-                  Active workflow for Johnson v Johnson (Oakland County)
+                <p className="text-secondary text-lg">
+                  Active: Johnson v Johnson (Wayne County Family Division)
+                </p>
+                <p className="text-accent-gold text-sm font-semibold mt-1">
+                  Emergency TRO Response • 24-hour deadline
                 </p>
               </div>
               <div className="flex items-center space-x-6">
                 <div className="text-right">
-                  <p className="text-sm text-steel-blue font-semibold tracking-wide">TRO RESPONSE DUE</p>
-                  <p className="text-3xl font-bold text-alert-amber">47 hours</p>
-                  <div className="workflow-progress mt-2">
-                    <div className="progress-pulse"></div>
-                  </div>
+                  <div className="text-sm text-secondary font-medium">DEADLINE</div>
+                  <div className="text-3xl font-bold text-status-critical font-mono">47:23:15</div>
+                  <div className="text-xs text-accent-gold">Hours remaining</div>
                 </div>
-                <div className="relative w-16 h-16 edison-bulb">
-                  <div className="edison-filament"></div>
-                  <div className="light-rays"></div>
+                <div className="lex-fiat-logo">
+                  <Lightbulb className="lightbulb-icon" />
                 </div>
               </div>
             </div>
 
-            {/* Emergency Alerts */}
-            {urgentRedFlags.length > 0 && (
-              <div className="mb-6">
-                <AlertsBanner redFlags={urgentRedFlags} />
-              </div>
-            )}
-
-            {/* Workflow Pipeline - LexFiat's Core Value */}
+            {/* Workflow Pipeline */}
             <WorkflowPipeline 
               cases={cases as any}
               redFlags={redFlags as any}
@@ -95,39 +97,64 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Secondary Workflows - Uniform and Inevitable */}
+        {/* Bottom Widgets - Performance, Good Counsel, Today's Focus */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-slate-blue rounded-lg p-6 shadow-lg border-2 border-steel-blue">
-            <h3 className="text-lg font-semibold text-warm-white mb-2">Emergency Response</h3>
-            <p className="text-sm text-light-blue mb-4">Ready for urgent motions & TROs</p>
-            <div className="workflow-progress mb-4">
-              <div className="progress-pulse"></div>
+          {/* Performance Widget (Blue) */}
+          <div className="bg-card-dark rounded-lg p-6 shadow-lg border border-border-gray">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-1 h-8 bg-status-processing rounded-full"></div>
+              <h3 className="text-lg font-bold text-primary">Performance</h3>
             </div>
-            <button className="w-full bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-semibold py-3 rounded-md transition-all duration-300 tracking-wide">
-              ACTIVATE WORKFLOW
-            </button>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-secondary text-sm">Time saved today</span>
+                <span className="text-primary font-bold font-mono">4.7h</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-secondary text-sm">Automation success</span>
+                <span className="text-primary font-bold font-mono">91%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-secondary text-sm">Documents processed</span>
+                <span className="text-primary font-bold font-mono">247</span>
+              </div>
+            </div>
           </div>
           
-          <div className="bg-slate-blue rounded-lg p-6 shadow-lg border-2 border-steel-blue">
-            <h3 className="text-lg font-semibold text-warm-white mb-2">Discovery Management</h3>
-            <p className="text-sm text-light-blue mb-4">Automated discovery tracking</p>
-            <div className="workflow-progress mb-4">
-              <div className="progress-pulse"></div>
+          {/* Good Counsel Widget (Green) */}
+          <div className="bg-card-dark rounded-lg p-6 shadow-lg border border-border-gray">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-1 h-8 bg-status-success rounded-full"></div>
+              <h3 className="text-lg font-bold text-primary">Good Counsel</h3>
             </div>
-            <button className="w-full bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-semibold py-3 rounded-md transition-all duration-300 tracking-wide">
-              ACTIVATE WORKFLOW
-            </button>
+            <div className="space-y-3">
+              <div className="bg-card-light p-3 rounded border-l-4 border-status-success">
+                <p className="text-sm text-primary">No contact with James Hartley in 18 days</p>
+                <p className="text-xs text-accent-gold mt-1">Probate hearing Dec 14</p>
+              </div>
+              <div className="bg-card-light p-3 rounded border-l-4 border-status-warning">
+                <p className="text-sm text-primary">Take 10 minutes - Step outside for fresh air</p>
+                <p className="text-xs text-secondary mt-1">You've been focused for 2.5 hours</p>
+              </div>
+            </div>
           </div>
           
-          <div className="bg-slate-blue rounded-lg p-6 shadow-lg border-2 border-steel-blue">
-            <h3 className="text-lg font-semibold text-warm-white mb-2">Settlement Negotiation</h3>
-            <p className="text-sm text-light-blue mb-4">AI-assisted negotiation support</p>
-            <div className="workflow-progress mb-4">
-              <div className="progress-pulse"></div>
+          {/* Today's Focus Widget (Purple) */}
+          <div className="bg-card-dark rounded-lg p-6 shadow-lg border border-border-gray">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-1 h-8 bg-status-purple rounded-full"></div>
+              <h3 className="text-lg font-bold text-primary">Today's Focus</h3>
             </div>
-            <button className="w-full bg-professional-blue hover:bg-accent-gold text-warm-white hover:text-deep-navy font-semibold py-3 rounded-md transition-all duration-300 tracking-wide">
-              ACTIVATE WORKFLOW
-            </button>
+            <div className="space-y-3">
+              <div className="bg-card-light p-3 rounded border-l-4 border-status-critical">
+                <p className="text-sm text-primary font-semibold">TRO Response - Johnson v Johnson</p>
+                <p className="text-xs text-secondary">Wayne County • Due 5 PM tomorrow</p>
+              </div>
+              <div className="bg-card-light p-3 rounded border-l-4 border-status-processing">
+                <p className="text-sm text-primary">Discovery Response - Hartley Estate</p>
+                <p className="text-xs text-secondary">Oakland County • Due Friday</p>
+              </div>
+            </div>
           </div>
         </div>
       </main>

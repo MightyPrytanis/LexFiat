@@ -2,9 +2,11 @@
 
 ## Overview
 
-Lex Fiat is an advanced legal workflow automation system designed for legal professionals. The platform provides AI-powered document analysis, Gmail integration, and intelligent case management to streamline legal workflows. The system features a modern React frontend with a Node.js/Express backend, utilizing in-memory storage for demo purposes and Anthropic's Claude AI for document intelligence.
+LexFiat is a comprehensive legal workflow automation system with "Legal Intelligence" as the tagline. The platform integrates Gmail monitoring, Claude API for document analysis, and Clio practice management to create "Adaptive Workflow Intelligence" - dashboards that transform based on active legal workflows rather than displaying static information. 
 
-The application showcases modular and adaptive workflows for different legal scenarios, from case initiation to emergency response handling, with a professional light theme that emphasizes clarity, efficiency, and abundant whitespace while maintaining human empathy.
+Core philosophy: "Automation enables better client relationships rather than replacing them." The system operates like an intelligent assembly line for legal work with three main stages: Intake (Gmail monitoring) → Processing (Claude AI analysis) → Output & Delivery (Review & approval).
+
+The application features a professional dark theme using the official LexFiat design system with navy backgrounds and gold accents, implementing an assembly line metaphor with conveyor belt animations and uniform workflow indicators.
 
 ## LexFiat's Unique Value Proposition
 
@@ -25,10 +27,12 @@ The dashboard is **workflow-driven**, not information-driven. Each legal scenari
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
-Design preferences: Serious professional interface that suggests inexorability and competence
-Theme: Professional blues and golds color palette - more serious than "Mondrian" bright colors but not "Imperial Star Destroyer" dark
-Logo: Negative space Edison bulb design with white filament/rays on dark circle, representing legal intelligence "piercing darkness"
-Workflow philosophy: Uniform roadmaps suggesting legal tasks will get completed - "it will, it must get done, it's only a matter of time"
+Design preferences: Professional, intelligent, innovative, trustworthy interface following official LexFiat design system
+Theme: Official LexFiat color palette - dark navy backgrounds (#0a0e1a, #1a1f2e) with gold accents (#fbbf24, #d97706)
+Logo: Gold lightbulb icon in radial gradient circle (per official brand standards)
+Typography: Inter font family only - NO serif fonts allowed (design specification requirement)
+Workflow philosophy: Assembly line metaphor with three-stage workflow (Intake → Processing → Output & Delivery)
+Content standards: Use consistent case examples (Johnson v Johnson, Hartley Estate, Towne v Michigan Dept)
 
 ## System Architecture
 

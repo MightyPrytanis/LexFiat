@@ -24,39 +24,58 @@
   --ring: hsl(207, 90%, 54%);
   --radius: 0.5rem;
 
-  /* Lex Fiat Professional Blues & Golds Theme */
-  --deep-navy: hsl(220, 35%, 12%);
-  --navy: hsl(220, 30%, 18%);
-  --slate-blue: hsl(220, 25%, 25%);
-  --steel-blue: hsl(210, 20%, 35%);
-  --warm-white: hsl(210, 15%, 97%);
-  --light-blue: hsl(210, 45%, 88%);
-  --professional-blue: hsl(210, 60%, 45%);
-  --accent-gold: hsl(45, 85%, 55%);
-  --rich-gold: hsl(40, 75%, 45%);
-  --alert-amber: hsl(25, 85%, 55%);
+  /* LexFiat Design System - Official Color Palette */
+  --primary-bg-dark: #0a0e1a;
+  --primary-bg-light: #1a1f2e;
+  --accent-gold: #fbbf24;
+  --accent-amber: #d97706;
+  
+  /* Secondary Colors */
+  --card-bg-dark: #1e293b;
+  --card-bg-light: #334155;
+  --border-gray: #475569;
+  
+  /* Text Colors */
+  --text-primary: #e1e7ef;
+  --text-secondary: #94a3b8;
+  --text-muted: #6b7280;
+  
+  /* Status Colors */
+  --status-success: #10b981;
+  --status-processing: #3b82f6;
+  --status-warning: #f59e0b;
+  --status-critical: #ef4444;
+  --status-purple: #8b5cf6;
+  
+  /* Spacing System */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
 }
 
 .dark {
-  --background: hsl(210, 15%, 97%);
-  --foreground: hsl(220, 35%, 12%);
-  --muted: hsl(210, 45%, 88%);
-  --muted-foreground: hsl(210, 20%, 35%);
-  --popover: hsl(210, 15%, 97%);
-  --popover-foreground: hsl(220, 35%, 12%);
-  --card: hsl(210, 15%, 97%);
-  --card-foreground: hsl(220, 35%, 12%);
-  --border: hsl(210, 25%, 80%);
-  --input: hsl(210, 25%, 85%);
-  --primary: hsl(210, 60%, 45%);
-  --primary-foreground: hsl(210, 15%, 97%);
-  --secondary: hsl(210, 45%, 88%);
-  --secondary-foreground: hsl(220, 35%, 12%);
-  --accent: hsl(210, 45%, 88%);
-  --accent-foreground: hsl(220, 35%, 12%);
-  --destructive: hsl(25, 85%, 55%);
-  --destructive-foreground: hsl(210, 15%, 97%);
-  --ring: hsl(210, 60%, 45%);
+  --background: var(--primary-bg-dark);
+  --foreground: var(--text-primary);
+  --muted: var(--card-bg-dark);
+  --muted-foreground: var(--text-secondary);
+  --popover: var(--card-bg-light);
+  --popover-foreground: var(--text-primary);
+  --card: var(--card-bg-dark);
+  --card-foreground: var(--text-primary);
+  --border: var(--border-gray);
+  --input: var(--card-bg-light);
+  --primary: var(--accent-gold);
+  --primary-foreground: var(--primary-bg-dark);
+  --secondary: var(--card-bg-light);
+  --secondary-foreground: var(--text-primary);
+  --accent: var(--accent-gold);
+  --accent-foreground: var(--primary-bg-dark);
+  --destructive: var(--status-critical);
+  --destructive-foreground: var(--text-primary);
+  --ring: var(--accent-gold);
 }
 
 @layer base {
@@ -74,41 +93,41 @@
   }
 }
 
-/* Lex Fiat Professional Blues & Golds Theme Classes */
-.bg-deep-navy {
-  background-color: var(--deep-navy);
+/* LexFiat Design System - Utility Classes */
+.bg-primary-dark {
+  background-color: var(--primary-bg-dark);
 }
 
-.bg-navy {
-  background-color: var(--navy);
+.bg-primary-light {
+  background-color: var(--primary-bg-light);
 }
 
-.bg-slate-blue {
-  background-color: var(--slate-blue);
+.bg-card-dark {
+  background-color: var(--card-bg-dark);
 }
 
-.bg-steel-blue {
-  background-color: var(--steel-blue);
+.bg-card-light {
+  background-color: var(--card-bg-light);
 }
 
-.bg-light-blue {
-  background-color: var(--light-blue);
+.bg-accent-gold {
+  background-color: var(--accent-gold);
 }
 
-.text-deep-navy {
-  color: var(--deep-navy);
+.text-primary {
+  color: var(--text-primary);
 }
 
-.text-navy {
-  color: var(--navy);
+.text-secondary {
+  color: var(--text-secondary);
 }
 
-.text-steel-blue {
-  color: var(--steel-blue);
+.text-muted {
+  color: var(--text-muted);
 }
 
-.text-professional-blue {
-  color: var(--professional-blue);
+.text-accent-gold {
+  color: var(--accent-gold);
 }
 
 .bg-charcoal {
@@ -155,89 +174,122 @@
   color: var(--alert-amber);
 }
 
-.edison-bulb {
+/* LexFiat Logo - Gold Lightbulb in Radial Gradient Circle */
+.lex-fiat-logo {
   position: relative;
-  background-color: var(--deep-navy);
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at center, var(--accent-gold) 0%, var(--accent-amber) 100%);
   border-radius: 50%;
-  border: 2px solid var(--steel-blue);
-  box-shadow: inset 0 0 20px var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
 }
 
-.edison-filament {
-  position: absolute;
-  inset: 25%;
-  background: linear-gradient(135deg, 
-    transparent 30%, 
-    var(--accent-gold) 35%, 
-    var(--accent-gold) 40%, 
-    transparent 45%,
-    transparent 55%,
-    var(--accent-gold) 60%,
-    var(--accent-gold) 65%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  animation: filament-glow 3s ease-in-out infinite;
+.lex-fiat-logo .lightbulb-icon {
+  font-size: 24px;
+  color: var(--primary-bg-dark);
 }
 
-.light-rays {
-  position: absolute;
-  inset: -10px;
-  background: conic-gradient(
-    transparent 0deg,
-    var(--accent-gold) 45deg,
-    transparent 90deg,
-    var(--accent-gold) 135deg,
-    transparent 180deg,
-    var(--accent-gold) 225deg,
-    transparent 270deg,
-    var(--accent-gold) 315deg,
-    transparent 360deg
-  );
-  border-radius: 50%;
-  opacity: 0.6;
-  animation: rays-rotate 8s linear infinite;
-}
-
-@keyframes filament-glow {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; filter: brightness(1.2); }
-}
-
-@keyframes rays-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.workflow-progress {
+/* Conveyor Belt Animation */
+.flow-line {
   position: relative;
-  background: linear-gradient(90deg, 
-    var(--professional-blue) 0%, 
-    var(--accent-gold) 50%, 
-    var(--professional-blue) 100%
-  );
-  height: 4px;
-  border-radius: 2px;
+  height: 3px;
+  background: var(--border-gray);
   overflow: hidden;
 }
 
-.progress-pulse {
+.flow-line::after {
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.4), 
-    transparent
-  );
-  animation: progress-sweep 2s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.6), transparent);
+  animation: flow-pulse 4s ease-in-out infinite;
 }
 
-@keyframes progress-sweep {
+@keyframes flow-pulse {
   0% { left: -100%; }
   100% { left: 100%; }
+}
+
+/* Progress Bar Animation */
+.progress-fill {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Live Update Highlights */
+.live-update {
+  animation: highlight 3s ease-in-out;
+}
+
+@keyframes highlight {
+  0% { background-color: rgba(251, 191, 36, 0.2); }
+  100% { background-color: transparent; }
+}
+
+/* Status Pills */
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  background: rgba(30, 58, 95, 0.7);
+  border-radius: 25px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Workflow Item Cards */
+.workflow-item {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border-gray);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border-left: 4px solid var(--priority-color);
+  transition: all 0.3s ease;
+}
+
+.workflow-item:hover {
+  background: rgba(51, 65, 85, 0.9);
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+/* Priority Colors */
+.priority-critical {
+  --priority-color: var(--status-critical);
+}
+
+.priority-high {
+  --priority-color: var(--status-warning);
+}
+
+.priority-normal {
+  --priority-color: var(--status-processing);
+}
+
+.priority-routine {
+  --priority-color: var(--status-success);
 }
 
 .border-aqua {
