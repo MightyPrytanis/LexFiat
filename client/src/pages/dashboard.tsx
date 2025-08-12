@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import Header from "@/components/layout/header";
 import WorkflowPipeline from "@/components/dashboard/workflow-pipeline";
 import AlertsBanner from "@/components/dashboard/alerts-banner";
+import DemoModeButton from "@/components/dashboard/demo-mode-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
@@ -65,12 +66,15 @@ export default function Dashboard() {
         {/* Quick Actions Bar */}
         <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
           <h1 className="text-xl sm:text-2xl font-bold text-white">Dashboard</h1>
-          <Link href="/settings">
-            <Button className="bg-gold hover:bg-gold/90 text-slate-900 w-full sm:w-auto">
-              <Settings className="w-4 h-4 mr-2" />
-              Settings
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+            <DemoModeButton />
+            <Link href="/settings">
+              <Button className="bg-gold hover:bg-gold/90 text-slate-900 w-full sm:w-auto">
+                <Settings className="w-4 h-4 mr-2" />
+                Settings
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Assembly Line Workflow Pipeline - LexFiat's Core */}

@@ -262,6 +262,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Demo mode endpoints
+  app.post("/api/demo/load", async (req, res) => {
+    try {
+      const { scenario } = req.body;
+      const result = await storage.loadDemoData(scenario);
+      res.json(result);
+    } catch (error) {
+      console.error("Error loading demo data:", error);
+      res.status(500).json({ message: "Failed to load demo data" });
+    }
+  });
+
+  app.post("/api/demo/clear", async (req, res) => {
+    try {
+      await storage.clearDemoData();
+      res.json({ message: "Demo data cleared successfully" });
+    } catch (error) {
+      console.error("Error clearing demo data:", error);
+      res.status(500).json({ message: "Failed to clear demo data" });
+    }
+  });
+
   // Object Storage Routes
   app.get("/public-objects/:filePath(*)", async (req, res) => {
     const filePath = req.params.filePath;
