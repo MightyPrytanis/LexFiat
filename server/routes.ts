@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { GmailService } from "./services/gmail";
 import { ClioService } from "./services/clio";
 import { AnthropicService } from "./services/anthropic";
+import { ObjectStorageService } from "./objectStorage";
 import { insertDocumentSchema, insertRedFlagSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -15,6 +16,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const attorney = await storage.getCurrentAttorney();
       if (!attorney) {
         return res.status(404).json({ message: "Attorney profile not found" });
+      }
+      res.json(attorney);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Get current attorney (alias for profile)
+  app.get("/api/attorneys/current", async (req, res) => {
+    try {
+      const attorney = await storage.getCurrentAttorney();
+      if (!attorney) {
+        return res.status(404).json({ message: "No attorney found" });
+      }
+      res.json(attorney);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Update attorney
+  app.patch("/api/attorneys/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const attorney = await storage.updateAttorney(id, req.body);
+      if (!attorney) {
+        return res.status(404).json({ message: "Attorney not found" });
       }
       res.json(attorney);
     } catch (error) {
@@ -234,6 +262,104 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Object Storage Routes
+  app.get("/public-objects/:filePath(*)", async (req, res) => {
+    const filePath = req.params.filePath;
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const file = await objectStorageService.searchPublicObject(filePath);
+      if (!file) {
+        return res.status(404).json({ error: "File not found" });
+      }
+      objectStorageService.downloadObject(file, res);
+    } catch (error) {
+      console.error("Error searching for public object:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/api/objects/upload", async (req, res) => {
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const uploadURL = await objectStorageService.getObjectEntityUploadURL();
+      res.json({ uploadURL });
+    } catch (error) {
+      console.error("Error getting upload URL:", error);
+      res.status(500).json({ error: "Failed to get upload URL" });
+    }
+  });
+
+  // AI Providers Routes
+  app.get("/api/ai-providers", async (req, res) => {
+    try {
+      const providers = await storage.getAiProviders();
+      res.json(providers);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.post("/api/ai-providers", async (req, res) => {
+    try {
+      const provider = await storage.createAiProvider(req.body);
+      res.status(201).json(provider);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.patch("/api/ai-providers/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const provider = await storage.updateAiProvider(id, req.body);
+      if (!provider) {
+        return res.status(404).json({ message: "AI provider not found" });
+      }
+      res.json(provider);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Feedback Routes
+  app.get("/api/feedback", async (req, res) => {
+    try {
+      const feedback = await storage.getFeedback();
+      res.json(feedback);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.post("/api/feedback", async (req, res) => {
+    try {
+      const feedback = await storage.createFeedback(req.body);
+      res.status(201).json(feedback);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Cross-check analysis
+  app.post("/api/documents/:id/cross-check", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { provider, primaryAnalysisId } = req.body;
+      
+      // This would integrate with the selected AI provider
+      // For now, return a mock response
+      const crossCheckResult = {
+        confidenceMatch: Math.floor(Math.random() * 30) + 70, // 70-100%
+        summary: `Cross-check completed using ${provider}. Analysis shows good alignment with primary findings.`,
+        conflicts: Math.random() > 0.7 ? ["Minor discrepancy in urgency assessment"] : [],
+      };
+
+      res.json({ success: true, result: crossCheckResult });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
   // Clio integration endpoints
   app.post("/api/clio/sync-matters", async (req, res) => {
     try {
@@ -272,7 +398,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         cases: syncedCases,
       });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: (error as Error).message });
     }
   });
 

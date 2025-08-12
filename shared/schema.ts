@@ -17,6 +17,14 @@ export const attorneys = pgTable("attorneys", {
   profilePhotoUrl: text("profile_photo_url"),
   clioApiKey: text("clio_api_key"),
   gmailCredentials: json("gmail_credentials"),
+  // Additional integration settings
+  calendarConnected: boolean("calendar_connected").default(false),
+  westlawConnected: boolean("westlaw_connected").default(false),
+  westlawApiKey: text("westlaw_api_key"),
+  claudeConnected: boolean("claude_connected").default(false),
+  claudeApiKey: text("claude_api_key"),
+  // Dashboard layout preferences
+  dashboardLayout: json("dashboard_layout"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -81,7 +89,34 @@ export const aiAnalyses = pgTable("ai_analyses", {
   result: json("result"),
   confidence: integer("confidence"), // 0-100
   workflowModuleId: varchar("workflow_module_id").references(() => workflowModules.id),
+  // Cross-check with secondary AI
+  secondaryReview: json("secondary_review"),
+  secondaryReviewProvider: text("secondary_review_provider"),
+  reviewStatus: text("review_status").default("pending"),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const feedback = pgTable("feedback", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  attorneyId: varchar("attorney_id").references(() => attorneys.id),
+  type: text("type").notNull(), // 'bug', 'feature', 'improvement', 'comment'
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  priority: text("priority").default("medium"),
+  status: text("status").default("open"),
+  attachments: json("attachments"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const aiProviders = pgTable("ai_providers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  attorneyId: varchar("attorney_id").references(() => attorneys.id),
+  provider: text("provider").notNull(), // 'chatgpt', 'grok', 'copilot', 'gemini', 'perplexity'
+  apiKey: text("api_key"),
+  enabled: boolean("enabled").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const insertAttorneySchema = createInsertSchema(attorneys).pick({
@@ -119,10 +154,28 @@ export const insertRedFlagSchema = createInsertSchema(redFlags).pick({
   severity: true,
 });
 
+export const insertFeedbackSchema = createInsertSchema(feedback).pick({
+  attorneyId: true,
+  type: true,
+  title: true,
+  description: true,
+  priority: true,
+  attachments: true,
+});
+
+export const insertAiProviderSchema = createInsertSchema(aiProviders).pick({
+  attorneyId: true,
+  provider: true,
+  apiKey: true,
+  enabled: true,
+});
+
 export type InsertAttorney = z.infer<typeof insertAttorneySchema>;
 export type InsertLegalCase = z.infer<typeof insertLegalCaseSchema>;
 export type InsertDocument = z.infer<typeof insertDocumentSchema>;
 export type InsertRedFlag = z.infer<typeof insertRedFlagSchema>;
+export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
+export type InsertAiProvider = z.infer<typeof insertAiProviderSchema>;
 
 export type Attorney = typeof attorneys.$inferSelect;
 export type LegalCase = typeof legalCases.$inferSelect;
@@ -130,3 +183,5 @@ export type Document = typeof documents.$inferSelect;
 export type RedFlag = typeof redFlags.$inferSelect;
 export type WorkflowModule = typeof workflowModules.$inferSelect;
 export type AiAnalysis = typeof aiAnalyses.$inferSelect;
+export type Feedback = typeof feedback.$inferSelect;
+export type AiProvider = typeof aiProviders.$inferSelect;
