@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, Settings } from "lucide-react";
+import { Link } from "wouter";
 import Header from "@/components/layout/header";
 import WorkflowPipeline from "@/components/dashboard/workflow-pipeline";
 import AlertsBanner from "@/components/dashboard/alerts-banner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
   const { data: attorney, isLoading: attorneyLoading } = useQuery({
@@ -60,6 +62,17 @@ export default function Dashboard() {
       )}
       
       <main className="max-w-7xl mx-auto px-8 py-8">
+        {/* Quick Actions Bar */}
+        <div className="mb-6 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+          <Link href="/settings">
+            <Button className="bg-gold hover:bg-gold/90 text-slate-900">
+              <Settings className="w-4 h-4 mr-2" />
+              Settings
+            </Button>
+          </Link>
+        </div>
+
         {/* Assembly Line Workflow Pipeline - LexFiat's Core */}
         <div className="mb-8">
           <div className="bg-card-dark rounded-xl p-8 shadow-xl border border-border-gray">

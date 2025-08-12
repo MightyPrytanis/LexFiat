@@ -3,18 +3,24 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Eye, EyeOff, Check, X, Link, Mail, Calendar, Scale, Gavel } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import type { Attorney } from "@shared/schema";
 
 export function IntegrationSettings() {
   const [showApiKeys, setShowApiKeys] = useState<Record<string, boolean>>({});
   const [editingIntegration, setEditingIntegration] = useState<string | null>(null);
   const [apiKeyInput, setApiKeyInput] = useState("");
-  
+  const [gmailCredentials, setGmailCredentials] = useState({
+    accessToken: "",
+    refreshToken: "",
+  });
+  const [outlookCredentials, setOutlookCredentials] = useState({
+    clientId: "",
+    clientSecret: "",
+  });
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -23,7 +29,7 @@ export function IntegrationSettings() {
   });
 
   const updateIntegration = useMutation({
-    mutationFn: async (data: Partial<Attorney>) => {
+    mutationFn: async (data: any) => {
       const response = await fetch(`/api/attorneys/${attorney?.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -33,264 +39,348 @@ export function IntegrationSettings() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/attorneys/current"] });
-      setEditingIntegration(null);
-      setApiKeyInput("");
       toast({
         title: "Integration Updated",
-        description: "Integration settings saved successfully.",
+        description: "Your integration settings have been updated successfully.",
       });
     },
-  });
-
-  const initiateGmailOAuth = useMutation({
-    mutationFn: async () => {
-      const response = await fetch("/api/integrations/gmail/oauth", {
-        method: "POST",
-      });
-      const { authUrl } = await response.json();
-      window.location.href = authUrl;
-    },
-  });
-
-  const toggleApiKeyVisibility = (integration: string) => {
-    setShowApiKeys(prev => ({
-      ...prev,
-      [integration]: !prev[integration]
-    }));
-  };
-
-  const handleSaveApiKey = (integration: string) => {
-    if (!apiKeyInput.trim()) {
+    onError: () => {
       toast({
-        title: "API Key Required",
-        description: "Please enter a valid API key.",
+        title: "Error",
+        description: "Failed to update integration settings. Please try again.",
         variant: "destructive",
       });
-      return;
-    }
+    },
+  });
 
-    const updateData: Partial<Attorney> = {};
+  const handleConnect = (integration: string) => {
+    const updateData: any = {};
     
     switch (integration) {
       case "clio":
         updateData.clioApiKey = apiKeyInput;
-        updateData.clioConnected = true;
+        break;
+      case "anthropic":
+        updateData.anthropicApiKey = apiKeyInput;
+        break;
+      case "outlook":
+        updateData.outlookCredentials = {
+          clientId: outlookCredentials.clientId,
+          clientSecret: outlookCredentials.clientSecret,
+        };
         break;
       case "westlaw":
         updateData.westlawApiKey = apiKeyInput;
-        updateData.westlawConnected = true;
-        break;
-      case "claude":
-        updateData.claudeApiKey = apiKeyInput;
-        updateData.claudeConnected = true;
         break;
     }
 
     updateIntegration.mutate(updateData);
+    setEditingIntegration(null);
+    setApiKeyInput("");
+  };
+
+  const handleGmailConnect = () => {
+    const updateData: any = {};
+    updateData.gmailCredentials = {
+      accessToken: gmailCredentials.accessToken,
+      refreshToken: gmailCredentials.refreshToken,
+    };
+
+    updateIntegration.mutate(updateData);
+    setEditingIntegration(null);
+    setGmailCredentials({ accessToken: "", refreshToken: "" });
+  };
+
+  const isConnected = (integration: string) => {
+    switch (integration) {
+      case "gmail":
+        return !!attorney?.gmailCredentials;
+      case "clio":
+        return !!attorney?.clioApiKey;
+      case "anthropic":
+        return !!attorney?.anthropicApiKey;
+      case "outlook":
+        return !!attorney?.outlookCredentials;
+      case "westlaw":
+        return !!attorney?.westlawApiKey;
+      default:
+        return false;
+    }
   };
 
   const integrations = [
     {
-      key: "gmail",
-      name: "Gmail & Calendar",
-      icon: Mail,
-      description: "Connect your Gmail account for email monitoring and calendar integration",
-      connected: attorney?.gmailCredentials,
+      id: "gmail",
+      name: "Gmail",
+      description: "Monitor and process incoming legal communications",
+      icon: <Mail className="w-5 h-5" />,
+      color: "bg-red-600",
       requiresOAuth: true,
-      status: attorney?.gmailCredentials ? "Connected" : "Not Connected",
     },
     {
-      key: "clio",
+      id: "clio",
       name: "Clio Practice Management",
-      icon: Scale,
-      description: "Sync cases, clients, and billing information",
-      connected: attorney?.clioConnected,
-      apiKey: attorney?.clioApiKey,
-      status: attorney?.clioConnected ? "Connected" : "Not Connected",
+      description: "Sync matters, clients, and billing information",
+      icon: <Scale className="w-5 h-5" />,
+      color: "bg-blue-600",
+      requiresOAuth: false,
     },
     {
-      key: "westlaw",
-      name: "Westlaw Research",
-      icon: Gavel,
-      description: "Access legal research and case law",
-      connected: attorney?.westlawConnected,
-      apiKey: attorney?.westlawApiKey,
-      status: attorney?.westlawConnected ? "Connected" : "Not Connected",
+      id: "anthropic",
+      name: "Claude AI (Anthropic)",
+      description: "Primary AI analysis for document processing",
+      icon: <Gavel className="w-5 h-5" />,
+      color: "bg-orange-600",
+      requiresOAuth: false,
     },
     {
-      key: "claude",
-      name: "Claude AI",
-      icon: Link,
-      description: "Personal Claude API for document analysis",
-      connected: attorney?.claudeConnected,
-      apiKey: attorney?.claudeApiKey,
-      status: attorney?.claudeConnected ? "Connected" : "Not Connected",
+      id: "outlook",
+      name: "Microsoft Outlook",
+      description: "Alternative email monitoring and processing",
+      icon: <Calendar className="w-5 h-5" />,
+      color: "bg-cyan-600",
+      requiresOAuth: true,
+    },
+    {
+      id: "westlaw",
+      name: "Westlaw Edge API",
+      description: "Legal research and case law integration",
+      icon: <Link className="w-5 h-5" />,
+      color: "bg-green-600",
+      requiresOAuth: false,
     },
   ];
 
-  const getStatusBadge = (connected: boolean | null | undefined) => {
-    if (connected) {
-      return <Badge className="bg-green-600 text-white">Connected</Badge>;
-    }
-    return <Badge variant="outline" className="text-slate-400">Not Connected</Badge>;
-  };
-
   return (
-    <Card className="bg-slate-800 border-slate-700">
-      <CardHeader>
-        <CardTitle className="text-gold flex items-center">
-          <Link className="w-5 h-5 mr-2" />
-          Account Integrations
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <p className="text-slate-300 text-sm">
-          Connect your accounts to unlock the full power of LexFiat's automation features.
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gold mb-2">External Integrations</h2>
+        <p className="text-slate-400">
+          Connect LexFiat to your essential legal workflow tools
         </p>
-        
-        {integrations.map((integration) => {
-          const Icon = integration.icon;
-          const isEditing = editingIntegration === integration.key;
-          
-          return (
-            <div key={integration.key} className="bg-slate-700 p-4 rounded-lg space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Icon className="w-6 h-6 text-gold" />
-                  <div>
-                    <h4 className="font-medium text-white">{integration.name}</h4>
-                    <p className="text-sm text-slate-400">{integration.description}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  {getStatusBadge(integration.connected)}
-                  {integration.connected && !integration.requiresOAuth && (
-                    <Switch
-                      checked={integration.connected}
-                      onCheckedChange={(enabled) => {
-                        const updateData: Partial<Attorney> = {};
-                        switch (integration.key) {
-                          case "clio":
-                            updateData.clioConnected = enabled;
-                            break;
-                          case "westlaw":
-                            updateData.westlawConnected = enabled;
-                            break;
-                          case "claude":
-                            updateData.claudeConnected = enabled;
-                            break;
-                        }
-                        updateIntegration.mutate(updateData);
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
+      </div>
 
-              {isEditing && !integration.requiresOAuth ? (
-                <div className="space-y-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {integrations.map((integration) => (
+          <Card key={integration.id} className="bg-slate-800 border-slate-700">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-white">
+                <div className="flex items-center space-x-3">
+                  <div className={`p-2 rounded-lg ${integration.color}`}>
+                    {integration.icon}
+                  </div>
                   <div>
-                    <Label htmlFor={`api-key-${integration.key}`} className="text-slate-300">
-                      API Key
-                    </Label>
-                    <Input
-                      id={`api-key-${integration.key}`}
-                      type="password"
-                      value={apiKeyInput}
-                      onChange={(e) => setApiKeyInput(e.target.value)}
-                      placeholder="Enter API key..."
-                      className="bg-slate-600 border-slate-500 text-white"
-                    />
+                    <h3 className="font-semibold">{integration.name}</h3>
+                    <p className="text-sm text-slate-400 font-normal">
+                      {integration.description}
+                    </p>
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleSaveApiKey(integration.key)}
-                      className="bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      <Check className="w-4 h-4 mr-1" />
-                      Save
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setEditingIntegration(null);
-                        setApiKeyInput("");
-                      }}
-                      className="border-slate-500 text-slate-300 hover:bg-slate-600"
-                    >
-                      <X className="w-4 h-4 mr-1" />
-                      Cancel
-                    </Button>
-                  </div>
+                </div>
+                {isConnected(integration.id) ? (
+                  <Badge className="bg-green-600 hover:bg-green-700 text-white">
+                    <Check className="w-3 h-3 mr-1" />
+                    Connected
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="border-slate-600 text-slate-400">
+                    <X className="w-3 h-3 mr-1" />
+                    Not Connected
+                  </Badge>
+                )}
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              {editingIntegration === integration.id ? (
+                <div className="space-y-4">
+                  {integration.id === "gmail" ? (
+                    <>
+                      <div>
+                        <Label className="text-slate-300">Access Token</Label>
+                        <Input
+                          type="password"
+                          value={gmailCredentials.accessToken}
+                          onChange={(e) =>
+                            setGmailCredentials(prev => ({
+                              ...prev,
+                              accessToken: e.target.value
+                            }))
+                          }
+                          placeholder="Enter Gmail access token"
+                          className="bg-slate-700 border-slate-600 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Refresh Token</Label>
+                        <Input
+                          type="password"
+                          value={gmailCredentials.refreshToken}
+                          onChange={(e) =>
+                            setGmailCredentials(prev => ({
+                              ...prev,
+                              refreshToken: e.target.value
+                            }))
+                          }
+                          placeholder="Enter Gmail refresh token"
+                          className="bg-slate-700 border-slate-600 text-white"
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          onClick={handleGmailConnect}
+                          disabled={updateIntegration.isPending}
+                          className="flex-1 bg-gold hover:bg-gold/90 text-slate-900"
+                        >
+                          Connect Gmail
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => setEditingIntegration(null)}
+                          className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </>
+                  ) : integration.id === "outlook" ? (
+                    <>
+                      <div>
+                        <Label className="text-slate-300">Client ID</Label>
+                        <Input
+                          value={outlookCredentials.clientId}
+                          onChange={(e) =>
+                            setOutlookCredentials(prev => ({
+                              ...prev,
+                              clientId: e.target.value
+                            }))
+                          }
+                          placeholder="Enter Outlook client ID"
+                          className="bg-slate-700 border-slate-600 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Client Secret</Label>
+                        <Input
+                          type="password"
+                          value={outlookCredentials.clientSecret}
+                          onChange={(e) =>
+                            setOutlookCredentials(prev => ({
+                              ...prev,
+                              clientSecret: e.target.value
+                            }))
+                          }
+                          placeholder="Enter Outlook client secret"
+                          className="bg-slate-700 border-slate-600 text-white"
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          onClick={() => handleConnect(integration.id)}
+                          disabled={updateIntegration.isPending}
+                          className="flex-1 bg-gold hover:bg-gold/90 text-slate-900"
+                        >
+                          Connect Outlook
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => setEditingIntegration(null)}
+                          className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <Label className="text-slate-300">API Key</Label>
+                        <div className="relative">
+                          <Input
+                            type={showApiKeys[integration.id] ? "text" : "password"}
+                            value={apiKeyInput}
+                            onChange={(e) => setApiKeyInput(e.target.value)}
+                            placeholder={`Enter ${integration.name} API key`}
+                            className="bg-slate-700 border-slate-600 text-white pr-10"
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3 text-slate-400 hover:text-white"
+                            onClick={() =>
+                              setShowApiKeys(prev => ({
+                                ...prev,
+                                [integration.id]: !prev[integration.id]
+                              }))
+                            }
+                          >
+                            {showApiKeys[integration.id] ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          onClick={() => handleConnect(integration.id)}
+                          disabled={updateIntegration.isPending}
+                          className="flex-1 bg-gold hover:bg-gold/90 text-slate-900"
+                        >
+                          Connect {integration.name}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => setEditingIntegration(null)}
+                          className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
               ) : (
-                <div className="flex items-center justify-between">
-                  {integration.apiKey && !integration.requiresOAuth ? (
-                    <div className="flex items-center space-x-2">
-                      <code className="text-xs bg-slate-600 px-2 py-1 rounded">
-                        {showApiKeys[integration.key] 
-                          ? integration.apiKey 
-                          : "••••••••••••••••"
-                        }
-                      </code>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => toggleApiKeyVisibility(integration.key)}
-                        className="text-slate-400 hover:text-white"
-                      >
-                        {showApiKeys[integration.key] ? (
-                          <EyeOff className="w-4 h-4" />
-                        ) : (
-                          <Eye className="w-4 h-4" />
-                        )}
-                      </Button>
+                <div className="space-y-3">
+                  {isConnected(integration.id) ? (
+                    <div className="bg-slate-700 p-3 rounded-lg">
+                      <p className="text-sm text-green-400 mb-2">✓ Integration Active</p>
+                      <div className="flex space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setEditingIntegration(integration.id)}
+                          className="border-slate-600 text-slate-300 hover:bg-slate-600"
+                        >
+                          Update Connection
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            /* Add disconnect logic */
+                          }}
+                          className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white"
+                        >
+                          Disconnect
+                        </Button>
+                      </div>
                     </div>
-                  ) : integration.requiresOAuth && integration.connected ? (
-                    <span className="text-green-400 text-sm">✓ OAuth connected</span>
-                  ) : (
-                    <span className="text-slate-400 text-sm">
-                      {integration.requiresOAuth ? "OAuth required" : "No API key configured"}
-                    </span>
-                  )}
-                  
-                  {integration.requiresOAuth ? (
-                    <Button
-                      size="sm"
-                      onClick={() => initiateGmailOAuth.mutate()}
-                      disabled={initiateGmailOAuth.isPending}
-                      className="bg-gold hover:bg-gold/90 text-slate-900"
-                    >
-                      {integration.connected ? "Reconnect" : "Connect"}
-                    </Button>
                   ) : (
                     <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setEditingIntegration(integration.key);
-                        setApiKeyInput(integration.apiKey || "");
-                      }}
-                      className="border-slate-600 text-slate-300 hover:bg-slate-600"
+                      onClick={() => setEditingIntegration(integration.id)}
+                      className="w-full bg-gold hover:bg-gold/90 text-slate-900"
                     >
-                      {integration.connected ? "Edit" : "Configure"}
+                      Connect {integration.name}
                     </Button>
                   )}
                 </div>
               )}
-            </div>
-          );
-        })}
-        
-        <div className="bg-blue-900/20 border border-blue-700 p-3 rounded-lg">
-          <p className="text-blue-300 text-sm">
-            <strong>Security:</strong> All credentials are encrypted and stored securely. 
-            OAuth tokens are automatically refreshed, and API keys are never shared.
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 }

@@ -15,6 +15,7 @@ export interface IStorage {
   // Attorney methods
   getCurrentAttorney(): Promise<Attorney | undefined>;
   createAttorney(attorney: any): Promise<Attorney>;
+  updateAttorney(id: string, updates: Partial<Attorney>): Promise<Attorney | undefined>;
   
   // Legal cases methods
   getLegalCases(): Promise<LegalCase[]>;
@@ -37,6 +38,15 @@ export interface IStorage {
   // Workflow modules methods
   getWorkflowModules(): Promise<WorkflowModule[]>;
   
+  // AI Providers methods
+  getAiProviders(): Promise<any[]>;
+  createAiProvider(provider: any): Promise<any>;
+  updateAiProvider(id: string, updates: any): Promise<any>;
+  
+  // Feedback methods
+  getFeedback(): Promise<any[]>;
+  createFeedback(feedback: any): Promise<any>;
+  
   // Dashboard stats
   getDashboardStats(): Promise<any>;
 }
@@ -47,6 +57,8 @@ export class MemStorage implements IStorage {
   private documents: Map<string, Document>;
   private redFlags: Map<string, RedFlag>;
   private workflowModules: Map<string, WorkflowModule>;
+  private aiProviders: Map<string, any>;
+  private feedback: Map<string, any>;
 
   constructor() {
     this.attorneys = new Map();
@@ -54,6 +66,8 @@ export class MemStorage implements IStorage {
     this.documents = new Map();
     this.redFlags = new Map();
     this.workflowModules = new Map();
+    this.aiProviders = new Map();
+    this.feedback = new Map();
     
     this.initializeSampleData();
   }
@@ -61,6 +75,15 @@ export class MemStorage implements IStorage {
   // Attorney methods
   async getCurrentAttorney(): Promise<Attorney | undefined> {
     return Array.from(this.attorneys.values())[0];
+  }
+
+  async updateAttorney(id: string, updates: Partial<Attorney>): Promise<Attorney | undefined> {
+    const attorney = this.attorneys.get(id);
+    if (!attorney) return undefined;
+    
+    const updatedAttorney = { ...attorney, ...updates };
+    this.attorneys.set(id, updatedAttorney);
+    return updatedAttorney;
   }
 
   async createAttorney(insertAttorney: InsertAttorney): Promise<Attorney> {
@@ -172,6 +195,45 @@ export class MemStorage implements IStorage {
   // Workflow modules methods
   async getWorkflowModules(): Promise<WorkflowModule[]> {
     return Array.from(this.workflowModules.values());
+  }
+
+  // AI Providers methods
+  async getAiProviders(): Promise<any[]> {
+    return Array.from(this.aiProviders.values());
+  }
+
+  async createAiProvider(provider: any): Promise<any> {
+    const id = randomUUID();
+    const newProvider = { ...provider, id, createdAt: new Date(), updatedAt: new Date() };
+    this.aiProviders.set(id, newProvider);
+    return newProvider;
+  }
+
+  async updateAiProvider(id: string, updates: any): Promise<any> {
+    const provider = this.aiProviders.get(id);
+    if (!provider) return undefined;
+    
+    const updatedProvider = { ...provider, ...updates, updatedAt: new Date() };
+    this.aiProviders.set(id, updatedProvider);
+    return updatedProvider;
+  }
+
+  // Feedback methods
+  async getFeedback(): Promise<any[]> {
+    return Array.from(this.feedback.values());
+  }
+
+  async createFeedback(feedback: any): Promise<any> {
+    const id = randomUUID();
+    const newFeedback = { 
+      ...feedback, 
+      id, 
+      attorneyId: Array.from(this.attorneys.keys())[0], // Use first attorney for demo
+      createdAt: new Date(), 
+      updatedAt: new Date() 
+    };
+    this.feedback.set(id, newFeedback);
+    return newFeedback;
   }
 
   // Dashboard stats
