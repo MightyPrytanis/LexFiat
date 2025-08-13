@@ -83,8 +83,20 @@ export function DemoModeButton() {
       return response.json();
     },
     onSuccess: (data) => {
-      // Invalidate all queries to refresh the dashboard with demo data
-      queryClient.invalidateQueries();
+      console.log("Demo data loaded successfully:", data);
+      
+      // Invalidate specific queries to refresh the dashboard with demo data
+      queryClient.invalidateQueries({ queryKey: ["/api/cases"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/red-flags"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/documents"] });
+      
+      // Force refetch immediately
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ["/api/cases"] });
+        queryClient.refetchQueries({ queryKey: ["/api/red-flags"] });
+        queryClient.refetchQueries({ queryKey: ["/api/dashboard/stats"] });
+      }, 100);
       
       const scenario = demoScenarios.find(s => s.id === selectedScenario);
       
@@ -124,7 +136,12 @@ export function DemoModeButton() {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      // Invalidate specific queries to refresh the dashboard
+      queryClient.invalidateQueries({ queryKey: ["/api/cases"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/red-flags"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/documents"] });
+      
       toast({
         title: "Demo Data Cleared",
         description: "All demo data has been removed successfully.",
