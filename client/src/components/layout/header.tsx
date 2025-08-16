@@ -28,11 +28,11 @@ export default function Header({ attorney }: HeaderProps) {
           
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-accent-gold font-semibold border-b-2 border-accent-gold pb-1">
+            <a href="/" className="text-accent-gold font-semibold border-b-2 border-accent-gold pb-1">
               Dashboard
             </a>
-            <a href="#" className="text-secondary hover:text-accent-gold transition-colors">
-              Analytics
+            <a href="/logo-showcase" className="text-secondary hover:text-accent-gold transition-colors">
+              Logo Showcase
             </a>
             <button 
               onClick={() => setShowHelp(true)}
