@@ -1,6 +1,7 @@
-import { Lightbulb, Bell, Settings, Wifi, Clock, HelpCircle } from "lucide-react";
+import { Bell, Settings, Wifi, Clock, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import HelpMenu from "../dashboard/help-menu";
+import { Logo } from "@/components/ui/logo";
 
 interface HeaderProps {
   attorney?: {
@@ -17,14 +18,11 @@ export default function Header({ attorney }: HeaderProps) {
     <header className="bg-primary-light border-b border-accent-gold px-8 py-6 shadow-lg" style={{ height: '100px' }}>
       <div className="flex items-center justify-between max-w-7xl mx-auto h-full">
         <div className="flex items-center space-x-12">
-          {/* LexFiat Logo - Gold Lightbulb in Radial Gradient Circle */}
+          {/* LexFiat Logo - New Simplified Edison Bulb Design */}
           <div className="flex items-center space-x-4">
-            <div className="lex-fiat-logo">
-              <Lightbulb className="lightbulb-icon" />
-            </div>
+            <Logo size="lg" />
             <div>
-              <h1 className="text-2xl font-bold text-primary">Lex Fiat</h1>
-              <p className="text-sm text-accent-gold font-semibold -mt-1 tracking-wide">"Let There Be Law"</p>
+              <p className="text-sm text-accent-gold font-semibold -mt-1 tracking-wide">"Legal Intelligence"</p>
             </div>
           </div>
           
