@@ -2,7 +2,7 @@
 
 > **"Automation enables better client relationships rather than replacing them."**
 
-LexFiat is a comprehensive legal workflow automation system designed for modern law practices. Built for Michigan attorney Mekel Miller, it transforms traditional legal workflows through AI-powered document analysis, intelligent case management, and adaptive dashboard interfaces.
+LexFiat is a comprehensive legal workflow automation system designed for modern law practices. Built for a busy solo family law practitioner, LexFiat transforms traditional legal workflows through AI-powered document analysis and verification, intelligent case management, and adaptive user interfaces.
 
 ## 🚀 Quick Start
 
