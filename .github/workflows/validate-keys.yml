@@ -19,6 +19,9 @@ jobs:
           ANTHROPIC_TEST_URL: ${{ secrets.ANTHROPIC_TEST_URL }}
           PERPLEXITY_TEST_URL: ${{ secrets.PERPLEXITY_TEST_URL }}
           GEMINI_TEST_URL: ${{ secrets.GEMINI_TEST_URL }}
+          # New optional secrets:
+          ANTHROPIC_VERSION: ${{ secrets.ANTHROPIC_VERSION }}        # required by Anthropic API
+          PERPLEXITY_MODEL: ${{ secrets.PERPLEXITY_MODEL }}          # optionally override model (default is "sonar")
         run: |
           set -euo pipefail
 
@@ -28,8 +31,11 @@ jobs:
 
           echo "Anthropic: testing /v1/models"
           ANTH_URL=${ANTHROPIC_TEST_URL:-https://api.anthropic.com/v1/models}
-          # capture body for debugging when non-200
-          curl -s -o /tmp/anth_resp -w "%{http_code}" -H "x-api-key: ${ANTHROPIC_API_KEY}" "$ANTH_URL" > /tmp/anth_code || echo "000" >/tmp/anth_code
+          ANTH_VER=${ANTHROPIC_VERSION:-""}
+          if [ -z "$ANTH_VER" ]; then
+            echo "Anthropic: WARNING: ANTHROPIC_VERSION not set. Set secret ANTHROPIC_VERSION to the version/date required by Anthropic docs."
+          fi
+          curl -s -o /tmp/anth_resp -w "%{http_code}" -H "x-api-key: ${ANTHROPIC_API_KEY}" ${ANTH_VER:+-H "anthropic-version: $ANTH_VER"} "$ANTH_URL" > /tmp/anth_code || echo "000" >/tmp/anth_code
           anth_status=$(cat /tmp/anth_code)
           if [ "$anth_status" = "200" ]; then
             echo "Anthropic: VALID (HTTP 200)"
@@ -41,9 +47,10 @@ jobs:
 
           echo "Perplexity: testing (POST to chat/completions by default)"
           PURL=${PERPLEXITY_TEST_URL:-https://api.perplexity.ai/chat/completions}
-          # Minimal POST payload; the provider will return an error describing required fields if body is incomplete.
-          # This step DOES NOT print secrets; it only prints the provider response body when non-200.
-          curl -s -o /tmp/perp_resp -w "%{http_code}" -H "Authorization: Bearer ${PERPLEXITY_API_KEY}" -H "Content-Type: application/json" -X POST -d '{"prompt":"ping","max_tokens":1}' "$PURL" > /tmp/perp_code || echo "000" >/tmp/perp_code
+          PMODEL=${PERPLEXITY_MODEL:-"sonar"}
+          # Minimal POST body that includes required fields model and messages
+          PAYLOAD=$(jq -c -n --arg m "$PMODEL" '{"model":$m,"messages":[{"role":"user","content":"ping"}],"max_tokens":1}')
+          curl -s -o /tmp/perp_resp -w "%{http_code}" -H "Authorization: Bearer ${PERPLEXITY_API_KEY}" -H "Content-Type: application/json" -X POST -d "$PAYLOAD" "$PURL" > /tmp/perp_code || echo "000" >/tmp/perp_code
           perp_status=$(cat /tmp/perp_code)
           if [ "$perp_status" = "200" ]; then
             echo "Perplexity: VALID (HTTP 200)"
