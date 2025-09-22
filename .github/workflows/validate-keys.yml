@@ -31,7 +31,7 @@ jobs:
 
           echo "Anthropic: testing /v1/models"
           ANTH_URL=${ANTHROPIC_TEST_URL:-https://api.anthropic.com/v1/models}
-          ANTH_VER=${ANTHROPIC_VERSION:-""}
+          ANTH_VER=${ANTHROPIC_VERSION:-"2023-06-01"}
           if [ -z "$ANTH_VER" ]; then
             echo "Anthropic: WARNING: ANTHROPIC_VERSION not set. Set secret ANTHROPIC_VERSION to the version/date required by Anthropic docs."
           fi
