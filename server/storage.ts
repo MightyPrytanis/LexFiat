@@ -4,10 +4,16 @@ import {
   type Document, 
   type RedFlag, 
   type WorkflowModule,
+  type MaeWorkflow,
+  type MaeWorkflowStep,
+  type MaeWorkflowExecution,
   type InsertAttorney,
   type InsertLegalCase,
   type InsertDocument,
-  type InsertRedFlag
+  type InsertRedFlag,
+  type InsertMaeWorkflow,
+  type InsertMaeWorkflowStep,
+  type InsertMaeWorkflowExecution
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -38,6 +44,25 @@ export interface IStorage {
   // Workflow modules methods
   getWorkflowModules(): Promise<WorkflowModule[]>;
   
+  // MAE Workflows methods
+  getMaeWorkflows(): Promise<MaeWorkflow[]>;
+  getMaeWorkflow(id: string): Promise<MaeWorkflow | undefined>;
+  createMaeWorkflow(workflow: InsertMaeWorkflow): Promise<MaeWorkflow>;
+  updateMaeWorkflow(id: string, updates: Partial<MaeWorkflow>): Promise<MaeWorkflow | undefined>;
+  deleteMaeWorkflow(id: string): Promise<boolean>;
+  
+  // MAE Workflow Steps methods
+  getMaeWorkflowSteps(workflowId: string): Promise<MaeWorkflowStep[]>;
+  createMaeWorkflowStep(step: InsertMaeWorkflowStep): Promise<MaeWorkflowStep>;
+  updateMaeWorkflowStep(id: string, updates: Partial<MaeWorkflowStep>): Promise<MaeWorkflowStep | undefined>;
+  
+  // MAE Workflow Executions methods
+  getMaeWorkflowExecutions(): Promise<MaeWorkflowExecution[]>;
+  getMaeWorkflowExecution(id: string): Promise<MaeWorkflowExecution | undefined>;
+  getMaeWorkflowExecutionsByCase(caseId: string): Promise<MaeWorkflowExecution[]>;
+  createMaeWorkflowExecution(execution: InsertMaeWorkflowExecution): Promise<MaeWorkflowExecution>;
+  updateMaeWorkflowExecution(id: string, updates: Partial<MaeWorkflowExecution>): Promise<MaeWorkflowExecution | undefined>;
+  
   // AI Providers methods
   getAiProviders(): Promise<any[]>;
   createAiProvider(provider: any): Promise<any>;
@@ -63,6 +88,9 @@ export class MemStorage implements IStorage {
   private workflowModules: Map<string, WorkflowModule>;
   private aiProviders: Map<string, any>;
   private feedback: Map<string, any>;
+  private maeWorkflows: Map<string, MaeWorkflow>;
+  private maeWorkflowSteps: Map<string, MaeWorkflowStep>;
+  private maeWorkflowExecutions: Map<string, MaeWorkflowExecution>;
 
   constructor() {
     this.attorneys = new Map();
@@ -72,6 +100,9 @@ export class MemStorage implements IStorage {
     this.workflowModules = new Map();
     this.aiProviders = new Map();
     this.feedback = new Map();
+    this.maeWorkflows = new Map();
+    this.maeWorkflowSteps = new Map();
+    this.maeWorkflowExecutions = new Map();
     
     this.initializeSampleData();
   }
@@ -366,6 +397,108 @@ export class MemStorage implements IStorage {
       };
       this.aiProviders.set(id, aiProvider);
     });
+  }
+
+  // MAE Workflows methods
+  async getMaeWorkflows(): Promise<MaeWorkflow[]> {
+    return Array.from(this.maeWorkflows.values());
+  }
+
+  async getMaeWorkflow(id: string): Promise<MaeWorkflow | undefined> {
+    return this.maeWorkflows.get(id);
+  }
+
+  async createMaeWorkflow(insertWorkflow: InsertMaeWorkflow): Promise<MaeWorkflow> {
+    const id = randomUUID();
+    const workflow: MaeWorkflow = {
+      ...insertWorkflow,
+      id,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.maeWorkflows.set(id, workflow);
+    return workflow;
+  }
+
+  async updateMaeWorkflow(id: string, updates: Partial<MaeWorkflow>): Promise<MaeWorkflow | undefined> {
+    const workflow = this.maeWorkflows.get(id);
+    if (!workflow) return undefined;
+    
+    const updatedWorkflow = { ...workflow, ...updates, updatedAt: new Date() };
+    this.maeWorkflows.set(id, updatedWorkflow);
+    return updatedWorkflow;
+  }
+
+  async deleteMaeWorkflow(id: string): Promise<boolean> {
+    return this.maeWorkflows.delete(id);
+  }
+
+  // MAE Workflow Steps methods
+  async getMaeWorkflowSteps(workflowId: string): Promise<MaeWorkflowStep[]> {
+    return Array.from(this.maeWorkflowSteps.values())
+      .filter(step => step.workflowId === workflowId)
+      .sort((a, b) => a.stepOrder - b.stepOrder);
+  }
+
+  async createMaeWorkflowStep(insertStep: InsertMaeWorkflowStep): Promise<MaeWorkflowStep> {
+    const id = randomUUID();
+    const step: MaeWorkflowStep = {
+      ...insertStep,
+      id,
+      isCompleted: false,
+      createdAt: new Date()
+    };
+    this.maeWorkflowSteps.set(id, step);
+    return step;
+  }
+
+  async updateMaeWorkflowStep(id: string, updates: Partial<MaeWorkflowStep>): Promise<MaeWorkflowStep | undefined> {
+    const step = this.maeWorkflowSteps.get(id);
+    if (!step) return undefined;
+    
+    const updatedStep = { ...step, ...updates };
+    this.maeWorkflowSteps.set(id, updatedStep);
+    return updatedStep;
+  }
+
+  // MAE Workflow Executions methods
+  async getMaeWorkflowExecutions(): Promise<MaeWorkflowExecution[]> {
+    return Array.from(this.maeWorkflowExecutions.values());
+  }
+
+  async getMaeWorkflowExecution(id: string): Promise<MaeWorkflowExecution | undefined> {
+    return this.maeWorkflowExecutions.get(id);
+  }
+
+  async getMaeWorkflowExecutionsByCase(caseId: string): Promise<MaeWorkflowExecution[]> {
+    return Array.from(this.maeWorkflowExecutions.values())
+      .filter(execution => execution.caseId === caseId);
+  }
+
+  async createMaeWorkflowExecution(insertExecution: InsertMaeWorkflowExecution): Promise<MaeWorkflowExecution> {
+    const id = randomUUID();
+    const execution: MaeWorkflowExecution = {
+      ...insertExecution,
+      id,
+      startedAt: new Date(),
+      completedAt: null,
+      createdAt: new Date()
+    };
+    this.maeWorkflowExecutions.set(id, execution);
+    return execution;
+  }
+
+  async updateMaeWorkflowExecution(id: string, updates: Partial<MaeWorkflowExecution>): Promise<MaeWorkflowExecution | undefined> {
+    const execution = this.maeWorkflowExecutions.get(id);
+    if (!execution) return undefined;
+    
+    const updatedExecution = { ...execution, ...updates };
+    if (updates.status === 'completed' && !updatedExecution.completedAt) {
+      updatedExecution.completedAt = new Date();
+    }
+    this.maeWorkflowExecutions.set(id, updatedExecution);
+    return updatedExecution;
   }
 
   // Demo Mode Methods
