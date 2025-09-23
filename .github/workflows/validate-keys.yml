@@ -53,7 +53,8 @@ jobs:
             echo "Anthropic: ANTHROPIC_API_KEY not set; skipping Anthropic check"
           else
             # Always include the anthropic-version header (now using the same variable name).
-            extra_args=(-H "anthropic-version: ${ANTHROPIC_VERSION}")
+            extra_args=()
+            extra_args+=(-H "anthropic-version: ${ANTHROPIC_VERSION}")
 
             echo "Anthropic: using key $(mask_key "${ANTHROPIC_API_KEY}") and anthropic-version='${ANTHROPIC_VERSION}'"
             curl -s -o /tmp/anth_resp -w "%{http_code}" -H "x-api-key: ${ANTHROPIC_API_KEY}" "${extra_args[@]}" "$ANTH_URL" > /tmp/anth_code || echo "000" >/tmp/anth_code
