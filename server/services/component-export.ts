@@ -120,7 +120,7 @@ export class ComponentExportService {
         const result = await this.exportComponent(componentId, options);
         results.push(result);
       } catch (error) {
-        console.error(`Failed to export component ${componentId}:`, error);
+        console.error('Failed to export component %s:', componentId, error);
       }
     }
     
