@@ -3,6 +3,7 @@ import { Lightbulb, Settings } from "lucide-react";
 import { Link } from "wouter";
 import Header from "@/components/layout/header";
 import WorkflowPipeline from "@/components/dashboard/workflow-pipeline";
+import MaeWorkflows from "@/components/dashboard/mae-workflows";
 import AlertsBanner from "@/components/dashboard/alerts-banner";
 import DemoModeButton from "@/components/dashboard/demo-mode-button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -109,6 +110,15 @@ export default function Dashboard() {
               cases={cases as any}
               redFlags={redFlags as any}
               dashboardStats={dashboardStats as any}
+              isLoading={casesLoading || redFlagsLoading || statsLoading}
+            />
+          </div>
+        </div>
+
+        {/* Multi-Agent Engine (MAE) Workflows Section */}
+        <div className="mb-6 sm:mb-8">
+          <div className="bg-card-dark rounded-xl p-4 sm:p-6 lg:p-8 shadow-xl border border-border-gray">
+            <MaeWorkflows 
               isLoading={casesLoading || redFlagsLoading || statsLoading}
             />
           </div>

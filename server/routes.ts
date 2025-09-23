@@ -362,6 +362,152 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // MAE Workflow Routes
+  app.get("/api/mae-workflows", async (req, res) => {
+    try {
+      const workflows = await storage.getMaeWorkflows();
+      res.json(workflows);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.get("/api/mae-workflows/:id", async (req, res) => {
+    try {
+      const workflow = await storage.getMaeWorkflow(req.params.id);
+      if (!workflow) {
+        return res.status(404).json({ message: "MAE workflow not found" });
+      }
+      res.json(workflow);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.post("/api/mae-workflows", async (req, res) => {
+    try {
+      const workflow = await storage.createMaeWorkflow(req.body);
+      res.status(201).json(workflow);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.put("/api/mae-workflows/:id", async (req, res) => {
+    try {
+      const workflow = await storage.updateMaeWorkflow(req.params.id, req.body);
+      if (!workflow) {
+        return res.status(404).json({ message: "MAE workflow not found" });
+      }
+      res.json(workflow);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.delete("/api/mae-workflows/:id", async (req, res) => {
+    try {
+      const deleted = await storage.deleteMaeWorkflow(req.params.id);
+      if (!deleted) {
+        return res.status(404).json({ message: "MAE workflow not found" });
+      }
+      res.json({ message: "MAE workflow deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // MAE Workflow Templates Route
+  app.get("/api/mae-workflow-templates", async (req, res) => {
+    try {
+      const { MaeWorkflowService } = await import("./services/mae-workflow.js");
+      const templates = MaeWorkflowService.getWorkflowTemplates();
+      res.json(templates);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Create workflow from template
+  app.post("/api/mae-workflows/from-template", async (req, res) => {
+    try {
+      const { templateId, customConfig, attorneyId } = req.body;
+      const { MaeWorkflowService } = await import("./services/mae-workflow.js");
+      
+      const workflowData = MaeWorkflowService.createWorkflowFromTemplate(templateId, customConfig, attorneyId);
+      const workflow = await storage.createMaeWorkflow(workflowData);
+      
+      // Generate and create workflow steps
+      const steps = MaeWorkflowService.generateWorkflowSteps(workflow.id, workflowData.config);
+      const createdSteps = await Promise.all(
+        steps.map(step => storage.createMaeWorkflowStep(step))
+      );
+      
+      res.status(201).json({ workflow, steps: createdSteps });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Execute workflow
+  app.post("/api/mae-workflows/:workflowId/execute", async (req, res) => {
+    try {
+      const { caseId, executionData } = req.body;
+      const { MaeWorkflowService } = await import("./services/mae-workflow.js");
+      
+      const executionConfig = await MaeWorkflowService.executeWorkflow(
+        req.params.workflowId, 
+        caseId, 
+        executionData
+      );
+      
+      const execution = await storage.createMaeWorkflowExecution(executionConfig);
+      res.status(201).json(execution);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // MAE Workflow Executions Routes
+  app.get("/api/mae-workflow-executions", async (req, res) => {
+    try {
+      const executions = await storage.getMaeWorkflowExecutions();
+      res.json(executions);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.get("/api/cases/:caseId/mae-executions", async (req, res) => {
+    try {
+      const executions = await storage.getMaeWorkflowExecutionsByCase(req.params.caseId);
+      res.json(executions);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.post("/api/mae-workflow-executions", async (req, res) => {
+    try {
+      const execution = await storage.createMaeWorkflowExecution(req.body);
+      res.status(201).json(execution);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.put("/api/mae-workflow-executions/:id", async (req, res) => {
+    try {
+      const execution = await storage.updateMaeWorkflowExecution(req.params.id, req.body);
+      if (!execution) {
+        return res.status(404).json({ message: "MAE workflow execution not found" });
+      }
+      res.json(execution);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
   // Cross-check analysis
   app.post("/api/documents/:id/cross-check", async (req, res) => {
     try {
