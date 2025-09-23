@@ -1,5 +1,10 @@
 import { Flag } from "lucide-react";
 
+// @CYRANO_REUSABLE: Component reusability tags
+// @CYRANO_REUSABLE_COMPONENT: Marks React/UI components that could be adapted
+// @CYRANO_STANDALONE: Component with minimal dependencies
+// @CYRANO_NEEDS_DOCS: Component needs documentation before export
+
 interface RedFlagsPanelProps {
   redFlags: Array<{
     id: string;

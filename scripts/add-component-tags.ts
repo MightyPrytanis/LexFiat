@@ -2,7 +2,7 @@
 // @CYRANO_REUSABLE: Script to add tags to existing code files for better component identification
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { ComponentScannerService } from '../server/services/component-scanner.js';
+// Note: Removed ComponentScannerService import to avoid database dependency for tagging
 
 interface FileTagging {
   filePath: string;
@@ -52,7 +52,6 @@ class ComponentTagger {
   async analyzeAndSuggestTags(): Promise<FileTagging[]> {
     console.log('🏷️  Analyzing files for reusability tagging...\n');
     
-    const scanner = new ComponentScannerService(this.projectRoot);
     const suggestions: FileTagging[] = [];
     
     // Key files to analyze

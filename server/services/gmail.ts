@@ -1,5 +1,13 @@
 import { google } from 'googleapis';
 
+// @CYRANO_REUSABLE: Component reusability tags
+// @CYRANO_REUSABLE_SERVICE: Marks a service class or module as potentially reusable for MCP integration
+// @CYRANO_REUSABLE_PARSER: Marks data parsing or transformation logic as reusable
+// @CYRANO_REUSABLE_WORKFLOW: Marks workflow or process logic as reusable
+// @CYRANO_HIGH_REUSABILITY: High reusability score component (80+)
+// @CYRANO_STANDALONE: Component with minimal dependencies
+// @CYRANO_DOCUMENTED: Component has comprehensive documentation
+
 export interface GmailMessage {
   id: string;
   threadId: string;

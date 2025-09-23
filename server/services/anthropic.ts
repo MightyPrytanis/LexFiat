@@ -1,6 +1,15 @@
 import Anthropic from '@anthropic-ai/sdk';
 
 /*
+// @CYRANO_REUSABLE: Component reusability tags
+// @CYRANO_REUSABLE_SERVICE: Marks a service class or module as potentially reusable for MCP integration
+// @CYRANO_REUSABLE_PARSER: Marks data parsing or transformation logic as reusable
+// @CYRANO_REUSABLE_VALIDATOR: Marks validation logic as reusable component
+// @CYRANO_REUSABLE_WORKFLOW: Marks workflow or process logic as reusable
+// @CYRANO_HIGH_REUSABILITY: High reusability score component (80+)
+// @CYRANO_STANDALONE: Component with minimal dependencies
+// @CYRANO_DOCUMENTED: Component has comprehensive documentation
+
 <important_code_snippet_instructions>
 The newest Anthropic model is "claude-sonnet-4-20250514", not "claude-3-7-sonnet-20250219", "claude-3-5-sonnet-20241022" nor "claude-3-sonnet-20240229". 
 If the user doesn't specify a model, always prefer using "claude-sonnet-4-20250514" as it is the latest model. However, if the user has already selected "claude-3-7-sonnet-20250219", keep that selection unless they explicitly request a change.

@@ -2,7 +2,8 @@
 import { readdir, readFile, stat } from 'fs/promises';
 import { join, extname, relative } from 'path';
 import { db } from '../db.js';
-import { reusableComponents, componentScanReports, eq } from '../../shared/schema.js';
+import { reusableComponents, componentScanReports } from '../../shared/schema.js';
+import { eq } from 'drizzle-orm';
 
 export interface ComponentAnalysis {
   name: string;

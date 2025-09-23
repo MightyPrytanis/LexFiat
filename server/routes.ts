@@ -11,7 +11,8 @@ import { ComponentScannerService } from './services/component-scanner.js';
 import { ComponentDocumentationService } from './services/component-documentation.js';
 import { ComponentExportService } from './services/component-export.js';
 import { db } from './db.js';
-import { reusableComponents, componentScanReports, componentExports, eq } from '../shared/schema.js';
+import { reusableComponents, componentScanReports, componentExports } from '../shared/schema.js';
+import { eq } from 'drizzle-orm';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const anthropicService = new AnthropicService();

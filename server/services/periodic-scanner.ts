@@ -2,7 +2,8 @@
 import { ComponentScannerService } from './component-scanner.js';
 import { ComponentDocumentationService } from './component-documentation.js';
 import { db } from '../db.js';
-import { reusableComponents, componentScanReports, eq, gte } from '../../shared/schema.js';
+import { reusableComponents, componentScanReports } from '../../shared/schema.js';
+import { eq, gte } from 'drizzle-orm';
 
 export interface PeriodicScanConfig {
   enabled: boolean;

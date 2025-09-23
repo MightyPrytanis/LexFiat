@@ -4,6 +4,10 @@ import { Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+// @CYRANO_REUSABLE: Component reusability tags
+// @CYRANO_REUSABLE_COMPONENT: Marks React/UI components that could be adapted
+// @CYRANO_NEEDS_DOCS: Component needs documentation before export
+
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>

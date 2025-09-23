@@ -1,3 +1,10 @@
+// @CYRANO_REUSABLE: Component reusability tags
+// @CYRANO_REUSABLE_SERVICE: Marks a service class or module as potentially reusable for MCP integration
+// @CYRANO_HIGH_REUSABILITY: High reusability score component (80+)
+// @CYRANO_MCP_CANDIDATE: Strong candidate for MCP module conversion (70+ compatibility)
+// @CYRANO_STANDALONE: Component with minimal dependencies
+// @CYRANO_DOCUMENTED: Component has comprehensive documentation
+
 export interface ClioMatter {
   id: string;
   display_number: string;

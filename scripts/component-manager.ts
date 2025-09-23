@@ -4,7 +4,8 @@ import { ComponentScannerService } from '../server/services/component-scanner.js
 import { ComponentDocumentationService } from '../server/services/component-documentation.js';
 import { ComponentExportService } from '../server/services/component-export.js';
 import { db } from '../server/db.js';
-import { reusableComponents, componentScanReports, eq } from '../shared/schema.js';
+import { reusableComponents, componentScanReports } from '../shared/schema.js';
+import { eq } from 'drizzle-orm';
 
 const commands = {
   scan: 'Scan for reusable components',

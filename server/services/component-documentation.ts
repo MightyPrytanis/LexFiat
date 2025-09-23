@@ -2,7 +2,8 @@
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join, dirname } from 'path';
 import { db } from '../db.js';
-import { reusableComponents, eq } from '../../shared/schema.js';
+import { reusableComponents } from '../../shared/schema.js';
+import { eq } from 'drizzle-orm';
 import type { ReusableComponent } from '../../shared/schema.js';
 
 export interface ComponentDocumentation {

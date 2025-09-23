@@ -2,6 +2,12 @@ import { useState } from "react";
 import { Mail, Brain, FileText, Check, Send, Clock, AlertTriangle, ChevronRight } from "lucide-react";
 import DraftApproval from "./draft-approval";
 
+// @CYRANO_REUSABLE: Component reusability tags
+// @CYRANO_REUSABLE_PARSER: Marks data parsing or transformation logic as reusable
+// @CYRANO_REUSABLE_COMPONENT: Marks React/UI components that could be adapted
+// @CYRANO_REUSABLE_WORKFLOW: Marks workflow or process logic as reusable
+// @CYRANO_DOCUMENTED: Component has comprehensive documentation
+
 interface WorkflowPipelineProps {
   cases: any[];
   redFlags: any[];

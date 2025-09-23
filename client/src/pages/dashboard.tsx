@@ -5,6 +5,7 @@ import Header from "@/components/layout/header";
 import WorkflowPipeline from "@/components/dashboard/workflow-pipeline";
 import AlertsBanner from "@/components/dashboard/alerts-banner";
 import DemoModeButton from "@/components/dashboard/demo-mode-button";
+import { ReusableComponentsPanel } from "@/components/dashboard/reusable-components-panel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
@@ -173,6 +174,11 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* @CYRANO_REUSABLE: Reusable Components Management Section */}
+        <div className="mt-6">
+          <ReusableComponentsPanel />
         </div>
       </main>
     </div>
