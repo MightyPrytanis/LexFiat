@@ -6,6 +6,12 @@ import { ClioService } from "./services/clio";
 import { AnthropicService } from "./services/anthropic";
 import { ObjectStorageService } from "./objectStorage";
 import { insertDocumentSchema, insertRedFlagSchema } from "@shared/schema";
+// @CYRANO_REUSABLE: Component Management Services
+import { ComponentScannerService } from './services/component-scanner.js';
+import { ComponentDocumentationService } from './services/component-documentation.js';
+import { ComponentExportService } from './services/component-export.js';
+import { db } from './db.js';
+import { reusableComponents, componentScanReports, componentExports, eq } from '../shared/schema.js';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const anthropicService = new AnthropicService();
@@ -419,6 +425,180 @@ export async function registerRoutes(app: Express): Promise<Server> {
         total: matters.length,
         cases: syncedCases,
       });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // @CYRANO_REUSABLE: Component Management Routes
+  // List all reusable components
+  app.get("/api/components/reusable", async (req, res) => {
+    try {
+      const components = await db.select().from(reusableComponents);
+      res.json(components);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Get specific reusable component
+  app.get("/api/components/reusable/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const component = await db
+        .select()
+        .from(reusableComponents)
+        .where(eq(reusableComponents.id, id))
+        .limit(1);
+      
+      if (component.length === 0) {
+        return res.status(404).json({ message: "Component not found" });
+      }
+      
+      res.json(component[0]);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Scan for reusable components
+  app.post("/api/components/scan", async (req, res) => {
+    try {
+      const { scanType = 'full_scan' } = req.body;
+      const scanner = new ComponentScannerService();
+      const scanId = await scanner.scanForReusableComponents(scanType);
+      
+      res.json({ 
+        success: true, 
+        scanId, 
+        message: "Component scan initiated" 
+      });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Get scan reports
+  app.get("/api/components/scan-reports", async (req, res) => {
+    try {
+      const reports = await db.select().from(componentScanReports);
+      res.json(reports);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Generate documentation for components
+  app.post("/api/components/generate-docs", async (req, res) => {
+    try {
+      const docService = new ComponentDocumentationService();
+      const documentationPaths = await docService.generateAllDocumentation();
+      
+      res.json({ 
+        success: true, 
+        generatedDocs: documentationPaths.length,
+        paths: documentationPaths 
+      });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Generate documentation for specific component
+  app.post("/api/components/:id/generate-docs", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const docService = new ComponentDocumentationService();
+      const documentationPath = await docService.generateComponentDocumentation(id);
+      
+      res.json({ 
+        success: true, 
+        documentationPath 
+      });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Export component for Cyrano MCP
+  app.post("/api/components/:id/export", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const exportOptions = req.body;
+      const exportService = new ComponentExportService();
+      const result = await exportService.exportComponent(id, exportOptions);
+      
+      res.json({ 
+        success: true, 
+        result 
+      });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Batch export components
+  app.post("/api/components/export-batch", async (req, res) => {
+    try {
+      const { componentIds, exportOptions } = req.body;
+      const exportService = new ComponentExportService();
+      const results = await exportService.exportBatch(componentIds, exportOptions);
+      
+      res.json({ 
+        success: true, 
+        results 
+      });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Get export history
+  app.get("/api/components/exports", async (req, res) => {
+    try {
+      const exports = await db.select().from(componentExports);
+      res.json(exports);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Perform security scan on component
+  app.post("/api/components/:id/security-scan", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const scanner = new ComponentScannerService();
+      const result = await scanner.performSecurityScan(id);
+      
+      res.json({ 
+        success: true, 
+        securityScanResult: result 
+      });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  // Update component manually (for flagging/tagging)
+  app.patch("/api/components/reusable/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updates = req.body;
+      
+      const result = await db
+        .update(reusableComponents)
+        .set({
+          ...updates,
+          updatedAt: new Date()
+        })
+        .where(eq(reusableComponents.id, id))
+        .returning();
+      
+      if (result.length === 0) {
+        return res.status(404).json({ message: "Component not found" });
+      }
+      
+      res.json(result[0]);
     } catch (error) {
       res.status(500).json({ message: (error as Error).message });
     }

@@ -119,6 +119,55 @@ export const aiProviders = pgTable("ai_providers", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// @CYRANO_REUSABLE: Database schema for component reusability tracking
+export const reusableComponents = pgTable("reusable_components", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  filePath: text("file_path").notNull(),
+  componentType: text("component_type").notNull(), // 'service', 'component', 'utility', 'workflow', 'parser', 'validator'
+  description: text("description"),
+  reusabilityScore: integer("reusability_score").default(0), // 0-100
+  dependencies: json("dependencies"), // Array of dependencies
+  apiSurface: json("api_surface"), // Exported functions/classes/interfaces
+  securityStatus: text("security_status").default("pending"), // 'pending', 'approved', 'rejected', 'needs_review'
+  vulnerabilities: json("vulnerabilities"), // Security scan results
+  cypherPattern: text("cypher_pattern"), // Pattern for MCP module adaptation
+  exportStatus: text("export_status").default("identified"), // 'identified', 'documented', 'exported', 'integrated'
+  lastScanned: timestamp("last_scanned").defaultNow(),
+  flaggedBy: text("flagged_by").default("auto_scanner"), // 'auto_scanner', 'manual', 'ai_analysis'
+  cypherCompatibility: integer("cypher_compatibility").default(0), // 0-100 compatibility score
+  tags: json("tags"), // Array of tags for categorization
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// @CYRANO_REUSABLE: Tracking scan reports and analytics
+export const componentScanReports = pgTable("component_scan_reports", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  scanType: text("scan_type").notNull(), // 'full_scan', 'incremental', 'security_scan'
+  status: text("status").notNull(), // 'running', 'completed', 'failed'
+  componentsFound: integer("components_found").default(0),
+  componentsUpdated: integer("components_updated").default(0),
+  securityIssues: integer("security_issues").default(0),
+  cypherCandidates: integer("cypher_candidates").default(0),
+  scanDuration: integer("scan_duration"), // in milliseconds
+  results: json("results"), // Detailed scan results
+  errors: json("errors"), // Any errors encountered
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// @CYRANO_REUSABLE: Component export tracking
+export const componentExports = pgTable("component_exports", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  componentId: varchar("component_id").references(() => reusableComponents.id),
+  exportPath: text("export_path").notNull(),
+  exportFormat: text("export_format").default("mcp_module"), // 'mcp_module', 'standalone', 'library'
+  adaptations: json("adaptations"), // Changes made for Cyrano compatibility
+  exportMetadata: json("export_metadata"), // Additional export information
+  status: text("status").default("pending"), // 'pending', 'completed', 'failed'
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertAttorneySchema = createInsertSchema(attorneys).pick({
   name: true,
   email: true,
@@ -170,12 +219,54 @@ export const insertAiProviderSchema = createInsertSchema(aiProviders).pick({
   enabled: true,
 });
 
+// @CYRANO_REUSABLE: Insert schemas for reusable component management
+export const insertReusableComponentSchema = createInsertSchema(reusableComponents).pick({
+  name: true,
+  filePath: true,
+  componentType: true,
+  description: true,
+  reusabilityScore: true,
+  dependencies: true,
+  apiSurface: true,
+  securityStatus: true,
+  vulnerabilities: true,
+  cypherPattern: true,
+  exportStatus: true,
+  flaggedBy: true,
+  cypherCompatibility: true,
+  tags: true,
+});
+
+export const insertComponentScanReportSchema = createInsertSchema(componentScanReports).pick({
+  scanType: true,
+  status: true,
+  componentsFound: true,
+  componentsUpdated: true,
+  securityIssues: true,
+  cypherCandidates: true,
+  scanDuration: true,
+  results: true,
+  errors: true,
+});
+
+export const insertComponentExportSchema = createInsertSchema(componentExports).pick({
+  componentId: true,
+  exportPath: true,
+  exportFormat: true,
+  adaptations: true,
+  exportMetadata: true,
+  status: true,
+});
+
 export type InsertAttorney = z.infer<typeof insertAttorneySchema>;
 export type InsertLegalCase = z.infer<typeof insertLegalCaseSchema>;
 export type InsertDocument = z.infer<typeof insertDocumentSchema>;
 export type InsertRedFlag = z.infer<typeof insertRedFlagSchema>;
 export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
 export type InsertAiProvider = z.infer<typeof insertAiProviderSchema>;
+export type InsertReusableComponent = z.infer<typeof insertReusableComponentSchema>;
+export type InsertComponentScanReport = z.infer<typeof insertComponentScanReportSchema>;
+export type InsertComponentExport = z.infer<typeof insertComponentExportSchema>;
 
 export type Attorney = typeof attorneys.$inferSelect;
 export type LegalCase = typeof legalCases.$inferSelect;
@@ -185,3 +276,6 @@ export type WorkflowModule = typeof workflowModules.$inferSelect;
 export type AiAnalysis = typeof aiAnalyses.$inferSelect;
 export type Feedback = typeof feedback.$inferSelect;
 export type AiProvider = typeof aiProviders.$inferSelect;
+export type ReusableComponent = typeof reusableComponents.$inferSelect;
+export type ComponentScanReport = typeof componentScanReports.$inferSelect;
+export type ComponentExport = typeof componentExports.$inferSelect;
