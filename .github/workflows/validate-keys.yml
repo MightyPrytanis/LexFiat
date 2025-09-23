@@ -20,7 +20,7 @@ jobs:
           PERPLEXITY_TEST_URL: ${{ secrets.PERPLEXITY_TEST_URL }}
           GEMINI_TEST_URL: ${{ secrets.GEMINI_TEST_URL }}
           # New optional secrets:
-          ANTHROPIC_VERSION: ${{ secrets.ANTHROPIC_VERSION }}        # required by Anthropic API
+          ANTHROPIC_VERSION: ${{ secrets.ANTHROPIC_VERSION }}        # required by Anthropic API (optional; default used if unset)
           PERPLEXITY_MODEL: ${{ secrets.PERPLEXITY_MODEL }}          # optionally override model (default is "sonar")
         run: |
           set -euo pipefail
@@ -46,17 +46,16 @@ jobs:
 
           echo "Anthropic: testing /v1/models"
           ANTH_URL=${ANTHROPIC_TEST_URL:-https://api.anthropic.com/v1/models}
-          ANTH_VER=${ANTHROPIC_VERSION:-"2023-06-01"}
+          # Use the same env name and provide a default here (no extra alias).
+          ANTHROPIC_VERSION=${ANTHROPIC_VERSION:-"2023-06-01"}
 
           if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
             echo "Anthropic: ANTHROPIC_API_KEY not set; skipping Anthropic check"
           else
-            # Always add the anthropic-version header (ANTH_VER already has a default).
-            extra_args=()
-            extra_args+=(-H "anthropic-version: ${ANTH_VER}")
+            # Always include the anthropic-version header (now using the same variable name).
+            extra_args=(-H "anthropic-version: ${ANTHROPIC_VERSION}")
 
-            echo "Anthropic: using key $(mask_key "${ANTHROPIC_API_KEY}") and anthropic-version='${ANTH_VER:-}'"
-            # write body to /tmp/anth_resp and http code to /tmp/anth_code
+            echo "Anthropic: using key $(mask_key "${ANTHROPIC_API_KEY}") and anthropic-version='${ANTHROPIC_VERSION}'"
             curl -s -o /tmp/anth_resp -w "%{http_code}" -H "x-api-key: ${ANTHROPIC_API_KEY}" "${extra_args[@]}" "$ANTH_URL" > /tmp/anth_code || echo "000" >/tmp/anth_code
             anth_status=$(cat /tmp/anth_code)
             if [ "$anth_status" = "200" ]; then
