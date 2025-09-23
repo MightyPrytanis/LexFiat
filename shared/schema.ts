@@ -75,11 +75,49 @@ export const redFlags = pgTable("red_flags", {
 export const workflowModules = pgTable("workflow_modules", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
-  type: text("type").notNull(), // 'document_intelligence', 'emergency_response', etc.
+  type: text("type").notNull(), // 'document_intelligence', 'emergency_response', 'mae_compare', 'mae_critique', 'mae_collaborate', 'mae_custom', etc.
   active: boolean("active").default(true),
   attorneyId: varchar("attorney_id").references(() => attorneys.id),
   config: json("config"),
   lastActivity: timestamp("last_activity"),
+});
+
+// Multi-Agent Engine (MAE) Workflows
+export const maeWorkflows = pgTable("mae_workflows", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  type: text("type").notNull(), // 'compare', 'critique', 'collaborate', 'custom'
+  description: text("description"),
+  config: json("config"), // Workflow configuration and steps
+  isTemplate: boolean("is_template").default(false),
+  isActive: boolean("is_active").default(true),
+  attorneyId: varchar("attorney_id").references(() => attorneys.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const maeWorkflowSteps = pgTable("mae_workflow_steps", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => maeWorkflows.id),
+  stepOrder: integer("step_order").notNull(),
+  stepType: text("step_type").notNull(), // 'agent_action', 'human_review', 'automation', 'integration'
+  stepName: text("step_name").notNull(),
+  config: json("config"),
+  isCompleted: boolean("is_completed").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const maeWorkflowExecutions = pgTable("mae_workflow_executions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => maeWorkflows.id),
+  caseId: varchar("case_id").references(() => legalCases.id),
+  status: text("status").notNull().default('pending'), // 'pending', 'running', 'completed', 'failed', 'paused'
+  currentStep: integer("current_step").default(1),
+  results: json("results"),
+  executionData: json("execution_data"),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const aiAnalyses = pgTable("ai_analyses", {
@@ -170,12 +208,41 @@ export const insertAiProviderSchema = createInsertSchema(aiProviders).pick({
   enabled: true,
 });
 
+export const insertMaeWorkflowSchema = createInsertSchema(maeWorkflows).pick({
+  name: true,
+  type: true,
+  description: true,
+  config: true,
+  isTemplate: true,
+  attorneyId: true,
+});
+
+export const insertMaeWorkflowStepSchema = createInsertSchema(maeWorkflowSteps).pick({
+  workflowId: true,
+  stepOrder: true,
+  stepType: true,
+  stepName: true,
+  config: true,
+});
+
+export const insertMaeWorkflowExecutionSchema = createInsertSchema(maeWorkflowExecutions).pick({
+  workflowId: true,
+  caseId: true,
+  status: true,
+  currentStep: true,
+  results: true,
+  executionData: true,
+});
+
 export type InsertAttorney = z.infer<typeof insertAttorneySchema>;
 export type InsertLegalCase = z.infer<typeof insertLegalCaseSchema>;
 export type InsertDocument = z.infer<typeof insertDocumentSchema>;
 export type InsertRedFlag = z.infer<typeof insertRedFlagSchema>;
 export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
 export type InsertAiProvider = z.infer<typeof insertAiProviderSchema>;
+export type InsertMaeWorkflow = z.infer<typeof insertMaeWorkflowSchema>;
+export type InsertMaeWorkflowStep = z.infer<typeof insertMaeWorkflowStepSchema>;
+export type InsertMaeWorkflowExecution = z.infer<typeof insertMaeWorkflowExecutionSchema>;
 
 export type Attorney = typeof attorneys.$inferSelect;
 export type LegalCase = typeof legalCases.$inferSelect;
@@ -185,3 +252,6 @@ export type WorkflowModule = typeof workflowModules.$inferSelect;
 export type AiAnalysis = typeof aiAnalyses.$inferSelect;
 export type Feedback = typeof feedback.$inferSelect;
 export type AiProvider = typeof aiProviders.$inferSelect;
+export type MaeWorkflow = typeof maeWorkflows.$inferSelect;
+export type MaeWorkflowStep = typeof maeWorkflowSteps.$inferSelect;
+export type MaeWorkflowExecution = typeof maeWorkflowExecutions.$inferSelect;

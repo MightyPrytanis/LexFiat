@@ -1,4 +1,4 @@
-import { Brain, AlertTriangle, FolderOpen, Handshake, Gavel, BarChart3 } from "lucide-react";
+import { Brain, AlertTriangle, FolderOpen, Handshake, Gavel, BarChart3, FileText, MessageSquareText, Users, Settings } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface WorkflowModulesProps {
@@ -73,6 +73,49 @@ export default function WorkflowModules({ dashboardStats, isLoading }: WorkflowM
       alert: "NEW: Davis Settlement Offer",
       alertDetail: "$75,000 - Analysis ready",
       buttonText: "Review Settlement",
+      active: true,
+    },
+    {
+      title: "MAE Compare",
+      description: "Multi-agent document comparison",
+      icon: FileText,
+      borderColor: "border-blue-500",
+      iconBg: "bg-blue-500 bg-opacity-20",
+      iconColor: "text-blue-400",
+      buttonColor: "bg-blue-500 hover:bg-blue-600 text-white",
+      alert: "NEW: Document comparison ready",
+      alertDetail: "Johnson case pleadings",
+      buttonText: "Run Comparison",
+      active: true,
+    },
+    {
+      title: "MAE Critique",
+      description: "AI-powered document critique",
+      icon: MessageSquareText,
+      borderColor: "border-purple-500",
+      iconBg: "bg-purple-500 bg-opacity-20",
+      iconColor: "text-purple-400",
+      buttonColor: "bg-purple-500 hover:bg-purple-600 text-white",
+      stats: [
+        { label: "Reviews Today", value: 5 },
+        { label: "Issues Found", value: 12, color: "text-yellow-400" },
+      ],
+      buttonText: "Start Critique",
+      active: true,
+    },
+    {
+      title: "MAE Collaborate",
+      description: "Multi-party collaboration workflow",
+      icon: Users,
+      borderColor: "border-green-500",
+      iconBg: "bg-green-500 bg-opacity-20", 
+      iconColor: "text-green-400",
+      buttonColor: "bg-green-500 hover:bg-green-600 text-white",
+      stats: [
+        { label: "Active Sessions", value: 2 },
+        { label: "Participants", value: 7, color: "text-green-400" },
+      ],
+      buttonText: "Join Collaboration",
       active: true,
     },
     {
