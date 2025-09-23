@@ -51,11 +51,9 @@ jobs:
           if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
             echo "Anthropic: ANTHROPIC_API_KEY not set; skipping Anthropic check"
           else
-            # Build curl args safely so optional header is added as a proper argument pair.
+            # Always add the anthropic-version header (ANTH_VER already has a default).
             extra_args=()
-            if [ -n "${ANTHROPIC_VERSION:-}" ]; then
-              extra_args+=(-H "anthropic-version: ${ANTH_VER}")
-            fi
+            extra_args+=(-H "anthropic-version: ${ANTH_VER}")
 
             echo "Anthropic: using key $(mask_key "${ANTHROPIC_API_KEY}") and anthropic-version='${ANTH_VER:-}'"
             # write body to /tmp/anth_resp and http code to /tmp/anth_code
