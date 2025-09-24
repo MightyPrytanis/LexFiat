@@ -52,10 +52,10 @@ export default function Header({ attorney }: HeaderProps) {
             <span className="text-sm text-primary font-medium">Gmail Live</span>
           </div>
           
-          {/* Claude Status */}
+          {/* AI Status */}
           <div className="status-pill">
             <div className="w-2 h-2 bg-status-processing rounded-full animate-pulse"></div>
-            <span className="text-sm text-primary font-medium">Claude Connected</span>
+            <span className="text-sm text-primary font-medium">AI Connected</span>
           </div>
           
           {/* Clio Status */}
