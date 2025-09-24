@@ -150,7 +150,7 @@ export const feedback = pgTable("feedback", {
 export const aiProviders = pgTable("ai_providers", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   attorneyId: varchar("attorney_id").references(() => attorneys.id),
-  provider: text("provider").notNull(), // 'chatgpt', 'grok', 'copilot', 'gemini', 'perplexity'
+  provider: text("provider").notNull(), // 'perplexity', 'anthropic', 'openai', 'gemini', 'grok', 'deepseek', 'mapleai'
   apiKey: text("api_key"),
   enabled: boolean("enabled").default(false),
   createdAt: timestamp("created_at").defaultNow(),

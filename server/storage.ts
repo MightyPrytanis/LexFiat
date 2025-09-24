@@ -358,22 +358,22 @@ export class MemStorage implements IStorage {
     // Initialize AI providers
     const aiProviderData = [
       {
-        provider: 'anthropic',
-        name: 'Claude (Anthropic)',
+        provider: 'perplexity',
+        name: 'Perplexity',
         enabled: true,
-        models: ['claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022'],
-        currentModel: 'claude-sonnet-4-20250514',
+        models: ['llama-3.1-sonar-large-128k-online', 'llama-3.1-sonar-small-128k-online', 'llama-3.1-8b-instruct'],
+        currentModel: 'llama-3.1-sonar-large-128k-online',
         priority: 1,
-        description: 'Advanced reasoning and analysis capabilities'
+        description: 'Research-focused AI with real-time web access'
       },
       {
-        provider: 'gemini',
-        name: 'Gemini (Google)',
+        provider: 'anthropic',
+        name: 'Claude (Anthropic)',
         enabled: false,
-        models: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash-preview'],
-        currentModel: 'gemini-2.5-flash',
+        models: ['claude-sonnet-4-20250514', 'claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022'],
+        currentModel: 'claude-sonnet-4-20250514',
         priority: 2,
-        description: 'Multimodal AI with document and image analysis'
+        description: 'Advanced reasoning and analysis capabilities'
       },
       {
         provider: 'openai',
@@ -383,6 +383,42 @@ export class MemStorage implements IStorage {
         currentModel: 'gpt-4o',
         priority: 3,
         description: 'General-purpose language model with broad knowledge'
+      },
+      {
+        provider: 'gemini',
+        name: 'Gemini (Google)',
+        enabled: false,
+        models: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash-preview'],
+        currentModel: 'gemini-2.5-flash',
+        priority: 4,
+        description: 'Multimodal AI with document and image analysis'
+      },
+      {
+        provider: 'grok',
+        name: 'Grok (xAI)',
+        enabled: false,
+        models: ['grok-2', 'grok-2-mini', 'grok-1.5'],
+        currentModel: 'grok-2',
+        priority: 5,
+        description: 'xAI\'s conversational AI with real-time information'
+      },
+      {
+        provider: 'deepseek',
+        name: 'DeepSeek',
+        enabled: false,
+        models: ['deepseek-chat', 'deepseek-coder', 'deepseek-math'],
+        currentModel: 'deepseek-chat',
+        priority: 6,
+        description: 'Advanced AI models for reasoning and coding'
+      },
+      {
+        provider: 'mapleai',
+        name: 'MapleAI',
+        enabled: false,
+        models: ['maple-chat', 'maple-reasoning'],
+        currentModel: 'maple-chat',
+        priority: 7,
+        description: 'Canadian-developed AI with focus on reasoning'
       }
     ];
 

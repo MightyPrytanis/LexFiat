@@ -127,8 +127,8 @@ export function IntegrationSettings() {
     },
     {
       id: "anthropic",
-      name: "Claude AI (Anthropic)",
-      description: "Primary AI analysis for document processing",
+      name: "Anthropic (Claude)",
+      description: "AI analysis for document processing",
       icon: <Gavel className="w-5 h-5" />,
       color: "bg-orange-600",
       requiresOAuth: false,

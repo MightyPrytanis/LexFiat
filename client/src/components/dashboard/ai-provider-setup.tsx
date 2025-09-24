@@ -97,11 +97,13 @@ export function AiProviderSetup() {
   };
 
   const availableProviders = [
+    { key: "perplexity", name: "Perplexity", icon: "🔍", description: "Research-focused AI with real-time web access" },
     { key: "anthropic", name: "Claude", icon: "🧠", description: "Advanced reasoning and analysis capabilities" },
-    { key: "gemini", name: "Gemini", icon: "💎", description: "Google's multimodal AI with document analysis" },
     { key: "openai", name: "ChatGPT", icon: "🤖", description: "OpenAI's GPT models" },
-    { key: "grok", name: "Grok", icon: "🔥", description: "xAI's conversational AI" },
-    { key: "perplexity", name: "Perplexity", icon: "🔍", description: "Research-focused AI" },
+    { key: "gemini", name: "Gemini", icon: "💎", description: "Google's multimodal AI with document analysis" },
+    { key: "grok", name: "Grok", icon: "🔥", description: "xAI's conversational AI with real-time information" },
+    { key: "deepseek", name: "DeepSeek", icon: "🧮", description: "Advanced AI models for reasoning and coding" },
+    { key: "mapleai", name: "MapleAI", icon: "🍁", description: "Canadian-developed AI with focus on reasoning" },
   ];
 
   const getProviderConfig = (providerKey: string) => {
@@ -128,8 +130,8 @@ export function AiProviderSetup() {
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-slate-300 text-sm">
-          Configure multiple AI providers for cross-checking and redundancy. 
-          Each provider can be used for secondary analysis validation.
+          Configure your preferred AI providers for document analysis and cross-checking. 
+          You have full control to choose and enable any combination of providers that suit your needs.
         </p>
         
         {availableProviders.map((availableProvider) => {
@@ -150,7 +152,7 @@ export function AiProviderSetup() {
                   {getStatusBadge(configuredProvider)}
                   {configuredProvider && (
                     <Switch
-                      checked={configuredProvider.enabled}
+                      checked={configuredProvider.enabled || false}
                       onCheckedChange={(enabled) =>
                         updateProvider.mutate({
                           providerId: configuredProvider.id,

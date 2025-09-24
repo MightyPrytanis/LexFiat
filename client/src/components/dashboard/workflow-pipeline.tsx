@@ -40,7 +40,7 @@ export default function WorkflowPipeline({ cases, redFlags, dashboardStats, isLo
     {
       id: 2,
       title: "Processing", 
-      description: "Claude AI analysis",
+      description: "AI analysis",
       icon: Brain,
       color: "processing",
       count: 8,

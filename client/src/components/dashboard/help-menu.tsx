@@ -126,7 +126,7 @@ export default function HelpMenu({ onClose }: HelpMenuProps) {
             <div className="space-y-2 text-sm">
               <div className="flex items-start space-x-2">
                 <div className="w-1.5 h-1.5 bg-accent-gold rounded-full mt-2"></div>
-                <span className="text-secondary"><strong className="text-primary">Integration over replacement</strong> - Work with existing tools (Gmail, Clio, Claude)</span>
+                <span className="text-secondary"><strong className="text-primary">Integration over replacement</strong> - Work with existing tools (Gmail, Clio, AI providers)</span>
               </div>
               <div className="flex items-start space-x-2">
                 <div className="w-1.5 h-1.5 bg-accent-gold rounded-full mt-2"></div>

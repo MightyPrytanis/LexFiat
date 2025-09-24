@@ -39,11 +39,15 @@ export function AiCrossCheck({ documentId, primaryAnalysis }: AiCrossCheckProps)
 
   const getProviderIcon = (provider: string) => {
     switch (provider) {
-      case "chatgpt": return "🤖";
-      case "grok": return "🔥";
-      case "copilot": return "🧠";
-      case "gemini": return "💎";
       case "perplexity": return "🔍";
+      case "anthropic": return "🧠";
+      case "openai": 
+      case "chatgpt": return "🤖";
+      case "gemini": return "💎";
+      case "grok": return "🔥";
+      case "deepseek": return "🧮";
+      case "mapleai": return "🍁";
+      case "copilot": return "🧠";
       default: return "🤖";
     }
   };
@@ -108,8 +112,8 @@ export function AiCrossCheck({ documentId, primaryAnalysis }: AiCrossCheckProps)
                 <span className="text-sm text-slate-300">Secondary Review:</span>
                 <span className="text-sm text-gold">
                   {getProviderIcon(primaryAnalysis.secondaryReviewProvider || "")} 
-                  {primaryAnalysis.secondaryReviewProvider?.charAt(0).toUpperCase() + 
-                   primaryAnalysis.secondaryReviewProvider?.slice(1)}
+                  {(primaryAnalysis.secondaryReviewProvider?.charAt(0).toUpperCase() || '') + 
+                   (primaryAnalysis.secondaryReviewProvider?.slice(1) || '')}
                 </span>
               </div>
               {getStatusBadge(primaryAnalysis.reviewStatus || "pending")}
