@@ -100,8 +100,7 @@ lexfiat/
 ├── shared/                  # Shared types
 │   └── schema.ts           # Database schemas
 ├── DEVELOPER_HANDOFF.md    # Complete handoff guide
-├── DEPLOYMENT_CHECKLIST.md # Production deployment
-└── replit.md              # Project documentation
+└── DEPLOYMENT_CHECKLIST.md # Production deployment
 ```
 
 ## 🎨 Brand Identity
@@ -121,11 +120,25 @@ Visit `/logo-showcase` to see all brand variations and usage guidelines.
 
 ## 🚀 Deployment
 
-### Production Deployment
-1. **Deploy on Replit** (recommended: Autoscale)
-2. **Configure Custom Domain** (lexfiat.org)
-3. **Set DNS Records** at domain registrar
-4. **Verify SSL Certificate** and functionality
+### Production Deployment Options
+
+#### Option 1: Docker Deployment (Recommended)
+1. **Build Docker image** from provided Dockerfile
+2. **Deploy to any cloud provider** (AWS, GCP, Azure, DigitalOcean)
+3. **Configure environment variables** for your deployment
+4. **Set up SSL certificate** with Let's Encrypt or cloud provider
+
+#### Option 2: Traditional Hosting
+1. **Deploy to VPS or dedicated server** with Node.js support
+2. **Configure reverse proxy** (nginx, Apache)
+3. **Set up SSL certificate** and domain configuration
+4. **Configure PM2 or systemd** for process management
+
+#### Option 3: Platform-as-a-Service
+1. **Deploy to Heroku, Railway, or similar PaaS**
+2. **Configure custom domain** (lexfiat.org)
+3. **Set environment variables** in platform dashboard
+4. **Enable auto-scaling** based on traffic
 
 See `DEPLOYMENT_CHECKLIST.md` for detailed deployment instructions.
 
@@ -139,10 +152,9 @@ ANTHROPIC_API_KEY=sk-ant-...    # Required
 GEMINI_API_KEY=...              # Optional
 OPENAI_API_KEY=...              # Optional
 
-# Object Storage (Replit)
-DEFAULT_OBJECT_STORAGE_BUCKET_ID=...
-PRIVATE_OBJECT_DIR=...
-PUBLIC_OBJECT_SEARCH_PATHS=...
+# File Storage (Local/Cloud)
+PUBLIC_OBJECT_SEARCH_PATHS=public/uploads,public/assets
+PRIVATE_OBJECT_DIR=private/uploads
 ```
 
 ## 📊 Demo Mode
@@ -203,12 +215,12 @@ npm run db:studio    # Open database browser
 ### Technical Issues
 - Review `DEVELOPER_HANDOFF.md` for comprehensive setup guide
 - Check `DEPLOYMENT_CHECKLIST.md` for deployment troubleshooting
-- Consult `replit.md` for project-specific documentation
+- Consult project documentation for implementation details
 
 ### Production Support
 - **Domain**: lexfiat.org
 - **Client**: Mekel Miller, Esq. - Michigan Family Law & Probate
-- **Platform**: Replit Deployments with PostgreSQL
+- **Platform**: Cloud-agnostic deployment with PostgreSQL
 
 ## 📄 License
 

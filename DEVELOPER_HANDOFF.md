@@ -60,11 +60,10 @@ XAI_API_KEY=... (Optional)
 PERPLEXITY_API_KEY=... (Optional)
 ```
 
-#### Object Storage (Replit)
+#### File Storage (Local/Cloud)
 ```
-DEFAULT_OBJECT_STORAGE_BUCKET_ID=...
-PRIVATE_OBJECT_DIR=...
-PUBLIC_OBJECT_SEARCH_PATHS=...
+PUBLIC_OBJECT_SEARCH_PATHS=public/uploads,public/assets
+PRIVATE_OBJECT_DIR=private/uploads
 ```
 
 ### Installation & Setup
@@ -114,7 +113,9 @@ lexfiat/
 │   └── db.ts           # Database connection
 ├── shared/              # Shared types and schemas
 │   └── schema.ts       # Drizzle database schemas
-├── replit.md           # Project documentation and preferences
+├── .devcontainer/      # GitHub Codespaces configuration
+├── Dockerfile          # Container deployment setup
+├── docker-compose.yml  # Local development stack
 └── package.json        # Dependencies and scripts
 ```
 
@@ -200,26 +201,40 @@ npm run db:studio    # Open database studio
 
 ## Deployment
 
-### Replit Deployment
-1. Click "Deploy" in Replit interface
-2. Choose "Autoscale" deployment type
-3. Configure custom domain (lexfiat.org)
-4. Set up DNS records with domain registrar
+### Docker Deployment (Recommended)
+1. Copy `.env.example` to `.env` and configure environment variables
+2. Build and start services:
+   ```bash
+   docker-compose up -d
+   ```
+3. Run database migrations:
+   ```bash
+   docker-compose exec lexfiat npm run db:push
+   ```
+
+### Traditional VPS Deployment
+1. Install Node.js 18+ and PostgreSQL
+2. Install dependencies: `npm install`
+3. Build application: `npm run build`
+4. Configure environment variables in production
+5. Start with PM2: `pm2 start dist/server/index.js`
+
+### Platform-as-a-Service (PaaS)
+- **Heroku**: Use provided Procfile and configure add-ons
+- **Railway**: Connect GitHub repo and configure environment variables
+- **DigitalOcean App Platform**: Deploy from repository with managed database
 
 ### Custom Domain Setup
-1. Deploy application on Replit
-2. Navigate to Deployments → Settings
-3. Select "Manually connect from another registrar"
-4. Enter `lexfiat.org`
-5. Add provided A and TXT records to DNS
-6. Wait for propagation (up to 48 hours)
+1. Configure DNS A record to point to your server/load balancer IP
+2. Set up SSL certificate with Let's Encrypt or cloud provider
+3. Configure reverse proxy (nginx/Apache) if using VPS deployment
 
 ## Security Considerations
 
 ### API Keys
 - Store all API keys in environment variables
 - Never commit sensitive credentials
-- Use Replit Secrets for production deployment
+- Use secure environment variable management (Docker secrets, platform environment variables)
 
 ### Authentication
 - Session-based authentication system
@@ -261,18 +276,19 @@ npm run db:studio    # Open database studio
 ### Key Dependencies
 - Node.js 18+
 - PostgreSQL database
-- Replit hosting platform
+- Cloud hosting platform or VPS
 - Anthropic Claude API
 
 ### Monitoring
-- Console logs for debugging
-- Error handling in place
+- Application logs (console, PM2, or container logs)
+- Error handling and reporting
 - Database connection monitoring
+- Uptime monitoring recommended
 
 ### Backup & Recovery
-- Database managed by Replit
+- Database backups managed by hosting provider or scheduled dumps
 - Code versioned in Git repository
-- Environment variables in Replit Secrets
+- Environment variables secured in hosting platform secrets/vault
 
 ## Contacts & Resources
 
@@ -282,13 +298,13 @@ npm run db:studio    # Open database studio
 - Domain: lexfiat.org
 
 ### Documentation
-- Technical specs in `replit.md`
+- Technical architecture and deployment guides
 - API documentation in code comments
 - UI components documented with TypeScript interfaces
 
 ### External Services
 - Anthropic Claude API documentation
-- Replit deployment guides
+- Platform-specific deployment guides (Docker, Heroku, etc.)
 - shadcn/ui component library
 
 ---
