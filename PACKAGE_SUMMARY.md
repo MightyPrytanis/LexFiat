@@ -55,7 +55,7 @@ Comprehensive 50+ section technical guide covering:
 ### 2. **DEPLOYMENT_CHECKLIST.md**
 Step-by-step production deployment guide:
 - Pre-deployment verification checklist
-- Replit deployment configuration
+- Platform-agnostic deployment configuration (Docker, VPS, PaaS)
 - Custom domain setup (lexfiat.org)
 - DNS configuration instructions
 - SSL certificate verification
@@ -71,12 +71,13 @@ Developer-friendly project documentation:
 - Development scripts and workflows
 - Brand identity guidelines
 
-### 4. **replit.md** (Updated)
-Project-specific context and preferences:
-- Recent changes and status updates
-- User preferences and communication style
-- Technical decisions and rationale
-- Deployment status and domain configuration
+### 3. **Deployment and Infrastructure Guides**
+Comprehensive deployment instructions for multiple platforms:
+- Docker containerization setup
+- Traditional VPS deployment guide  
+- Platform-as-a-Service (PaaS) configurations
+- GitHub Codespaces DevContainer setup
+- Brand identity guidelines
 
 ## 🛠️ Technical Specifications
 
@@ -84,7 +85,7 @@ Project-specific context and preferences:
 - **Frontend**: React 18, TypeScript, Vite, shadcn/ui, Tailwind CSS
 - **Backend**: Node.js, Express.js, TypeScript, Drizzle ORM
 - **Database**: PostgreSQL with connection pooling
-- **Deployment**: Replit Autoscale with custom domain support
+- **Deployment**: Cloud-agnostic with Docker, VPS, and PaaS support
 - **AI**: Anthropic Claude Sonnet 4 + multi-provider support
 
 ### Key Features
@@ -107,14 +108,14 @@ Project-specific context and preferences:
 - All required environment variables documented
 - Claude API key configuration (required for core functionality)
 - PostgreSQL database connection strings
-- Replit object storage integration
+- Local file storage configuration (replaces cloud storage dependency)
 - Optional AI provider keys (Gemini, OpenAI, XAI)
 
 ### Domain Configuration
 - **Target Domain**: lexfiat.org (owned by client)
-- **DNS Setup**: Complete instructions provided
-- **SSL**: Automatic via Replit
-- **Fallback**: .replit.app URL for testing
+- **DNS Setup**: Complete instructions provided for any hosting platform
+- **SSL**: Configurable with Let's Encrypt or cloud provider
+- **Fallback**: Development/staging environments
 
 ### Performance Optimized
 - Page load times under 3 seconds
@@ -164,9 +165,9 @@ Project-specific context and preferences:
 
 ### Immediate Actions (Day 1)
 1. Review `DEVELOPER_HANDOFF.md` thoroughly
-2. Set up local development environment
+2. Set up local development environment with Docker or traditional setup
 3. Test all functionality in demo mode
-4. Deploy to Replit using `DEPLOYMENT_CHECKLIST.md`
+4. Choose deployment platform (Docker, VPS, or PaaS) using `DEPLOYMENT_CHECKLIST.md`
 5. Configure custom domain (lexfiat.org)
 
 ### Week 1 Goals
@@ -189,10 +190,9 @@ Project-specific context and preferences:
 - Technical architecture in `DEVELOPER_HANDOFF.md`
 - Step-by-step deployment in `DEPLOYMENT_CHECKLIST.md`  
 - Quick reference in `README.md`
-- Project context in `replit.md`
 
 ### External Resources
-- Replit deployment documentation
+- Platform-specific deployment documentation (Docker, Heroku, etc.)
 - Anthropic Claude API documentation
 - shadcn/ui component library
 - Drizzle ORM documentation
