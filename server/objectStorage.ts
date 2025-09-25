@@ -1,7 +1,7 @@
-import fs from "fs/promises";
-import path from "path";
-import { Response } from "express";
-import { randomUUID } from "crypto";
+import { createReadStream, promises as fs } from "node:fs";
+import * as path from "node:path";
+import type { Response } from "express";
+import { randomUUID } from "node:crypto";
 
 export class ObjectNotFoundError extends Error {
   constructor() {
@@ -15,15 +15,12 @@ export class ObjectStorageService {
   constructor() {}
 
   getPublicObjectSearchPaths(): Array<string> {
-    const pathsStr = process.env.PUBLIC_OBJECT_SEARCH_PATHS || "public/uploads,public/assets";
-    const paths = Array.from(
-      new Set(
-        pathsStr
-          .split(",")
-          .map((path) => path.trim())
-          .filter((path) => path.length > 0)
-      )
-    );
+    const pathsStr: string = process.env.PUBLIC_OBJECT_SEARCH_PATHS || "public/uploads,public/assets";
+    const rawPaths: Array<string> = pathsStr.split(",");
+    const trimmedPaths: Array<string> = rawPaths.map((p: string) => p.trim());
+    const nonEmptyPaths: Array<string> = trimmedPaths.filter((p: string) => p.length > 0);
+    const uniquePaths: Array<string> = Array.from(new Set<string>(nonEmptyPaths));
+    const paths: Array<string> = uniquePaths;
     return paths;
   }
 
@@ -79,8 +76,20 @@ export class ObjectStorageService {
         "Cache-Control": `public, max-age=${cacheTtlSec}`,
       });
 
-      const fileBuffer = await fs.readFile(filePath);
-      res.send(fileBuffer);
+      const fileStream = createReadStream(filePath);
+      fileStream.on("error", (err: unknown) => {
+        console.error("Stream error while downloading file:", err);
+        if (!res.headersSent) {
+          res.status(500).end("Error streaming file");
+        } else {
+          res.end();
+        }
+      });
+      // Ensure we do not keep reading if client disconnects
+      res.on("close", () => {
+        fileStream.destroy();
+      });
+      fileStream.pipe(res);
     } catch (error) {
       console.error("Error downloading file:", error);
       if (!res.headersSent) {
@@ -103,7 +112,7 @@ export class ObjectStorageService {
     return fullPath;
   }
 
-  async saveFile(filePath: string, buffer: Buffer): Promise<void> {
+  async saveFile(filePath: string, buffer: Uint8Array): Promise<void> {
     // Ensure directory exists
     await fs.mkdir(path.dirname(filePath), { recursive: true });
     await fs.writeFile(filePath, buffer);
