@@ -34,10 +34,16 @@ export class ObjectStorageService {
 
   async searchPublicObject(filePath: string): Promise<string | null> {
     for (const searchPath of this.getPublicObjectSearchPaths()) {
-      const fullPath = path.join(process.cwd(), searchPath, filePath);
+      // Compute the absolute search directory and the requested file path.
+      const absSearchRoot = path.resolve(process.cwd(), searchPath);
+      const candidatePath = path.resolve(absSearchRoot, filePath);
+      // Ensure that the candidatePath is inside absSearchRoot
+      if (!candidatePath.startsWith(absSearchRoot + path.sep)) {
+        continue; // Potential path traversal, skip this candidate
+      }
       try {
-        await fs.access(fullPath);
-        return fullPath;
+        await fs.access(candidatePath);
+        return candidatePath;
       } catch {
         // File doesn't exist in this path, continue searching
       }
