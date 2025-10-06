@@ -6,6 +6,7 @@ import WorkflowPipeline from "@/components/dashboard/workflow-pipeline";
 import MaeWorkflows from "@/components/dashboard/mae-workflows";
 import AlertsBanner from "@/components/dashboard/alerts-banner";
 import DemoModeButton from "@/components/dashboard/demo-mode-button";
+import { GoodCounsel } from "@/components/dashboard/good-counsel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
@@ -149,21 +150,8 @@ export default function Dashboard() {
           </div>
           
           {/* Good Counsel Widget (Green) */}
-          <div className="bg-card-dark rounded-lg p-6 shadow-lg border border-border-gray">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-1 h-8 bg-status-success rounded-full"></div>
-              <h3 className="text-lg font-bold text-primary">Good Counsel</h3>
-            </div>
-            <div className="space-y-3">
-              <div className="bg-card-light p-3 rounded border-l-4 border-status-success">
-                <p className="text-sm text-primary">No contact with James Hartley in 18 days</p>
-                <p className="text-xs text-accent-gold mt-1">Probate hearing Dec 14</p>
-              </div>
-              <div className="bg-card-light p-3 rounded border-l-4 border-status-warning">
-                <p className="text-sm text-primary">Take 10 minutes - Step outside for fresh air</p>
-                <p className="text-xs text-secondary mt-1">You've been focused for 2.5 hours</p>
-              </div>
-            </div>
+          <div className="bg-card-dark rounded-lg shadow-lg border border-border-gray">
+            <GoodCounsel />
           </div>
           
           {/* Today's Focus Widget (Purple) */}
