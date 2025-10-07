@@ -1,0 +1,14 @@
+{
+  "title": "ERROR_REPORT_CLAUDE_MISCONFIG",
+  "severity": "HIGH",
+  "date": "2025-10-07",
+  "summary": "Agent misconfiguration and troubleshooting edits caused deployment of stale assets and wasted developer time.",
+  "modified_files": [
+    "render.yaml",
+    "client/src/main.tsx",
+    "client/src/styles/piquette.css",
+    "dashboard_copy.tsx"
+  ],
+  "revert_command": "git revert --no-edit f358ed1 2810863 d45dc16 247da38 6ed0281 b5bfe3e && git push",
+  "notes": "Reverting is safe. The client UI source files remain intact."
+}
