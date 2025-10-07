@@ -1,4 +1,6 @@
-# LexFiat - Legal Intelligence Platform
+# Lex Fiat
+
+<!-- Last updated: 2025-10-07 --> - Legal Intelligence Platform
 
 > **"Automation enables better client relationships rather than replacing them."**
 
