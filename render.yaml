@@ -2,7 +2,7 @@ services:
   - type: web
     name: lexfiat
     env: static
-    buildCommand: rm -rf node_modules dist .vite package-lock.json && npm install && npm run build
+  buildCommand: cd client && rm -rf node_modules dist .vite package-lock.json && npm ci && npm run build && mv dist ../dist
     staticPublishPath: dist
     envVars:
       - key: NODE_VERSION
