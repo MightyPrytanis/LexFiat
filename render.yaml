@@ -2,13 +2,15 @@ services:
   - type: web
     name: lexfiat
     env: static
-    buildCommand: npm ci && npm run build
+    buildCommand: rm -rf node_modules dist && npm ci && npm run build
     staticPublishPath: dist
     envVars:
       - key: NODE_VERSION
         value: "20"
       - key: VITE_CYRANO_API_URL
         value: https://cyrano-mcp-server.onrender.com
+      - key: BUILD_CACHE_BUST
+        value: "20251007"
     routes:
       - type: rewrite
         source: /*
