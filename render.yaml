@@ -2,7 +2,7 @@ services:
   - type: web
     name: lexfiat
     env: static
-    buildCommand: rm -rf node_modules dist && npm ci && npm run build
+    buildCommand: rm -rf node_modules dist .vite package-lock.json && npm install && npm run build
     staticPublishPath: dist
     envVars:
       - key: NODE_VERSION
@@ -10,7 +10,7 @@ services:
       - key: VITE_CYRANO_API_URL
         value: https://cyrano-mcp-server.onrender.com
       - key: BUILD_CACHE_BUST
-        value: "20251007"
+        value: "20251007-v2"
     routes:
       - type: rewrite
         source: /*
