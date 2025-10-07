@@ -35,7 +35,8 @@ export function GoodCounsel({ caseContext = "", timePressure = "medium" }: GoodC
       time_pressure: string;
       ethical_concerns?: string[];
     }) => {
-      const response = await fetch("http://localhost:5002/mcp/execute", {
+      const apiUrl = import.meta.env.VITE_CYRANO_API_URL || "https://cyrano-mcp-server.onrender.com";
+      const response = await fetch(`${apiUrl}/mcp/execute`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

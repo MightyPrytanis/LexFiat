@@ -24,7 +24,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="dark min-h-screen bg-navy text-warm-white">
+        <div className="piquette-theme dark min-h-screen">
           <Toaster />
           <Router />
         </div>

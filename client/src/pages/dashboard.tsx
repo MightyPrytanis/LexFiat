@@ -52,7 +52,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-primary-dark">
+    <div className="min-h-screen">
       <Header attorney={attorney as any} />
       
       {/* Critical Alerts Section */}
@@ -81,13 +81,13 @@ export default function Dashboard() {
 
         {/* Assembly Line Workflow Pipeline - LexFiat's Core */}
         <div className="mb-6 sm:mb-8">
-          <div className="bg-card-dark rounded-xl p-4 sm:p-6 lg:p-8 shadow-xl border border-border-gray">
+          <div className="swim-panel cyrano-panel-glass">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-3xl font-bold text-primary mb-2">
+                <h1 className="text-3xl font-bold text-primary mb-2 panel-heading">
                   Legal Intelligence Assembly Line
                 </h1>
-                <p className="text-secondary text-lg">
+                <p className="text-secondary text-lg swim-body">
                   Active: Johnson v Johnson (Wayne County Family Division)
                 </p>
                 <p className="text-accent-gold text-sm font-semibold mt-1">
@@ -118,7 +118,7 @@ export default function Dashboard() {
 
         {/* Multi-Agent Engine (MAE) Workflows Section */}
         <div className="mb-6 sm:mb-8">
-          <div className="bg-card-dark rounded-xl p-4 sm:p-6 lg:p-8 shadow-xl border border-border-gray">
+          <div className="swim-panel cyrano-panel-glass">
             <MaeWorkflows 
               isLoading={casesLoading || redFlagsLoading || statsLoading}
             />
@@ -128,46 +128,46 @@ export default function Dashboard() {
         {/* Bottom Widgets - Performance, Good Counsel, Today's Focus */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Performance Widget (Blue) */}
-          <div className="bg-card-dark rounded-lg p-6 shadow-lg border border-border-gray">
+          <div className="swim-panel stat-card">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-1 h-8 bg-status-processing rounded-full"></div>
-              <h3 className="text-lg font-bold text-primary">Performance</h3>
+              <h3 className="text-lg font-bold text-primary panel-heading">Performance</h3>
             </div>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-secondary text-sm">Time saved today</span>
+                <span className="text-secondary text-sm panel-text-secondary">Time saved today</span>
                 <span className="text-primary font-bold font-mono">4.7h</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-secondary text-sm">Automation success</span>
+                <span className="text-secondary text-sm panel-text-secondary">Automation success</span>
                 <span className="text-primary font-bold font-mono">91%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-secondary text-sm">Documents processed</span>
+                <span className="text-secondary text-sm panel-text-secondary">Documents processed</span>
                 <span className="text-primary font-bold font-mono">247</span>
               </div>
             </div>
           </div>
           
           {/* Good Counsel Widget (Green) */}
-          <div className="bg-card-dark rounded-lg shadow-lg border border-border-gray">
+          <div className="swim-panel">
             <GoodCounsel />
           </div>
           
           {/* Today's Focus Widget (Purple) */}
-          <div className="bg-card-dark rounded-lg p-6 shadow-lg border border-border-gray">
+          <div className="swim-panel stat-card">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-1 h-8 bg-status-purple rounded-full"></div>
-              <h3 className="text-lg font-bold text-primary">Today's Focus</h3>
+              <h3 className="text-lg font-bold text-primary panel-heading">Today's Focus</h3>
             </div>
             <div className="space-y-3">
-              <div className="bg-card-light p-3 rounded border-l-4 border-status-critical">
+              <div className="bg-card-light p-3 border-l-4 border-status-critical">
                 <p className="text-sm text-primary font-semibold">TRO Response - Johnson v Johnson</p>
-                <p className="text-xs text-secondary">Wayne County • Due 5 PM tomorrow</p>
+                <p className="text-xs text-secondary panel-text-secondary">Wayne County • Due 5 PM tomorrow</p>
               </div>
-              <div className="bg-card-light p-3 rounded border-l-4 border-status-processing">
+              <div className="bg-card-light p-3 border-l-4 border-status-processing">
                 <p className="text-sm text-primary">Discovery Response - Hartley Estate</p>
-                <p className="text-xs text-secondary">Oakland County • Due Friday</p>
+                <p className="text-xs text-secondary panel-text-secondary">Oakland County • Due Friday</p>
               </div>
             </div>
           </div>
