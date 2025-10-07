@@ -5,6 +5,8 @@
      - Wrap the target page/app with <div class="piquette-theme"> ... </div>
 */
 
+/* build-bump: 2025-10-07T06:07:00Z - force CSS asset refresh */
+
 /* 1) LexFiat tokens scoped to the theme wrapper (no global changes) */
 .piquette-theme {
   /* Base palette (from lexfiat_technical_appendix.css) */
