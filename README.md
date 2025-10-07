@@ -255,3 +255,4 @@ This project is proprietary software developed for legal practice automation.
 *"Let There Be Law"* through intelligent automation.
 
 Built with ⚡ by expert developers, designed for legal professionals.
+
