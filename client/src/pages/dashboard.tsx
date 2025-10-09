@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { useState } from "react";
 import Header from "@/components/layout/header";
 import { GoodCounselWidget } from "@/components/dashboard/good-counsel-widget";
+import { EthicsGuidanceWidget } from "@/components/dashboard/ethics-guidance-widget";
 import { GoodCounsel } from "@/components/dashboard/good-counsel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -284,6 +285,12 @@ export default function Dashboard() {
               </div>
             </CardContent>
           </Card>
+
+          {/* GoodCounsel Widget */}
+          <GoodCounselWidget onClick={() => setActivePanel("goodcounsel")} />
+
+          {/* Ethics Guidance Widget */}
+          <EthicsGuidanceWidget onClick={() => setActivePanel("ethics")} />
 
         </div>
       </main>

@@ -2,50 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: hsl(210, 22%, 98%);
-  --foreground: hsl(210, 22%, 11%);
-  --muted: hsl(210, 40%, 96%);
-  --muted-foreground: hsl(210, 6%, 46%);
-  --popover: hsl(210, 22%, 98%);
-  --popover-foreground: hsl(210, 22%, 11%);
-  --card: hsl(210, 22%, 98%);
-  --card-foreground: hsl(210, 22%, 11%);
-  --border: hsl(214, 32%, 91%);
-  --input: hsl(214, 32%, 91%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(210, 40%, 99%);
-  --secondary: hsl(210, 40%, 96%);
-  --secondary-foreground: hsl(210, 22%, 11%);
-  --accent: hsl(210, 40%, 96%);
-  --accent-foreground: hsl(210, 22%, 11%);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(210, 40%, 99%);
-  --ring: hsl(207, 90%, 54%);
-  --radius: 0.5rem;
+@import './styles/piquette.css';
 
-  /* LexFiat Design System - Official Color Palette */
-  --primary-bg-dark: #0a0e1a;
-  --primary-bg-light: #1a1f2e;
-  --accent-gold: #fbbf24;
-  --accent-amber: #d97706;
+:root {
+  /* Piquette Color System */
+  --piq-ocean-deep: #0A1A2A;
+  --piq-ocean-mid: #1E3A5F;
+  --piq-steel-blue: #2C5282;
+  --piq-glass-blue: #60A5FA;
+  --piq-electric-purple: #A855F7;
+  --piq-cyber-green: #10B981;
+  --piq-neon-orange: #F59E0B;
+  --piq-white: #FFFFFF;
+  --piq-mist: #F8FAFC;
+  --piq-steel-gray: #94A3B8;
+  --piq-chrome: #E2E8F0;
+  --piq-panel-glass: rgba(255, 255, 255, 0.08);
+  --piq-panel-border: rgba(255, 255, 255, 0.15);
+  --piq-accent-glow: rgba(96, 165, 250, 0.2);
+
+  /* Tailwind compatibility */
+  --background: var(--piq-ocean-deep);
+  --foreground: var(--piq-white);
+  --muted: var(--piq-ocean-mid);
+  --muted-foreground: var(--piq-steel-gray);
+  --popover: var(--piq-ocean-mid);
+  --popover-foreground: var(--piq-white);
+  --card: var(--piq-ocean-mid);
+  --card-foreground: var(--piq-white);
+  --border: var(--piq-panel-border);
+  --input: var(--piq-ocean-mid);
+  --primary: var(--piq-glass-blue);
+  --primary-foreground: var(--piq-white);
+  --secondary: var(--piq-steel-blue);
+  --secondary-foreground: var(--piq-white);
+  --accent: var(--piq-neon-orange);
+  --accent-foreground: var(--piq-white);
+  --destructive: #ef4444;
+  --destructive-foreground: var(--piq-white);
+  --ring: var(--piq-glass-blue);
+  --radius: 0;
+
+  /* LexFiat Design System mapped to Piquette */
+  --primary-bg-dark: var(--piq-ocean-deep);
+  --primary-bg-light: var(--piq-ocean-mid);
+  --accent-gold: #D4AF37;
+  --accent-amber: var(--piq-neon-orange);
   
   /* Secondary Colors */
-  --card-bg-dark: #1e293b;
-  --card-bg-light: #334155;
-  --border-gray: #475569;
+  --card-bg-dark: var(--piq-ocean-mid);
+  --card-bg-light: var(--piq-steel-blue);
+  --border-gray: var(--piq-panel-border);
   
   /* Text Colors */
-  --text-primary: #e1e7ef;
-  --text-secondary: #94a3b8;
-  --text-muted: #6b7280;
+  --text-primary: var(--piq-white);
+  --text-secondary: var(--piq-chrome);
+  --text-muted: var(--piq-steel-gray);
   
   /* Status Colors */
-  --status-success: #10b981;
-  --status-processing: #3b82f6;
-  --status-warning: #f59e0b;
+  --status-success: var(--piq-cyber-green);
+  --status-processing: var(--piq-glass-blue);
+  --status-warning: var(--piq-neon-orange);
   --status-critical: #ef4444;
-  --status-purple: #8b5cf6;
+  --status-purple: var(--piq-electric-purple);
   
   /* Spacing System */
   --space-xs: 0.25rem;
