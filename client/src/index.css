@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './styles/piquette.css';
-
 :root {
   /* Piquette Color System */
   --piq-ocean-deep: #0A1A2A;

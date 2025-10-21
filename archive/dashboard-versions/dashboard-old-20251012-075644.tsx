@@ -3,6 +3,7 @@ import { Lightbulb, Settings, AlertTriangle } from "lucide-react";
 import { Link } from "wouter";
 import Header from "@/components/layout/header";
 import WorkflowPipeline from "@/components/dashboard/workflow-pipeline";
+import AlertsBanner from "@/components/dashboard/alerts-banner";
 import DemoModeButton from "@/components/dashboard/demo-mode-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,10 @@ export default function Dashboard() {
   const { data: dashboardStats, isLoading: statsLoading } = useQuery({
     queryKey: ["/api/dashboard/stats"],
   });
+
+  const urgentRedFlags = (redFlags as any[])?.filter((flag: any) => 
+    flag.severity === 'critical' || flag.severity === 'high'
+  ) || [];
 
   if (attorneyLoading) {
     return (
@@ -47,7 +52,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-primary-dark">
       <Header attorney={attorney as any} />
-
+      
       {/* Priority Alerts Ticker Widget */}
       <div className="bg-card-dark rounded-lg p-4 shadow-lg border border-red-500 mb-4">
         <div className="flex items-center space-x-3 mb-3">
@@ -72,23 +77,9 @@ export default function Dashboard() {
             </div>
             <span className="text-orange-200 text-sm">15 min ago</span>
           </div>
-          <div className="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-500 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="h-4 w-4 text-yellow-400" />
-              <span className="text-white font-medium">Smith Family Trust - Document Review</span>
-            </div>
-            <span className="text-yellow-200 text-sm">1 hour ago</span>
-          </div>
-          <div className="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-500 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="h-4 w-4 text-green-400" />
-              <span className="text-white font-medium">System: All AI providers operational</span>
-            </div>
-            <span className="text-green-200 text-sm">2 hours ago</span>
-          </div>
         </div>
       </div>
-
+      
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Quick Actions Bar */}
         <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
@@ -132,7 +123,7 @@ export default function Dashboard() {
             </div>
 
             {/* Workflow Pipeline */}
-            <WorkflowPipeline
+            <WorkflowPipeline 
               cases={cases as any}
               redFlags={redFlags as any}
               dashboardStats={dashboardStats as any}
@@ -141,7 +132,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Three Main Widgets */}
+        {/* Three Main Widgets - Matching HTML Reference */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
           {/* Today's Focus Widget (Purple) */}
           <div className="bg-card-dark rounded-lg p-4 shadow-lg border-l-4 border-purple-500">
@@ -160,7 +151,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-
+          
           {/* GoodCounsel Widget (Gold) */}
           <div className="bg-card-dark rounded-lg p-4 shadow-lg border-l-4 border-yellow-500">
             <div className="flex items-center space-x-3 mb-4">
@@ -184,7 +175,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-
+          
           {/* Testing Widget (Blue with Radio Buttons) */}
           <div className="bg-card-dark rounded-lg p-4 shadow-lg border-l-4 border-blue-500">
             <div className="flex items-center space-x-3 mb-4">
@@ -231,7 +222,7 @@ export default function Dashboard() {
               + Widgets
             </button>
           </div>
-
+          
           {/* Four Connected Workflow Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Document Intake */}
