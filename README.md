@@ -2,10 +2,9 @@
 
 <!-- Last updated: 2025-10-07 --> - Legal Intelligence Platform
 
-> **"Automation enables better client relationships rather than replacing them."**
+> **Practicing law can be a real grind.  It doesn't have to be.**   
 
-
-LexFiat is a comprehensive legal workflow automation system designed for modern law practices. Built for a busy solo family law practitioner, LexFiat transforms traditional legal workflows through AI-powered document analysis and verification, intelligent case management, and adaptive user interfaces.
+LexFiat is a comprehensive legal workflow automation system designed for modern law practices. Coneived initially for for a busy solo family law practitioner, LexFiat transforms traditional legal workflows through AI-powered document analysis and verification, intelligent case management, and adaptive user interfaces.
 
 ## 🚀 Quick Start
 
@@ -36,6 +35,8 @@ npm run dev
 
 Visit `http://localhost:5000` to see LexFiat in action.
 
+**LexFiat uses automation to free lawyers from repetitive, time-consuming but necessary chores** 
+
 ## ✨ Key Features
 
 ### Adaptive Workflow Intelligence
@@ -44,18 +45,20 @@ Visit `http://localhost:5000` to see LexFiat in action.
 - **Real-time Updates**: Live data synchronization across all components
 
 ### AI-Powered Legal Analysis
-- **Multi-AI Support**: Claude Sonnet 4 (primary), Gemini 2.5 Flash, OpenAI GPT-4o
+- **Multi-AI Support**: Respects user sovereignty by allowing the user to select any AI assistant for orchestration or specific tasks.
+- **Off the Shelf Solution**: Native support for Perplexity, OpenAI, XAi, Google, and Claude Models.
 - **Document Intelligence**: Automated analysis of legal documents and correspondence
 - **Red Flag Detection**: Intelligent identification of urgent legal matters
-- **Response Generation**: AI-drafted responses with attorney approval workflow
+- **Response Generation**: AI-drafted responses with mandatory attorney review/approval workflow
+- **Multimodal AI Coordination**: Allow AI panels to approach workflows in compete/compare, critique/crosscheck, or fully collaborative/cooperative modes.
 
 ### Professional Legal Branding
-- **Custom Logo**: Simplified Edison bulb design representing "Legal Intelligence"
+- **Custom Logo**: An elegant simplified Edison bulb design incorporating the traditional scales of justice, but in a novel way that instantly commnicates the app's purpose and philosophy
 - **Dark Theme**: Professional navy and gold color scheme
-- **Responsive Design**: Optimized for desktop and mobile use
+- **Responsive, Customizable Design**: Optimized for desktop and mobile use
 
 ### Demo Mode
-- **Realistic Scenarios**: Johnson v Johnson divorce, Hartley Estate probate cases
+- **Realistic Scenarios**: Fictitious but realistic cases: Johnson v Johnson divorce, Hartley Estate probate, Towne v Department employment suit.
 - **Interactive Testing**: Full workflow demonstration without real client data
 - **Educational Tool**: Perfect for showcasing capabilities to potential clients
 
@@ -85,61 +88,49 @@ const aiProviders = {
 };
 ```
 
-## 🔄 Platform Migration Summary
+##Platform Migration Summary
 
-**✅ Replit Dependencies Removed:**
+**Replit Dependencies Removed:**
 - All Replit-specific Vite plugins eliminated
 - Replit object storage replaced with local filesystem storage
 - Replit deployment documentation updated with platform-agnostic alternatives
 - All environment variables converted to generic, cloud-agnostic formats
 
-**🚀 New Deployment Options Added:**
+**New Deployment Options Added:**
 - **Docker**: Complete containerization with docker-compose.yml for full-stack deployment
 - **GitHub Codespaces**: DevContainer configuration for cloud development environments  
 - **Platform-as-a-Service**: Support for Heroku, Railway, DigitalOcean App Platform
 - **Traditional VPS**: PM2, nginx, and SSL certificate setup guides
 - **Local Development**: Simplified setup with standard Node.js tools
 
-**📦 Open Source Alternatives:**
+**Open Source Alternatives:**
 - File storage: Local filesystem with configurable paths (replaces Replit object storage)
 - Development tools: Standard Vite setup without proprietary plugins
 - SSL/Domain: Let's Encrypt and cloud provider SSL options
 - Environment management: Standard .env files with comprehensive examples
 
+
+
 ## 📁 Project Structure
 
 ```
-lexfiat/
-├── client/                    # React frontend
+Cyrano/
+├── Lex Fiat/                    # React frontend
 │   ├── src/
 │   │   ├── components/       # Reusable components
 │   │   ├── pages/           # Page components
 │   │   ├── hooks/           # Custom hooks
 │   │   └── lib/             # Utilities
-├── server/                   # Express backend
-│   ├── services/            # Business logic
-│   ├── routes.ts           # API endpoints
-│   └── storage.ts          # Data layer
 ├── shared/                  # Shared types
 │   └── schema.ts           # Database schemas
-├── DEVELOPER_HANDOFF.md    # Complete handoff guide
-└── DEPLOYMENT_CHECKLIST.md # Production deployment
+
 ```
 
-## 🎨 Brand Identity
 
-### Design System
-- **Colors**: Navy backgrounds with gold accents
-- **Typography**: Inter font family exclusively
-- **Logo**: Simplified Edison bulb with geometric filament
-- **Theme**: Professional dark mode optimized for legal work
 
-### Logo Variations
-- **Full Logo**: Icon + wordmark for headers
-- **Icon Only**: App icons and favicons
-- **Wordmark**: Text-only for constrained spaces
 
-Visit `/logo-showcase` to see all brand variations and usage guidelines.
+
+Deprecated `/logo-showcase` to see all brand variations and usage guidelines.
 
 ## 🚀 Deployment
 
@@ -163,7 +154,11 @@ Visit `/logo-showcase` to see all brand variations and usage guidelines.
 3. **Set environment variables** in platform dashboard
 4. **Enable auto-scaling** based on traffic
 
-See `DEPLOYMENT_CHECKLIST.md` for detailed deployment instructions.
+#### Deployment Status
+- Tested build/deployment on Replit (UI only) 8/2025 
+- Tested build/deployment on Render (LexFiat, Cyrano MCP, and database) 10/2025
+
+
 
 ### Environment Variables
 ```env
@@ -251,8 +246,7 @@ This project is proprietary software developed for legal practice automation.
 
 ---
 
-**LexFiat** - *Legal Intelligence Platform*  
-*"Let There Be Law"* through intelligent automation.
 
 Built with ⚡ by expert developers, designed for legal professionals.
 
+Copyright 2025 Cognisint LLC - Made available under Apache 2.0 License - Please see our AI fraud, errors, and abuse poicy
